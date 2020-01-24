@@ -22,6 +22,7 @@
 #include "Game/Game.hpp"
 #include "Game/GameCommon.hpp"
 #include "Game/App.hpp"
+#include "Game/Map.hpp"
 #include <vector>
 
 #include <Math.h>
@@ -31,7 +32,7 @@
 */
 Game::Game()
 {
-	ConstructGame();
+
 }
 
 //--------------------------------------------------------------------------
@@ -40,7 +41,7 @@ Game::Game()
 */
 Game::~Game()
 {
-	DeconstructGame();
+
 }
 
 //--------------------------------------------------------------------------
@@ -54,6 +55,14 @@ void Game::Startup()
 
 	m_DevColsoleCamera.SetOrthographicProjection( Vec2( -100.0f, -50.0f ), Vec2( 100.0f,  50.0f ) );
 	m_DevColsoleCamera.SetModelMatrix( Matrix44::IDENTITY );
+
+	TileDefinition::InitiolizeDefinitions();
+
+	m_CurentCamera.SetOrthographicProjection(Vec2(), Vec2(WORLD_WIDTH, WORLD_HEIGHT));
+
+	m_terrain_sheet = new SpriteSheet( (TextureView*)g_theRenderer->CreateOrGetTextureViewFromFile("Data/Images/Terrain_8x8.png"), IntVec2( 8, 8 ), Vec2::ALIGN_CENTERED, Vec2::ZERO );
+
+	m_maps[0] = new Map( 0, IntVec2( 10, 10 ), m_terrain_sheet, TileType::GRASS_TILE, TileType::STONE_TILE );
 }
 
 //--------------------------------------------------------------------------
@@ -62,7 +71,7 @@ void Game::Startup()
 */
 void Game::Shutdown()
 {
-
+	TileDefinition::DeconstructDefinitions();
 }
 
 static int g_index = 0;
@@ -216,6 +225,7 @@ void Game::GameRender() const
 
 
 	ProfilerDisplayRender();
+	m_maps.at(0)->Render();
 
 	// Debug
 	if( g_isInDebug )
@@ -231,6 +241,8 @@ void Game::GameRender() const
 */
 void Game::UpdateGame( float deltaSeconds )
 {
+	m_maps[0];
+
 	static bool swapper = true;
 	if( g_pingPongTimer < 0.0f || g_pingPongTimer > 7.0f )
 	{
@@ -255,6 +267,15 @@ void Game::UpdateGame( float deltaSeconds )
 	UpdateCamera( deltaSeconds );
 }
 
+
+//--------------------------------------------------------------------------
+/**
+* GetAdmin
+*/
+EntityAdmin& Game::GetAdmin()
+{
+	return g_theGame->m_admin;
+}
 
 //--------------------------------------------------------------------------
 /**
@@ -343,36 +364,7 @@ void Game::UpdateCamera( float deltaSeconds )
 {
 	UNUSED( deltaSeconds );
 	m_CurentCamera.SetModelMatrix( Matrix44::IDENTITY );
-	m_CurentCamera.SetOrthographicProjection( Vec2(), Vec2(WORLD_WIDTH, WORLD_HEIGHT) );
 	m_CurentCamera.SetColorTargetView( g_theRenderer->GetColorTargetView() );
 	m_CurentCamera.SetDepthTargetView( g_theRenderer->GetDepthTargetView() );
 	g_theRenderer->BeginCamera( &m_CurentCamera );
-}
-
-//--------------------------------------------------------------------------
-/**
-* ResetGame
-*/
-void Game::ResetGame()
-{
-	DeconstructGame();
-	ConstructGame();
-}
-
-//--------------------------------------------------------------------------
-/**
-* ConstructGame
-*/
-void Game::ConstructGame()
-{
-
-}
-
-//--------------------------------------------------------------------------
-/**
-* DeconstructGame
-*/
-void Game::DeconstructGame()
-{
-
 }

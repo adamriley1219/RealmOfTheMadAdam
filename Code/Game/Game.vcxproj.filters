@@ -19,6 +19,9 @@
     <Filter Include="Components">
       <UniqueIdentifier>{e042ce2f-ff60-4f42-9f11-dd2209983109}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{56f3754b-1497-46bf-b06e-b3ef857aa11f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp">
@@ -77,6 +80,18 @@
     </ClCompile>
     <ClCompile Include="Systems\GamePhysicsSystem.cpp">
       <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="TileDefinition.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityAdmin.cpp">
+      <Filter>Gameplay</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +154,18 @@
     </ClInclude>
     <ClInclude Include="Systems\GamePhysicsSystem.hpp">
       <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.hpp">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.hpp">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="TileDefinition.hpp">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityAdmin.hpp">
+      <Filter>Gameplay</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

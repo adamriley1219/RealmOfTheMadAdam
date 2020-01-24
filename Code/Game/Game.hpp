@@ -1,7 +1,14 @@
 #pragma once
 #include "Game/GameCommon.hpp"
+#include "Game/EntityAdmin.hpp"
+
+#include "Engine/Renderer/Camera.hpp"
+
+#include <unordered_map>
 
 class Shader;
+class Map;
+class SpriteSheet;
 
 class Game
 {
@@ -19,6 +26,9 @@ public:
 	void GameRender() const;
 	void UpdateGame( float deltaSeconds );
 
+public:
+	// Getter Helpers
+	static EntityAdmin& GetAdmin();
 
 private:
 	//Render
@@ -32,17 +42,16 @@ private:
 	void UpdateCamera( float deltaSeconds );
 
 private:
-	void ResetGame();
-
-	// Helper Methods
-	void ConstructGame();
-	void DeconstructGame();
-private:
 	bool m_isQuitting = false;
 
 	Shader* m_shader;
 
 	mutable Camera m_CurentCamera;
 	mutable Camera m_DevColsoleCamera;
+
+	SpriteSheet* m_terrain_sheet;
+
+	std::unordered_map<uint, Map*> m_maps;
+	EntityAdmin m_admin;
 
 };
