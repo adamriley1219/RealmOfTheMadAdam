@@ -1,19 +1,19 @@
-#include "Game/Entity.hpp"
+#include "Game/Systems/GamePhysicsSystem.hpp"
 
 //--------------------------------------------------------------------------
 /**
-* Entity
+* GamePhysicsSystem
 */
-Entity::Entity()
+GamePhysicsSystem::GamePhysicsSystem()
 {
 
 }
 
 //--------------------------------------------------------------------------
 /**
-* ~Entity
+* ~GamePhysicsSystem
 */
-Entity::~Entity()
+GamePhysicsSystem::~GamePhysicsSystem()
 {
 
 }

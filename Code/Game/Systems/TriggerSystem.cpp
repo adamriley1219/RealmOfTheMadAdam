@@ -1,19 +1,19 @@
-#include "Game/Entity.hpp"
+#include "Game/Systems/TriggerSystem.hpp"
 
 //--------------------------------------------------------------------------
 /**
-* Entity
+* TriggerSystem
 */
-Entity::Entity()
+TriggerSystem::TriggerSystem()
 {
 
 }
 
 //--------------------------------------------------------------------------
 /**
-* ~Entity
+* ~TriggerSystem
 */
-Entity::~Entity()
+TriggerSystem::~TriggerSystem()
 {
 
 }

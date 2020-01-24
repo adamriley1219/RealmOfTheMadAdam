@@ -1,19 +1,19 @@
-#include "Game/Entity.hpp"
+#include "Game/Systems/QuestSystem.hpp"
 
 //--------------------------------------------------------------------------
 /**
-* Entity
+* QuestSystem
 */
-Entity::Entity()
+QuestSystem::QuestSystem()
 {
 
 }
 
 //--------------------------------------------------------------------------
 /**
-* ~Entity
+* ~QuestSystem
 */
-Entity::~Entity()
+QuestSystem::~QuestSystem()
 {
 
 }

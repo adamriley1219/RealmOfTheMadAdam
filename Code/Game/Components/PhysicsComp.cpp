@@ -1,19 +1,20 @@
-#include "Game/Entity.hpp"
+#include "Game/Components/PhysicsComp.hpp"
+
 
 //--------------------------------------------------------------------------
 /**
-* Entity
+* PhysicsComp
 */
-Entity::Entity()
+PhysicsComp::PhysicsComp()
 {
 
 }
 
 //--------------------------------------------------------------------------
 /**
-* ~Entity
+* ~PhysicsComp
 */
-Entity::~Entity()
+PhysicsComp::~PhysicsComp()
 {
 
 }

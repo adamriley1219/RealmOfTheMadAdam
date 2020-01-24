@@ -1,19 +1,18 @@
-#include "Game/Entity.hpp"
-
+#include "Game/Components/Component.hpp"
 //--------------------------------------------------------------------------
 /**
-* Entity
+* Component
 */
-Entity::Entity()
+Component::Component()
 {
 
 }
 
 //--------------------------------------------------------------------------
 /**
-* ~Entity
+* ~Component
 */
-Entity::~Entity()
+Component::~Component()
 {
 
 }

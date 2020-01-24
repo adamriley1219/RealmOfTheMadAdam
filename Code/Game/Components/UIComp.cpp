@@ -1,19 +1,20 @@
-#include "Game/Entity.hpp"
+#include "Game/Components/UIComp.hpp"
+
 
 //--------------------------------------------------------------------------
 /**
-* Entity
+* UIComp
 */
-Entity::Entity()
+UIComp::UIComp()
 {
 
 }
 
 //--------------------------------------------------------------------------
 /**
-* ~Entity
+* ~UIComp
 */
-Entity::~Entity()
+UIComp::~UIComp()
 {
 
 }

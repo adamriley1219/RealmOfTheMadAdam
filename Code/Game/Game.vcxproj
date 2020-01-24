@@ -189,18 +189,46 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Components\Component.cpp" />
+    <ClCompile Include="Components\NameComp.cpp" />
+    <ClCompile Include="Components\PhysicsComp.cpp" />
+    <ClCompile Include="Components\RenderComp.cpp" />
+    <ClCompile Include="Components\TransformComp.cpp" />
+    <ClCompile Include="Components\UIComp.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameUtils.cpp" />
     <ClCompile Include="Main_Windows.cpp" />
+    <ClCompile Include="Systems\CombatSystem.cpp" />
+    <ClCompile Include="Systems\GameInputSystem.cpp" />
+    <ClCompile Include="Systems\GamePhysicsSystem.cpp" />
+    <ClCompile Include="Systems\QuestSystem.cpp" />
+    <ClCompile Include="Systems\RenderSystem.cpp" />
+    <ClCompile Include="Systems\System.cpp" />
+    <ClCompile Include="Systems\TriggerSystem.cpp" />
+    <ClCompile Include="Systems\UISystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.hpp" />
+    <ClInclude Include="Components\Component.hpp" />
+    <ClInclude Include="Components\NameComp.hpp" />
+    <ClInclude Include="Components\PhysicsComp.hpp" />
+    <ClInclude Include="Components\RenderComp.hpp" />
+    <ClInclude Include="Components\TransformComp.hpp" />
+    <ClInclude Include="Components\UIComp.hpp" />
     <ClInclude Include="EngineBuildPreferences.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameCommon.hpp" />
     <ClInclude Include="GameUtils.hpp" />
+    <ClInclude Include="Systems\CombatSystem.hpp" />
+    <ClInclude Include="Systems\GameInputSystem.hpp" />
+    <ClInclude Include="Systems\GamePhysicsSystem.hpp" />
+    <ClInclude Include="Systems\QuestSystem.hpp" />
+    <ClInclude Include="Systems\RenderSystem.hpp" />
+    <ClInclude Include="Systems\System.hpp" />
+    <ClInclude Include="Systems\TriggerSystem.hpp" />
+    <ClInclude Include="Systems\UISystem.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\..\Run\Data\GameConfig.xml" />

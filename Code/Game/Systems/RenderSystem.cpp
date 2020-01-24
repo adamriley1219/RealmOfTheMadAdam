@@ -1,19 +1,19 @@
-#include "Game/Entity.hpp"
+#include "Game/Systems/RenderSystem.hpp"
 
 //--------------------------------------------------------------------------
 /**
-* Entity
+* RenderSystem
 */
-Entity::Entity()
+RenderSystem::RenderSystem()
 {
 
 }
 
 //--------------------------------------------------------------------------
 /**
-* ~Entity
+* ~RenderSystem
 */
-Entity::~Entity()
+RenderSystem::~RenderSystem()
 {
 
 }

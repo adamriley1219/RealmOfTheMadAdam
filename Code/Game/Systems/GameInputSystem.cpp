@@ -1,19 +1,19 @@
-#include "Game/Entity.hpp"
+#include "Game/Systems/GameInputSystem.hpp"
 
 //--------------------------------------------------------------------------
 /**
-* Entity
+* GameInpuSystem
 */
-Entity::Entity()
+GameInpuSystem::GameInpuSystem()
 {
 
 }
 
 //--------------------------------------------------------------------------
 /**
-* ~Entity
+* ~GameInpuSystem
 */
-Entity::~Entity()
+GameInpuSystem::~GameInpuSystem()
 {
 
 }

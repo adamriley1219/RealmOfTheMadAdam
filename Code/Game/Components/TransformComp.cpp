@@ -1,19 +1,19 @@
-#include "Game/Entity.hpp"
+#include "Game/Components/TransformComp.hpp"
 
 //--------------------------------------------------------------------------
 /**
-* Entity
+* TransformComp
 */
-Entity::Entity()
+TransformComp::TransformComp()
 {
 
 }
 
 //--------------------------------------------------------------------------
 /**
-* ~Entity
+* ~TransformComp
 */
-Entity::~Entity()
+TransformComp::~TransformComp()
 {
 
 }

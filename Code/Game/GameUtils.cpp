@@ -37,14 +37,6 @@ void DrawDisc( const Vertex_PCU translation, float radius )
 	g_theRenderer->DrawVertexArray( NUM_DISC_VERTS, VertsToDraw );
 }
 
-//--------------------------------------------------------------------------
-/**
-* ResolveBulletVxAsteroidGetDistance
-*/
-float GetDistanceBetween( const Entity* entityA, const Entity* entiryB )
-{
-	return GetDistance( entityA->GetPosition(), entiryB->GetPosition() );
-}
 
 float GetRandomlyChosenFloat( float a, float b )
 {

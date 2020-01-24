@@ -1,19 +1,19 @@
-#include "Game/Entity.hpp"
+#include "Game/Components/RenderComp.hpp"
 
 //--------------------------------------------------------------------------
 /**
-* Entity
+* RenderComp
 */
-Entity::Entity()
+RenderComp::RenderComp()
 {
 
 }
 
 //--------------------------------------------------------------------------
 /**
-* ~Entity
+* ~RenderComp
 */
-Entity::~Entity()
+RenderComp::~RenderComp()
 {
 
 }

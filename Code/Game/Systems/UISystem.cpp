@@ -1,19 +1,18 @@
-#include "Game/Entity.hpp"
-
+#include "Game/Systems/UISystem.hpp"
 //--------------------------------------------------------------------------
 /**
-* Entity
+* UISystem
 */
-Entity::Entity()
+UISystem::UISystem()
 {
 
 }
 
 //--------------------------------------------------------------------------
 /**
-* ~Entity
+* ~UISystem
 */
-Entity::~Entity()
+UISystem::~UISystem()
 {
 
 }

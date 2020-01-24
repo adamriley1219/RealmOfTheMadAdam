@@ -1,19 +1,19 @@
-#include "Game/Entity.hpp"
+#include "Game/Systems/CombatSystem.hpp"
 
 //--------------------------------------------------------------------------
 /**
-* Entity
+* CombatSystem
 */
-Entity::Entity()
+CombatSystem::CombatSystem()
 {
 
 }
 
 //--------------------------------------------------------------------------
 /**
-* ~Entity
+* ~CombatSystem
 */
-Entity::~Entity()
+CombatSystem::~CombatSystem()
 {
 
 }
