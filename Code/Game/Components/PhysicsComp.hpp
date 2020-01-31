@@ -2,12 +2,13 @@
 #include "Game/Components/Component.hpp"
 
 
-class PhysicsComp : public Component
+struct PhysicsComp : public Component
 {
 public:
 	PhysicsComp();
 	~PhysicsComp();
 
-private:
+public:
+	float m_speed = 1;
 
 };

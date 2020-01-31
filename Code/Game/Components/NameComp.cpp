@@ -17,7 +17,7 @@ NameComp::NameComp()
 NameComp::NameComp( const std::string& given_name )
 	: m_name( given_name )
 {
-
+	m_type = NAME_COMP;
 }
 
 //--------------------------------------------------------------------------

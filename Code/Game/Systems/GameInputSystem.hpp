@@ -9,6 +9,8 @@ public:
 	GameInpuSystem();
 	~GameInpuSystem();
 
+	void Update( float deltaTime ) const;
+
 private:
 
 };

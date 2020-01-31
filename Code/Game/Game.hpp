@@ -1,6 +1,5 @@
 #pragma once
 #include "Game/GameCommon.hpp"
-#include "Game/EntityAdmin.hpp"
 
 #include "Engine/Renderer/Camera.hpp"
 
@@ -29,6 +28,8 @@ public:
 public:
 	Map* GetCurrentMap() const;
 
+	bool IsPlayer( EntityID id );
+
 private:
 	void ImGUIWidget();
 
@@ -40,6 +41,7 @@ private:
 	Shader* m_shader;
 
 	uint m_map_id = 0;
+	EntityID m_player_id = 0;
 
 	mutable Camera m_CurentCamera;
 	mutable Camera m_DevColsoleCamera;
@@ -47,6 +49,5 @@ private:
 	SpriteSheet* m_terrain_sheet;
 
 	std::unordered_map<uint, Map*> m_maps;
-	EntityAdmin m_masterAdmin;
 
 };

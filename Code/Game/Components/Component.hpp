@@ -13,7 +13,7 @@ enum eComponentType
 };
 
 
-class Component
+struct Component
 {
 public:
 	Component();
@@ -24,6 +24,6 @@ public:
 public:
 	eComponentType m_type = UNIDENTIFIED_COMP;
 
-private:
+public:
 	EntityID m_owner = 0;
 };

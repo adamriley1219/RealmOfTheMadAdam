@@ -18,3 +18,12 @@ GamePhysicsSystem::~GamePhysicsSystem()
 {
 
 }
+
+//--------------------------------------------------------------------------
+/**
+* Update
+*/
+void GamePhysicsSystem::Update( float deltaTime ) const
+{
+
+}

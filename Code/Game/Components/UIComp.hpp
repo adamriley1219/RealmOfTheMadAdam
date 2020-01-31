@@ -3,7 +3,7 @@
 
 
 
-class UIComp : public Component
+struct UIComp : public Component
 {
 public:
 	UIComp();

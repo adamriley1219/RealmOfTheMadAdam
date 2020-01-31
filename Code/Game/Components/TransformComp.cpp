@@ -17,7 +17,7 @@ TransformComp::TransformComp()
 TransformComp::TransformComp( float x, float y )
 	: Component(), m_transform( Vec2( x, y ) )
 {
-
+	m_type = TRANSFORM_COMP;
 }
 
 //--------------------------------------------------------------------------

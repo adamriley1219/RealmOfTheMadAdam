@@ -34,7 +34,7 @@ class Map;
 
 extern bool g_isInDebug;
 
-typedef uint EntityID;
+
 
 //--------------------------------------------------------------------------
 // Constant global variables.

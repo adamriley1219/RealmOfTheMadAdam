@@ -205,6 +205,7 @@
     <ClCompile Include="Systems\CombatSystem.cpp" />
     <ClCompile Include="Systems\GameInputSystem.cpp" />
     <ClCompile Include="Systems\GamePhysicsSystem.cpp" />
+    <ClCompile Include="Systems\MovementSystem.cpp" />
     <ClCompile Include="Systems\QuestSystem.cpp" />
     <ClCompile Include="Systems\RenderSystem.cpp" />
     <ClCompile Include="Systems\System.cpp" />
@@ -232,6 +233,7 @@
     <ClInclude Include="Systems\CombatSystem.hpp" />
     <ClInclude Include="Systems\GameInputSystem.hpp" />
     <ClInclude Include="Systems\GamePhysicsSystem.hpp" />
+    <ClInclude Include="Systems\MovementSystem.hpp" />
     <ClInclude Include="Systems\QuestSystem.hpp" />
     <ClInclude Include="Systems\RenderSystem.hpp" />
     <ClInclude Include="Systems\System.hpp" />

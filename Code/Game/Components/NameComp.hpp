@@ -3,7 +3,7 @@
 
 #include <Engine/Core/EngineCommon.hpp>
 
-class NameComp : public Component
+struct NameComp : public Component
 {
 public:
 	NameComp();

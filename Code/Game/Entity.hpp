@@ -5,6 +5,7 @@
 #include "Game/Components/Component.hpp"
 
 class EntityAdmin;
+struct Component;
 
 class Entity
 {

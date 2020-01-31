@@ -1,9 +1,19 @@
 #include "Game/EntityAdmin.hpp"
 #include "Game/Components/Component.hpp"
+
+#include "Game/Systems/CombatSystem.hpp"
+#include "Game/Systems/GameInputSystem.hpp"
+#include "Game/Systems/GamePhysicsSystem.hpp"
+#include "Game/Systems/QuestSystem.hpp"
+#include "Game/Systems/TriggerSystem.hpp"
+#include "Game/Systems/UISystem.hpp"
 #include "Game/Systems/RenderSystem.hpp"
+#include "Game/Systems/MovementSystem.hpp"
+
 #include "Game/Entity.hpp"
 
 std::vector<System*> EntityAdmin::m_systems;
+EntityAdmin EntityAdmin::m_master;
 
 //--------------------------------------------------------------------------
 /**
@@ -166,10 +176,55 @@ RenderSystemTuple* EntityAdmin::GetRenderTuple( EntityID entity_id ) const
 	if( trans_comp && render_comp )
 	{
 		RenderSystemTuple* tup = new RenderSystemTuple();
-		tup->rendercomp = render_comp;
-		tup->transformcomp = trans_comp;
+		tup->render_comp = render_comp;
+		tup->transform_comp = trans_comp;
 		return tup;
 	}
 
+	return nullptr;
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetMovementTuple
+*/
+MovementTuple* EntityAdmin::GetMovementTuple( EntityID entity_id ) const
+{
+	auto ent_itr = m_entities.find(entity_id);
+
+	if (ent_itr == m_entities.end())
+	{
+		return nullptr;
+	}
+
+	Entity* entity = ent_itr->second;
+
+	TransformComp* trans_comp = (TransformComp*)entity->GetComponent( TRANSFORM_COMP );
+	PhysicsComp* physics_comp = (PhysicsComp*)entity->GetComponent( PHYSICS_COMP );
+
+	if ( trans_comp && physics_comp )
+	{
+		MovementTuple* tup = new MovementTuple();
+		tup->phys_comp = physics_comp;
+		tup->trans_comp = trans_comp;
+		return tup;
+	}
+
+	return nullptr;
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetInputSingleton
+*/
+InputComp* EntityAdmin::GetInputSingleton()
+{
+	for( Component* comp : m_master.m_components )
+	{
+		if( comp->m_type == INPUT_COMP )
+		{
+			return (InputComp*)comp;
+		}
+	}
 	return nullptr;
 }

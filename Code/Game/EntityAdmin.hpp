@@ -1,13 +1,17 @@
 #pragma once
-#include "Game/Entity.hpp"
-
 #include <vector>
 #include <unordered_map>
 
+#include "Game/GameCommon.hpp"
+
 class System;
 class Entity;
-class Component;
+
+struct Component;
+struct InputComp;
+
 struct RenderSystemTuple;
+struct MovementTuple;
 
 class EntityAdmin
 {
@@ -27,9 +31,15 @@ public:
 	void RemoveEntity( Entity* entity );
 	void RemoveComponent( Component* component );
 
+public:
 	RenderSystemTuple* GetRenderTuple( EntityID entity_id ) const;
+	MovementTuple* GetMovementTuple( EntityID entity_id ) const;
 
 public:
+	static InputComp* GetInputSingleton();
+
+public:
+	static EntityAdmin m_master;
 	static std::vector<System*> m_systems;
 	std::vector<Component*> m_components;
 	std::unordered_map<EntityID, Entity*> m_entities; 

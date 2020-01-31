@@ -4,12 +4,12 @@
 
 #include <vector>
 
-class RenderComp : public Component
+struct RenderComp : public Component
 {
 public:
 	RenderComp();
 	~RenderComp();
 
-private:
+public:
 	std::vector<Vertex_PCU> m_verts;
 };

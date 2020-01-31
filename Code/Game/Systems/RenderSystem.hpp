@@ -1,13 +1,13 @@
 #pragma once
 #include "Game/Systems/System.hpp"
 
-class RenderComp;
-class TransformComp;
+struct RenderComp;
+struct TransformComp;
 
 struct RenderSystemTuple
 {
-	RenderComp* rendercomp;
-	TransformComp* transformcomp;
+	RenderComp* render_comp;
+	TransformComp* transform_comp;
 };
 
 class RenderSystem : public System

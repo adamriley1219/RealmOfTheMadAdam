@@ -32,6 +32,7 @@
 #include "Game/Systems/TriggerSystem.hpp"
 #include "Game/Systems/UISystem.hpp"
 #include "Game/Systems/RenderSystem.hpp"
+#include "Game/Systems/MovementSystem.hpp"
 
 #include "Game/Components/InputComp.hpp"
 #include "Game/Components/NameComp.hpp"
@@ -80,13 +81,14 @@ void Game::Startup()
 
 	m_terrain_sheet = new SpriteSheet( (TextureView*)g_theRenderer->CreateOrGetTextureViewFromFile("Data/Images/Terrain_8x8.png", true), IntVec2( 8, 8 ), Vec2::ALIGN_CENTERED, Vec2::ZERO );
 
-	m_masterAdmin.m_systems.push_back( new GameInpuSystem() );
-	m_masterAdmin.m_systems.push_back( new GamePhysicsSystem() );
-	m_masterAdmin.m_systems.push_back( new CombatSystem() );
-	m_masterAdmin.m_systems.push_back( new QuestSystem() );
-	m_masterAdmin.m_systems.push_back( new TriggerSystem() );
-	m_masterAdmin.m_systems.push_back( new UISystem() );
-	m_masterAdmin.m_systems.push_back( new RenderSystem() );
+	EntityAdmin::m_master.m_systems.push_back( new GameInpuSystem() );
+	EntityAdmin::m_master.m_systems.push_back( new GamePhysicsSystem() );
+	EntityAdmin::m_master.m_systems.push_back( new CombatSystem() );
+	EntityAdmin::m_master.m_systems.push_back( new QuestSystem() );
+	EntityAdmin::m_master.m_systems.push_back( new TriggerSystem() );
+	EntityAdmin::m_master.m_systems.push_back( new UISystem() );
+	EntityAdmin::m_master.m_systems.push_back( new RenderSystem() );
+	EntityAdmin::m_master.m_systems.push_back( new MovementSystem() );
 
 	m_map_id = 0;
 	m_maps[m_map_id] = new Map( m_map_id, IntVec2( 10, 30 ), m_terrain_sheet, TileType::GRASS_TILE, TileType::STONE_TILE );
@@ -95,9 +97,11 @@ void Game::Startup()
 	player->AddComponent( new NameComp( "player" ) );
 	player->AddComponent( new PhysicsComp( ) );
 	player->AddComponent( new RenderComp( ) );
-	player->AddComponent( new TransformComp( 5, 5 ) );
-	player->AddComponent( new InputComp( ) );
+	player->AddComponent( new TransformComp( 4.5, 2.5 ) );
+	m_player_id = player->m_id;
 
+	// Add singletons
+	EntityAdmin::m_master.AddComponent( new InputComp() );
 }
 
 //--------------------------------------------------------------------------
@@ -107,6 +111,13 @@ void Game::Startup()
 void Game::Shutdown()
 {
 	TileDefinition::DeconstructDefinitions();
+
+	// TODO: Delete maps 
+
+	for( System*& sys : EntityAdmin::m_master.m_systems )
+	{
+		SAFE_DELETE( sys );
+	}
 }
 
 static int g_index = 0;
@@ -138,6 +149,7 @@ bool Game::HandleKeyReleased( unsigned char keyCode )
 void Game::GameRender() const
 {
 	g_theRenderer->BindShader( m_shader );
+	g_theRenderer->BindSampler( SAMPLE_MODE_POINT );
 
 	m_maps.at(m_map_id)->Render();
 
@@ -165,6 +177,15 @@ Map* Game::GetCurrentMap() const
 	return m_maps.at(m_map_id);
 }
 
+
+//--------------------------------------------------------------------------
+/**
+* IsPlayer
+*/
+bool Game::IsPlayer( EntityID id )
+{
+	return ( m_player_id == id );
+}
 
 //--------------------------------------------------------------------------
 /**

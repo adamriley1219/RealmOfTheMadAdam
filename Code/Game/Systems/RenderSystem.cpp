@@ -3,7 +3,14 @@
 #include "Game/Map.hpp"
 #include "Game/EntityAdmin.hpp"
 
+#include "Game/Components/RenderComp.hpp"
+#include "Game/Components/TransformComp.hpp"
+
 #include "Engine/Renderer/RenderContext.hpp"
+
+#include "Engine/Math/Matrix44.hpp"
+
+#include "Engine/Physics/Transform2D.hpp"
 
 
 //--------------------------------------------------------------------------
@@ -41,7 +48,12 @@ void RenderSystem::Render() const
 		if( tuple )
 		{
 			// Can render something
-			now you can render when you come back
+			Matrix44 trans_matrix = tuple->transform_comp->m_transform.GetTransformMatrix();
+			for( Vertex_PCU vert : tuple->render_comp->m_verts )
+			{
+				vert.position = trans_matrix.TransformPosition3D( vert.position );
+				verts.push_back( vert );
+			}
 		}
 	}
 	if( verts.size() > 0 )

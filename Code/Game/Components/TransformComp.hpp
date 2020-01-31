@@ -2,7 +2,7 @@
 #include "Game/Components/Component.hpp"
 #include "Engine/Physics/Transform2D.hpp"
 
-class TransformComp : public Component
+struct TransformComp : public Component
 {
 public:
 	TransformComp();

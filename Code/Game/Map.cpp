@@ -52,6 +52,7 @@ void Map::Update( float deltaSeconds )
 void Map::Render() const
 {
 	g_theRenderer->BindTextureView( 0, m_tileSpriteSheet->GetTextureView() );
+
 	std::vector<Vertex_PCU> verts;
 	for( int i = 0; i < m_tiles.size() ; i++ )
 	{

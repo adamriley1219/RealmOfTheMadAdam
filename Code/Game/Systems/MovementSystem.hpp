@@ -4,17 +4,17 @@
 struct PhysicsComp;
 struct TransformComp;
 
-struct PhysicsTuple
+struct MovementTuple
 {
-	PhysicsComp* physics_comp;
 	TransformComp* trans_comp;
+	PhysicsComp* phys_comp;
 };
 
-class GamePhysicsSystem : public System
+class MovementSystem : public System
 {
 public:
-	GamePhysicsSystem();
-	~GamePhysicsSystem();
+	MovementSystem();
+	~MovementSystem();
 
 	void Update( float deltaTime ) const;
 

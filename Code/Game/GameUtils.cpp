@@ -3,8 +3,11 @@
 #include "Engine/Math/MathUtils.hpp"
 #include "Engine/Math/RNG.hpp"
 #include "Engine/Renderer/Camera.hpp"
+
 #include "Game/Entity.hpp"
+#include "Game/EntityAdmin.hpp"
 #include "Game/App.hpp"
+#include "Game/Map.hpp"
 
 
 //--------------------------------------------------------------------------
@@ -55,4 +58,13 @@ float GetRandomlyChosenFloat( float a, float b )
 Map* GetCurrentMap()
 {
 	return g_theGame->GetCurrentMap();
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetCurrentAdmin
+*/
+EntityAdmin& GetCurrentAdmin()
+{
+	return GetCurrentMap()->m_admin;
 }
