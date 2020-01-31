@@ -64,25 +64,6 @@ void Map::Render() const
 
 //--------------------------------------------------------------------------
 /**
-* LevelComplete
-*/
-bool Map::LevelComplete() const
-{
-	return m_mapComplete;
-}
-
-//--------------------------------------------------------------------------
-/**
-* MapResetMap
-*/
-void Map::ResetMap()
-{
-	ClearMap();
-	ConstructMap();
-}
-
-//--------------------------------------------------------------------------
-/**
 * ConstructMapGetTilePointIsOn
 */
 const Tile* Map::GetTilePointIsOn( const Vec2& point ) const

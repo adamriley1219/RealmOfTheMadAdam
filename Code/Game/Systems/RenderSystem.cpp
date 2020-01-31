@@ -41,6 +41,8 @@ void RenderSystem::Render() const
 	Map* map = GetCurrentMap();
 	EntityAdmin& admin = map->m_admin;
 	
+	g_theRenderer->BindTextureView( 0, nullptr );
+
 	std::vector<Vertex_PCU> verts;
 	for( auto ent_par : admin.m_entities )
 	{

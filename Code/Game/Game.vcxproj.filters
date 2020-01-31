@@ -22,9 +22,6 @@
     <Filter Include="Map">
       <UniqueIdentifier>{56f3754b-1497-46bf-b06e-b3ef857aa11f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Components\Controller">
-      <UniqueIdentifier>{b82465ac-5e7e-4c67-8b39-d7b1c7b82ef8}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp">

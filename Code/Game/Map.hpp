@@ -20,9 +20,6 @@ public:
 
 	void Update( float deltaSeconds );
 	void Render() const;
-	bool LevelComplete() const;
-
-	void ResetMap();
 
 	// Tile Functions
 	const Tile* GetTilePointIsOn( const Vec2& point ) const;

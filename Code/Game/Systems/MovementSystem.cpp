@@ -44,10 +44,17 @@ void MovementSystem::Update( float deltaTime ) const
 			if( g_theGame->IsPlayer( ent_pair.first ) )
 			{
 				Transform2D& transform = tuple->trans_comp->m_transform;
-				float speed = tuple->phys_comp->m_speed;
+				PhysicsComp* phyx = tuple->phys_comp;
 				InputComp* input = EntityAdmin::GetInputSingleton();
 
-				transform.m_position += input->m_move_dir * speed * deltaTime;
+				float change_vel = phyx->m_acceleration * deltaTime;
+				float frame_friction = phyx->m_friction_per_sec * deltaTime;
+
+				phyx->m_velocity += input->m_move_dir * change_vel;
+				phyx->m_velocity *= Clamp( 1.0f - frame_friction, 0.0f, 1.0f );
+				phyx->m_velocity.ClampLength( phyx->m_max_speed );
+
+				transform.m_position += phyx->m_velocity * deltaTime;
 
 			}
 		}
