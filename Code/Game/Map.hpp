@@ -4,6 +4,7 @@
 #include "Game/Entity.hpp"
 #include "Game/TileDefinition.hpp"
 #include "Game/GameCommon.hpp"
+#include "Game/EntityAdmin.hpp"
 
 class Tile;
 class PlayerTank;
@@ -26,6 +27,9 @@ public:
 	// Tile Functions
 	const Tile* GetTilePointIsOn( const Vec2& point ) const;
 	const Tile* GetTileByMapCoordinates( int x, int y ) const;
+
+public:
+	EntityAdmin m_admin;
 
 private:
 	// Map Manipulation 

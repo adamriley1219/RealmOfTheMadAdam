@@ -2,7 +2,7 @@
 #include "Game/Components/Component.hpp"
 
 
-class PhysicsComp
+class PhysicsComp : public Component
 {
 public:
 	PhysicsComp();

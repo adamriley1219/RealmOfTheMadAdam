@@ -93,6 +93,9 @@
     <ClCompile Include="EntityAdmin.cpp">
       <Filter>Gameplay</Filter>
     </ClCompile>
+    <ClCompile Include="Components\InputComp.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.hpp">
@@ -166,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="EntityAdmin.hpp">
       <Filter>Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\InputComp.hpp">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

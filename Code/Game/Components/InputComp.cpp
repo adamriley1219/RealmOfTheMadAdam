@@ -1,19 +1,20 @@
-#include "Game/Systems/UISystem.hpp"
+#include "Game/Components/InputComp.hpp"
+
 //--------------------------------------------------------------------------
 /**
-* UISystem
+* NameComp
 */
-UISystem::UISystem()
-	: System()
+InputComp::InputComp()
+	: Component()
 {
-
+	m_type = INPUT_COMP;
 }
 
 //--------------------------------------------------------------------------
 /**
-* ~UISystem
+* ~NameComp
 */
-UISystem::~UISystem()
+InputComp::~InputComp()
 {
 
 }

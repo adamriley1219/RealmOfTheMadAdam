@@ -3,7 +3,7 @@
 
 
 
-class UIComp
+class UIComp : public Component
 {
 public:
 	UIComp();

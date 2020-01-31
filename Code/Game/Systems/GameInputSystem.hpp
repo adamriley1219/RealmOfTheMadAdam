@@ -3,7 +3,7 @@
 
 
 
-class GameInpuSystem
+class GameInpuSystem : public System
 {
 public:
 	GameInpuSystem();

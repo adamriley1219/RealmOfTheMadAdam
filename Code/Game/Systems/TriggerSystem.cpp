@@ -5,6 +5,7 @@
 * TriggerSystem
 */
 TriggerSystem::TriggerSystem()
+	: System()
 {
 
 }

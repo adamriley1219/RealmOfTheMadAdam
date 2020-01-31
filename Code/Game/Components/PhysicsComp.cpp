@@ -6,8 +6,9 @@
 * PhysicsComp
 */
 PhysicsComp::PhysicsComp()
+	: Component()
 {
-
+	m_type = PHYSICS_COMP;
 }
 
 //--------------------------------------------------------------------------

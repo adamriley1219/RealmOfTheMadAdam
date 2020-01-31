@@ -5,6 +5,7 @@
 * QuestSystem
 */
 QuestSystem::QuestSystem()
+	: System()
 {
 
 }

@@ -42,7 +42,7 @@ Map::~Map()
 */
 void Map::Update( float deltaSeconds )
 {
-	
+	m_admin.Update( deltaSeconds );
 }
 
 //--------------------------------------------------------------------------
@@ -58,6 +58,7 @@ void Map::Render() const
 		m_tiles[i]->AddVertsForRender( verts );
 	}
 	g_theRenderer->DrawVertexArray( (int) verts.size(), &verts[0] );	
+	m_admin.Render();
 }
 
 //--------------------------------------------------------------------------
@@ -158,21 +159,6 @@ void Map::ConstructMap()
 			m_tiles[GetTileIndexFromTileMapCoordinates( IntVec2( xIndex, yIndex ) )]->SetType( m_solidWith );
 		}
 	}
-
-	// Create Bunker
-	m_tiles[GetTileIndexFromTileMapCoordinates( IntVec2( 4, 2 ) )]->SetType(m_solidWith);
-	m_tiles[GetTileIndexFromTileMapCoordinates( IntVec2( 4, 3 ) )]->SetType(m_solidWith);
-	m_tiles[GetTileIndexFromTileMapCoordinates( IntVec2( 4, 4 ) )]->SetType(m_solidWith);
-	m_tiles[GetTileIndexFromTileMapCoordinates( IntVec2( 3, 4 ) )]->SetType(m_solidWith);
-	m_tiles[GetTileIndexFromTileMapCoordinates( IntVec2( 2, 4 ) )]->SetType(m_solidWith);
-
-
-
-	// Create end
-	m_tiles[GetTileIndexFromTileMapCoordinates( IntVec2( m_dimensions.x - 2, m_dimensions.y - 2 ) )]->SetType(EXIT_TILE);
-	m_tiles[GetTileIndexFromTileMapCoordinates( IntVec2( m_dimensions.x - 3, m_dimensions.y - 2 ) )]->SetType(COMMON_STONE_TILE);
-	m_tiles[GetTileIndexFromTileMapCoordinates( IntVec2( m_dimensions.x - 3, m_dimensions.y - 3 ) )]->SetType(COMMON_STONE_TILE);
-	m_tiles[GetTileIndexFromTileMapCoordinates( IntVec2( m_dimensions.x - 2, m_dimensions.y - 3 ) )]->SetType(COMMON_STONE_TILE);
 
 }
 

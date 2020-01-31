@@ -190,6 +190,7 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Components\Component.cpp" />
+    <ClCompile Include="Components\InputComp.cpp" />
     <ClCompile Include="Components\NameComp.cpp" />
     <ClCompile Include="Components\PhysicsComp.cpp" />
     <ClCompile Include="Components\RenderComp.cpp" />
@@ -215,6 +216,7 @@
   <ItemGroup>
     <ClInclude Include="App.hpp" />
     <ClInclude Include="Components\Component.hpp" />
+    <ClInclude Include="Components\InputComp.hpp" />
     <ClInclude Include="Components\NameComp.hpp" />
     <ClInclude Include="Components\PhysicsComp.hpp" />
     <ClInclude Include="Components\RenderComp.hpp" />

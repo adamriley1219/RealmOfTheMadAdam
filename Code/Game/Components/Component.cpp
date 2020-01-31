@@ -16,3 +16,12 @@ Component::~Component()
 {
 
 }
+
+//--------------------------------------------------------------------------
+/**
+* GetClaimed
+*/
+void Component::GetClaimed( EntityID owner )
+{
+	m_owner = owner;
+}

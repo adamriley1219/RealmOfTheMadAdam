@@ -47,3 +47,12 @@ float GetRandomlyChosenFloat( float a, float b )
 	}
 	return b;
 }
+
+//--------------------------------------------------------------------------
+/**
+* GetCurrentMap
+*/
+Map* GetCurrentMap()
+{
+	return g_theGame->GetCurrentMap();
+}

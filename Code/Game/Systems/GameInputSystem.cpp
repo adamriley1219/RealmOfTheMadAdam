@@ -5,6 +5,7 @@
 * GameInpuSystem
 */
 GameInpuSystem::GameInpuSystem()
+	: System()
 {
 
 }

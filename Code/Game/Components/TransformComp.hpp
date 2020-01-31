@@ -1,13 +1,15 @@
 #pragma once
 #include "Game/Components/Component.hpp"
+#include "Engine/Physics/Transform2D.hpp"
 
-
-class TransformComp
+class TransformComp : public Component
 {
 public:
 	TransformComp();
+	TransformComp( float x, float y );
 	~TransformComp();
 
-private:
+public:
+	Transform2D m_transform;
 
 };

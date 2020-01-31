@@ -27,16 +27,9 @@ public:
 	void UpdateGame( float deltaSeconds );
 
 public:
-	// Getter Helpers
-	static EntityAdmin& GetAdmin();
+	Map* GetCurrentMap() const;
 
 private:
-	//Render
-	void RenderDebug() const;
-	void RenderDebugCosmetics() const;
-	void RenderDebugPhysics() const;
-	void RenderDevConsole() const;
-
 	void ImGUIWidget();
 
 	void UpdateCamera( float deltaSeconds );
@@ -46,12 +39,14 @@ private:
 
 	Shader* m_shader;
 
+	uint m_map_id = 0;
+
 	mutable Camera m_CurentCamera;
 	mutable Camera m_DevColsoleCamera;
 
 	SpriteSheet* m_terrain_sheet;
 
 	std::unordered_map<uint, Map*> m_maps;
-	EntityAdmin m_admin;
+	EntityAdmin m_masterAdmin;
 
 };

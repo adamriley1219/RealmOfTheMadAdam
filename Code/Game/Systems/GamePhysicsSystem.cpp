@@ -5,6 +5,7 @@
 * GamePhysicsSystem
 */
 GamePhysicsSystem::GamePhysicsSystem()
+	: System()
 {
 
 }

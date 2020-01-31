@@ -5,6 +5,7 @@
 * CombatSystem
 */
 CombatSystem::CombatSystem()
+	: System()
 {
 
 }
