@@ -60,9 +60,9 @@ void Game::Startup()
 
 	m_CurentCamera.SetOrthographicProjection(Vec2(), Vec2(WORLD_WIDTH, WORLD_HEIGHT));
 
-	m_terrain_sheet = new SpriteSheet( (TextureView*)g_theRenderer->CreateOrGetTextureViewFromFile("Data/Images/Terrain_8x8.png"), IntVec2( 8, 8 ), Vec2::ALIGN_CENTERED, Vec2::ZERO );
+	m_terrain_sheet = new SpriteSheet( (TextureView*)g_theRenderer->CreateOrGetTextureViewFromFile("Data/Images/Terrain_8x8.png", true), IntVec2( 8, 8 ), Vec2::ALIGN_CENTERED, Vec2::ZERO );
 
-	m_maps[0] = new Map( 0, IntVec2( 10, 10 ), m_terrain_sheet, TileType::GRASS_TILE, TileType::STONE_TILE );
+	m_maps[0] = new Map( 0, IntVec2( 100, 100 ), m_terrain_sheet, TileType::GRASS_TILE, TileType::STONE_TILE );
 }
 
 //--------------------------------------------------------------------------
