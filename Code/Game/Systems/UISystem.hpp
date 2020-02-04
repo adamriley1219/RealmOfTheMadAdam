@@ -7,7 +7,7 @@ public:
 	UISystem();
 	~UISystem();
 
-private:
+public:
 
 };
 

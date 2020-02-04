@@ -9,7 +9,13 @@ enum eComponentType
 	PHYSICS_COMP,
 	RENDER_COMP,
 	TRANSFORM_COMP,
-	UI_COMP
+	UI_COMP,
+	QUEST_GIVER_COMP,
+	QUEST_CARRIER_COMP,
+	INTENT_COMP,
+	AI_COMP,
+	CAMERA_COMP,
+	INTERACT_COMP
 };
 
 
@@ -19,7 +25,7 @@ public:
 	Component();
 	virtual ~Component();
 
-	void GetClaimed( EntityID owner );
+	virtual void GetClaimed( EntityID owner );
 
 public:
 	eComponentType m_type = UNIDENTIFIED_COMP;

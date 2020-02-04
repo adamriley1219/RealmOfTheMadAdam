@@ -1,31 +1,31 @@
-#include "Game/Components/PhysicsComp.hpp"
+#include "Game/Components/InteractComp.hpp"
 
 
 //--------------------------------------------------------------------------
 /**
-* PhysicsComp
+* UIComp
 */
-PhysicsComp::PhysicsComp()
+InteractComp::InteractComp()
 	: Component()
 {
-	m_type = PHYSICS_COMP;
+	m_type = INTERACT_COMP;
 }
 
 //--------------------------------------------------------------------------
 /**
-* PhysicsComp
+* InteractComp
 */
-PhysicsComp::PhysicsComp(bool static_object)
-	: Component(), m_static_object( static_object )
+InteractComp::InteractComp( float range )
+	: Component(), m_interact_range( range )
 {
-	m_type = PHYSICS_COMP;
+	m_type = INTERACT_COMP;
 }
 
 //--------------------------------------------------------------------------
 /**
-* ~PhysicsComp
+* ~UIComp
 */
-PhysicsComp::~PhysicsComp()
+InteractComp::~InteractComp()
 {
 
 }

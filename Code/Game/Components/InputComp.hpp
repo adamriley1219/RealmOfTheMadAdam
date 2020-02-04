@@ -15,5 +15,4 @@ public:
 
 public:
 	std::map<Key, KeyButtonState*> m_button_states;
-	Vec2 m_move_dir = Vec2::ZERO;
 };

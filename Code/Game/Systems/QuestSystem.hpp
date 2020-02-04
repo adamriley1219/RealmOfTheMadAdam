@@ -8,6 +8,8 @@ public:
 	QuestSystem();
 	~QuestSystem();
 
+	void Update( float deltaTime ) const;
+
 private:
 
 };

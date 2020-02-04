@@ -1,4 +1,5 @@
 #include "Game/Components/InputComp.hpp"
+#include "Game/Systems/GameInputSystem.hpp"
 
 //--------------------------------------------------------------------------
 /**
@@ -9,10 +10,13 @@ InputComp::InputComp()
 {
 	m_type = INPUT_COMP;
 
-	m_button_states[KEY_A] = new KeyButtonState();
-	m_button_states[KEY_W] = new KeyButtonState();
-	m_button_states[KEY_S] = new KeyButtonState();
-	m_button_states[KEY_D] = new KeyButtonState();
+	m_button_states[INTERACT_KEY] = new KeyButtonState();
+	m_button_states[FIRE_KEY] = new KeyButtonState();
+	m_button_states[FIRE_SECONDARY_KEY] = new KeyButtonState();
+	m_button_states[MOVE_LEFT] = new KeyButtonState();
+	m_button_states[MOVE_RIGHT] = new KeyButtonState();
+	m_button_states[MOVE_UP] = new KeyButtonState();
+	m_button_states[MOVE_DOWN] = new KeyButtonState();
 }
 
 //--------------------------------------------------------------------------

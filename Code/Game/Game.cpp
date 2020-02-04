@@ -40,6 +40,12 @@
 #include "Game/Components/RenderComp.hpp"
 #include "Game/Components/TransformComp.hpp"
 #include "Game/Components/UIComp.hpp"
+#include "Game/Components/QuestGiverComp.hpp"
+#include "Game/Components/QuestCarrierComp.hpp"
+#include "Game/Components/IntentComp.hpp"
+#include "Game/Components/CameraComp.hpp"
+#include "Game/Components/InteractComp.hpp"
+#include "Game/Components/AIComp.hpp"
 
 
 #include <vector>
@@ -60,7 +66,14 @@ Game::Game()
 */
 Game::~Game()
 {
-
+	for( auto& map_pair : m_maps )
+	{
+		SAFE_DELETE( map_pair.second );
+	}
+	for( auto& system : EntityAdmin::m_master.m_systems )
+	{
+		SAFE_DELETE( system );
+	}
 }
 
 //--------------------------------------------------------------------------
@@ -95,10 +108,24 @@ void Game::Startup()
 
 	Entity* player = m_maps[m_map_id]->m_admin.CreateEntity();
 	player->AddComponent( new NameComp( "player" ) );
-	player->AddComponent( new PhysicsComp( ) );
+	player->AddComponent( new PhysicsComp( false ) );
+	player->AddComponent( new CameraComp( Vec2(-5, -2.5), Vec2( 5, 2.5 ), true ) );
 	player->AddComponent( new RenderComp( ) );
+	player->AddComponent( new IntentComp( ) );
+	player->AddComponent( new InputComp( ) );
+	player->AddComponent( new InteractComp() );
 	player->AddComponent( new TransformComp( 4.5, 2.5 ) );
-	m_player_id = player->m_id;
+
+
+	Entity* silent_joe = m_maps[m_map_id]->m_admin.CreateEntity();
+	silent_joe->AddComponent( new NameComp( "Silent Joe" ) );
+	silent_joe->AddComponent( new QuestGiverComp() );
+	silent_joe->AddComponent( new PhysicsComp( true ) );
+	silent_joe->AddComponent( new RenderComp() );
+	silent_joe->AddComponent( new InteractComp() );
+	silent_joe->AddComponent( new TransformComp( 6.0f, 3.0f ) );
+	silent_joe->AddComponent( new AIComp() );
+
 
 	// Add singletons
 	EntityAdmin::m_master.AddComponent( new InputComp() );
@@ -162,9 +189,9 @@ void Game::GameRender() const
 */
 void Game::UpdateGame( float deltaSeconds )
 {
+	UpdateCamera( deltaSeconds );
 	m_maps.at(m_map_id)->Update(deltaSeconds);
 
-	UpdateCamera( deltaSeconds );
 }
 
 
@@ -175,54 +202,6 @@ void Game::UpdateGame( float deltaSeconds )
 Map* Game::GetCurrentMap() const
 {
 	return m_maps.at(m_map_id);
-}
-
-
-//--------------------------------------------------------------------------
-/**
-* IsPlayer
-*/
-bool Game::IsPlayer( EntityID id )
-{
-	return ( m_player_id == id );
-}
-
-//--------------------------------------------------------------------------
-/**
-* ImGUIWidget
-*/
-void Game::ImGUIWidget()
-{
-	ImGui::Begin("TestWindow");
-
-	ImGui::Text(Stringf("%s", "100% in there.").c_str());
-
-	bool testCheck1 = true;
-	bool testCheck2 = false;
-	ImGui::Checkbox("test check box 1", &testCheck1);
-	ImGui::Checkbox("test check box 2", &testCheck2);
-
-	if (testCheck2)
-	{
-		DebugRenderMessage(0.0f, Rgba::GREEN, Rgba::GREEN, "Changed test check 2");
-	}
-	if (!testCheck1)
-	{
-		DebugRenderMessage(0.0f, Rgba::GREEN, Rgba::GREEN, "Changed test check 1");
-	}
-
-	float beginning = 50.0f;
-	ImGui::SliderFloat("slidy", &beginning, 0, 100);
-
-	if (beginning != 50.0f)
-	{
-		DebugRenderMessage(0.0f, Rgba::GREEN, Rgba::GREEN, "slidy changed");
-	}
-
-	float col[3] = { 1.0f, 1.0f, 1.0f };
-	ImGui::ColorEdit3("color thing?", col);
-
-	ImGui::End();
 }
 
 //--------------------------------------------------------------------------

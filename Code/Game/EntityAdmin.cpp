@@ -30,7 +30,14 @@ EntityAdmin::EntityAdmin()
 */
 EntityAdmin::~EntityAdmin()
 {
-
+	for( auto& ent_pair : m_entities )
+	{
+		SAFE_DELETE( ent_pair.second );
+	}
+	for ( auto& comp : m_components )
+	{
+		SAFE_DELETE( comp );
+	}
 }
 
 //--------------------------------------------------------------------------
@@ -201,12 +208,14 @@ MovementTuple* EntityAdmin::GetMovementTuple( EntityID entity_id ) const
 
 	TransformComp* trans_comp = (TransformComp*)entity->GetComponent( TRANSFORM_COMP );
 	PhysicsComp* physics_comp = (PhysicsComp*)entity->GetComponent( PHYSICS_COMP );
+	IntentComp* intent_comp = (IntentComp*)entity->GetComponent(INTENT_COMP);
 
-	if ( trans_comp && physics_comp )
+	if ( trans_comp && physics_comp && intent_comp )
 	{
 		MovementTuple* tup = new MovementTuple();
 		tup->phys_comp = physics_comp;
 		tup->trans_comp = trans_comp;
+		tup->intent_comp = intent_comp;
 		return tup;
 	}
 
@@ -215,16 +224,30 @@ MovementTuple* EntityAdmin::GetMovementTuple( EntityID entity_id ) const
 
 //--------------------------------------------------------------------------
 /**
-* GetInputSingleton
+* GetInputTuple
 */
-InputComp* EntityAdmin::GetInputSingleton()
+InputTuple* EntityAdmin::GetInputTuple( EntityID entity_id ) const
 {
-	for( Component* comp : m_master.m_components )
+	auto ent_itr = m_entities.find(entity_id);
+
+	if (ent_itr == m_entities.end())
 	{
-		if( comp->m_type == INPUT_COMP )
-		{
-			return (InputComp*)comp;
-		}
+		return nullptr;
 	}
+
+	Entity* entity = ent_itr->second;
+
+
+	InputComp* input_comp = (InputComp*)entity->GetComponent(INPUT_COMP);
+	IntentComp* intent_comp = (IntentComp*)entity->GetComponent(INTENT_COMP);
+
+	if (input_comp && intent_comp)
+	{
+		InputTuple* tup = new InputTuple();
+		tup->input_comp = input_comp;
+		tup->intent_comp = intent_comp;
+		return tup;
+	}
+
 	return nullptr;
 }

@@ -3,11 +3,13 @@
 
 struct PhysicsComp;
 struct TransformComp;
+struct IntentComp;
 
 struct MovementTuple
 {
 	TransformComp* trans_comp;
 	PhysicsComp* phys_comp;
+	IntentComp* intent_comp;
 };
 
 class MovementSystem : public System

@@ -12,6 +12,7 @@ struct InputComp;
 
 struct RenderSystemTuple;
 struct MovementTuple;
+struct InputTuple;
 
 class EntityAdmin
 {
@@ -34,9 +35,7 @@ public:
 public:
 	RenderSystemTuple* GetRenderTuple( EntityID entity_id ) const;
 	MovementTuple* GetMovementTuple( EntityID entity_id ) const;
-
-public:
-	static InputComp* GetInputSingleton();
+	InputTuple* GetInputTuple( EntityID entity_id ) const;
 
 public:
 	static EntityAdmin m_master;

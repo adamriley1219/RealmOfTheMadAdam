@@ -28,11 +28,6 @@ public:
 public:
 	Map* GetCurrentMap() const;
 
-	bool IsPlayer( EntityID id );
-
-private:
-	void ImGUIWidget();
-
 	void UpdateCamera( float deltaSeconds );
 
 private:
@@ -41,7 +36,6 @@ private:
 	Shader* m_shader;
 
 	uint m_map_id = 0;
-	EntityID m_player_id = 0;
 
 	mutable Camera m_CurentCamera;
 	mutable Camera m_DevColsoleCamera;
