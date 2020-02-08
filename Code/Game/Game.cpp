@@ -114,6 +114,7 @@ void Game::Startup()
 	player->AddComponent( new IntentComp( ) );
 	player->AddComponent( new InputComp( ) );
 	player->AddComponent( new InteractComp() );
+	player->AddComponent( new QuestCarrierComp() );
 	player->AddComponent( new TransformComp( 4.5, 2.5 ) );
 
 

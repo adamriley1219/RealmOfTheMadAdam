@@ -44,8 +44,10 @@ void RenderSystem::Render() const
 	Map* map = GetCurrentMap();
 	EntityAdmin& admin = map->m_admin;
 	
-	g_theRenderer->BindTextureView( 0, nullptr );
+	std::map<std::string, Vertex_Info_Group> texture_names_to_group_infos;
 
+	
+	// Go get everything the entities want to render
 	std::vector<Vertex_PCU> verts;
 	for( auto ent_par : admin.m_entities )
 	{
@@ -53,33 +55,60 @@ void RenderSystem::Render() const
 		if( tuple )
 		{
 			// Can render something
-			Matrix44 trans_matrix = tuple->transform_comp->m_transform.GetTransformMatrix();
-			for( Vertex_PCU vert : tuple->render_comp->m_verts )
+			
+			for( auto& group_pair : tuple->render_comp->m_verts_groups )
 			{
-				vert.position = trans_matrix.TransformPosition3D( vert.position );
-				verts.push_back( vert );
+				Vertex_Info_Group& group = (group_pair.second);
+				const std::string& file_path = group_pair.first; 
+				std::vector<Vertex_PCU>& group_verts = group.verts;
+
+				if( group_verts.size() > 0 )
+				{
+					Matrix44 trans_matrix = group.transform.GetTransformMatrix();
+					texture_names_to_group_infos[file_path].is_text = group.is_text;
+					// Intended not to use a reference but a copy.
+					// We are changing the position according to the matrix.
+					for( Vertex_PCU vert : group_verts )
+					{
+						vert.position = trans_matrix.TransformPosition3D( vert.position );
+						texture_names_to_group_infos[file_path].verts.push_back( vert );
+					}
+
+					group_verts.clear();
+				}
 			}
 		}
 		SAFE_DELETE(tuple);
 	}
-	if( verts.size() > 0 )
-	{
-		g_theRenderer->DrawVertexArray( verts );
-		verts.clear();
-	}
 
-	BitmapFont* font = g_theRenderer->CreateOrGetBitmapFromFile( "SquirrelFixedFont" );
-	g_theRenderer->BindTextureView( TEXTURE_SLOT_ALBEDO, font->GetTextureView() );
-
-	for ( auto& ent_par : admin.m_entities )
+	// Time to render everything
+	for( auto& to_render_pair : texture_names_to_group_infos )
 	{
-		Entity& entity = *(ent_par.second);
-		QuestGiverComp* quest_giver = (QuestGiverComp*)entity.GetComponent( QUEST_GIVER_COMP );
-		if( quest_giver )
+		const std::string& file_name = to_render_pair.first;
+		Vertex_Info_Group& group = to_render_pair.second;
+		if( group.verts.size() > 0 )
 		{
-			//quest_giver->
+			if( file_name == "" )
+			{
+				g_theRenderer->BindTextureViewWithSampler( TEXTURE_SLOT_ALBEDO, nullptr );
+			}
+			else
+			{
+				if( group.is_text )
+				{
+					BitmapFont* font = g_theRenderer->CreateOrGetBitmapFromFile( file_name.c_str() );
+					g_theRenderer->BindTextureViewWithSampler( TEXTURE_SLOT_ALBEDO, font->GetTextureView() );
+				}
+				else
+				{
+					g_theRenderer->BindTextureView( TEXTURE_SLOT_ALBEDO, file_name.c_str() );
+				}
+			}
+			g_theRenderer->SetBlendMode( eBlendMode::BLEND_MODE_ADDITIVE );
+			g_theRenderer->DrawVertexArray( group.verts );
 		}
 	}
+
 }
 
 //--------------------------------------------------------------------------

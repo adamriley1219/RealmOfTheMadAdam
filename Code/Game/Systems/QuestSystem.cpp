@@ -7,9 +7,13 @@
 #include "Game/Components/TransformComp.hpp"
 #include "Game/Components/InputComp.hpp"
 #include "Game/Components/IntentComp.hpp"
+#include "Game/Components/RenderComp.hpp"
 
 #include "Game/EntityAdmin.hpp"
 #include "Game/Entity.hpp"
+
+#include "Engine/Renderer/RenderContext.hpp"
+#include "Engine/Renderer/BitmapFont.hpp"
 
 
 //--------------------------------------------------------------------------
@@ -44,6 +48,7 @@ void QuestSystem::Update(float deltaTime) const
 		InteractComp* interact_comp = (InteractComp*)entity.GetComponent( INTERACT_COMP );
 		QuestGiverComp* quest_giver_comp = (QuestGiverComp*)entity.GetComponent( QUEST_GIVER_COMP );
 		TransformComp* trans_comp = (TransformComp*)entity.GetComponent( TRANSFORM_COMP );
+		RenderComp* render_comp = (RenderComp*)entity.GetComponent( RENDER_COMP );
 		if( interact_comp && trans_comp )
 		{
 			for (auto ent_other_pair : GetCurrentAdmin().m_entities)
@@ -63,6 +68,12 @@ void QuestSystem::Update(float deltaTime) const
 						if( player_intent_comp->m_wants_to_interact )
 						{
 							player_carrier_comp->AddQuest( quest_giver_comp );
+						}
+						if( render_comp )
+						{
+							BitmapFont* font = g_theRenderer->CreateOrGetBitmapFromFile( "SquirrelFixedFont" );
+							render_comp->m_verts_groups["SquirrelFixedFont"].is_text = true;
+							font->AddVertsFor2DText( render_comp->m_verts_groups["SquirrelFixedFont"].verts, Vec2( trans_comp->m_transform.m_position ), .75f, "F" );
 						}
 					}
 				}

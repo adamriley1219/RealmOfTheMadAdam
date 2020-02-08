@@ -2,10 +2,12 @@
 #include "Game/GameCommon.hpp"
 #include "Game/Game.hpp"
 #include "Game/EntityAdmin.hpp"
+#include "Game/Entity.hpp"
 
 #include "Game/Components/TransformComp.hpp"
 #include "Game/Components/PhysicsComp.hpp"
 #include "Game/Components/IntentComp.hpp"
+#include "Game/Components/RenderComp.hpp"
 
 #include "Engine/Physics/Transform2D.hpp"
 
@@ -53,6 +55,15 @@ void MovementSystem::Update( float deltaTime ) const
 			phyx.m_velocity.ClampLength( phyx.m_max_speed );
 
 			transform.m_position += phyx.m_velocity * deltaTime;
+
+			RenderComp* render_comp = (RenderComp*)ent_pair.second->GetComponent( RENDER_COMP );
+			if( render_comp )
+			{
+				std::vector<Vertex_PCU>& verts = render_comp->m_verts_groups[""].verts;
+				AddVertsForRing2D( verts, Vec2::ZERO, .25f, .01f, Rgba::WHITE, 8 );
+				
+				render_comp->m_verts_groups[""].transform = transform;
+			}
 		}
 		SAFE_DELETE(tuple);
 	}
