@@ -8,7 +8,7 @@
 InteractComp::InteractComp()
 	: Component()
 {
-	m_type = INTERACT_COMP;
+
 }
 
 //--------------------------------------------------------------------------
@@ -18,7 +18,7 @@ InteractComp::InteractComp()
 InteractComp::InteractComp( float range )
 	: Component(), m_interact_range( range )
 {
-	m_type = INTERACT_COMP;
+	
 }
 
 //--------------------------------------------------------------------------
@@ -28,4 +28,22 @@ InteractComp::InteractComp( float range )
 InteractComp::~InteractComp()
 {
 
+}
+
+//--------------------------------------------------------------------------
+/**
+* Copy
+*/
+void InteractComp::Copy(const Component* copyFrom)
+{
+	*this = *( (InteractComp*)copyFrom );
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetType
+*/
+eComponentType InteractComp::GetType()
+{
+	return INTERACT_COMP;
 }

@@ -10,6 +10,9 @@ public:
 	NameComp( const std::string& given_name );
 	~NameComp();
 
+	virtual void Copy(const Component* copyFrom);
+	virtual eComponentType GetType();
+
 public:
 	std::string m_name = "Unused";
 };

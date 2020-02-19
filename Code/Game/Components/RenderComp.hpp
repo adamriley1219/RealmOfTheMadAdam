@@ -19,6 +19,9 @@ public:
 	RenderComp();
 	~RenderComp();
 
+	virtual void Copy( const Component* copyFrom );
+	virtual eComponentType GetType();
+
 public:
 	std::map< std::string, Vertex_Info_Group > m_verts_groups;
 };

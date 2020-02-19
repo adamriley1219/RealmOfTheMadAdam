@@ -15,7 +15,8 @@ enum eComponentType
 	INTENT_COMP,
 	AI_COMP,
 	CAMERA_COMP,
-	INTERACT_COMP
+	INTERACT_COMP,
+	NUM_COMP_TYPES
 };
 
 
@@ -28,8 +29,11 @@ public:
 	virtual void GetClaimed( EntityID owner );
 
 public:
-	eComponentType m_type = UNIDENTIFIED_COMP;
+	EntityID m_owner = 0;
+//	ComponentID	m_id = 0;
 
 public:
-	EntityID m_owner = 0;
+	virtual void Copy( const Component* copyFrom ) = 0;
+	virtual eComponentType GetType() = 0;
+
 };

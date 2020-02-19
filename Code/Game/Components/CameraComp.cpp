@@ -8,7 +8,7 @@
 CameraComp::CameraComp()
 	: Component()
 {
-	m_type = CAMERA_COMP;
+	
 }
 
 //--------------------------------------------------------------------------
@@ -18,7 +18,6 @@ CameraComp::CameraComp()
 CameraComp::CameraComp( Vec2 min_ortho, Vec2 max_ortho, bool active )
 	: Component(), m_active( active )
 {
-	m_type = CAMERA_COMP;
 	m_camera.SetOrthographicProjection( min_ortho, max_ortho );
 }
 
@@ -29,4 +28,22 @@ CameraComp::CameraComp( Vec2 min_ortho, Vec2 max_ortho, bool active )
 CameraComp::~CameraComp()
 {
 	
+}
+
+//--------------------------------------------------------------------------
+/**
+* Copy
+*/
+void CameraComp::Copy(const Component* copyFrom)
+{
+	*this = *( (CameraComp*)copyFrom );
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetType
+*/
+eComponentType CameraComp::GetType()
+{
+	return CAMERA_COMP;
 }

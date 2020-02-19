@@ -41,22 +41,20 @@ QuestSystem::~QuestSystem()
 */
 void QuestSystem::Update(float deltaTime) const
 {
-	for (auto ent_pair : GetCurrentAdmin().m_entities)
+	UNUSED(deltaTime);
+	for (auto entity : GetCurrentAdmin().m_entities)
 	{
-		Entity& entity = *(ent_pair.second);
-
 		InteractComp* interact_comp = (InteractComp*)entity.GetComponent( INTERACT_COMP );
 		QuestGiverComp* quest_giver_comp = (QuestGiverComp*)entity.GetComponent( QUEST_GIVER_COMP );
 		TransformComp* trans_comp = (TransformComp*)entity.GetComponent( TRANSFORM_COMP );
 		RenderComp* render_comp = (RenderComp*)entity.GetComponent( RENDER_COMP );
 		if( interact_comp && trans_comp )
 		{
-			for (auto ent_other_pair : GetCurrentAdmin().m_entities)
+			for (auto other_entity : GetCurrentAdmin().m_entities)
 			{
 				// Is entity the player?
-				Entity& other = *(ent_other_pair.second);
-				QuestCarrierComp* player_carrier_comp = (QuestCarrierComp*)other.GetComponent( QUEST_CARRIER_COMP );
-				IntentComp* player_intent_comp = (IntentComp*)other.GetComponent( INTENT_COMP );
+				QuestCarrierComp* player_carrier_comp = (QuestCarrierComp*)other_entity.GetComponent( QUEST_CARRIER_COMP );
+				IntentComp* player_intent_comp = (IntentComp*)other_entity.GetComponent( INTENT_COMP );
 				TransformComp* trans_other_comp = (TransformComp*)entity.GetComponent(TRANSFORM_COMP);
 				if( player_carrier_comp && trans_other_comp && player_intent_comp )
 				{

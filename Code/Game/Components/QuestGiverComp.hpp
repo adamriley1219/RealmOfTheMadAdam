@@ -9,6 +9,8 @@ public:
 	QuestGiverComp();
 	~QuestGiverComp();
 
+	virtual void Copy(const Component* copyFrom);
+	virtual eComponentType GetType();
 
 public:
 	uint map_loc_id;

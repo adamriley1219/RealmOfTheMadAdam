@@ -8,7 +8,7 @@
 AIComp::AIComp()
 	: Component()
 {
-	m_type = AI_COMP;
+	
 }
 
 //--------------------------------------------------------------------------
@@ -18,4 +18,22 @@ AIComp::AIComp()
 AIComp::~AIComp()
 {
 
+}
+
+//--------------------------------------------------------------------------
+/**
+* Copy
+*/
+void AIComp::Copy(const Component* copyFrom)
+{
+	*this = *( (AIComp*)copyFrom );
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetType
+*/
+eComponentType AIComp::GetType()
+{
+	return AI_COMP;
 }

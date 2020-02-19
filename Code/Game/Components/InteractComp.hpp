@@ -10,6 +10,9 @@ public:
 	InteractComp( float range );
 	~InteractComp();
 
+	virtual void Copy(const Component* copyFrom);
+	virtual eComponentType GetType();
+
 public:
 	float m_interact_range = 1.0f;
 

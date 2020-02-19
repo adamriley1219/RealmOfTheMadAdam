@@ -4,6 +4,18 @@
 #include "Engine/Core/EngineCommon.hpp"
 #include "Engine/Input/InputSystem.hpp"
 
+enum eHotkeys
+{
+	UNKNOWN_HOTKEY = -1,
+	INTERACT_HOTKEY,
+	FIRE_HOTKEY,
+	FIRE_SECONDARY_HOTKEY,
+	MOVE_LEFT_HOTKEY,
+	MOVE_RIGHT_HOTKEY,
+	MOVE_UP_HOTKEY,
+	MOVE_DOWN_HOTKEY,
+	NUM_HOTKEYS
+};
 
 struct InputComp : public Component
 {
@@ -11,8 +23,12 @@ public:
 	InputComp();
 	~InputComp();
 
-	KeyButtonState* GetKeyState( Key key ) const;
+	KeyButtonState* GetKeyState( eHotkeys key );
+
+	virtual void Copy( const Component* copyFrom );
+	virtual eComponentType GetType();
 
 public:
-	std::map<Key, KeyButtonState*> m_button_states;
+	static InputComp s_prototype;
+	KeyButtonState m_button_states[NUM_HOTKEYS];
 };

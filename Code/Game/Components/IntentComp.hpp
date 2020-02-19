@@ -9,6 +9,9 @@ public:
 	IntentComp();
 	~IntentComp();
 
+	virtual void Copy(const Component* copyFrom);
+	virtual eComponentType GetType();
+
 public:
 	Vec2 m_desired_move_direction = Vec2::ZERO;
 	bool m_wants_to_interact = false;

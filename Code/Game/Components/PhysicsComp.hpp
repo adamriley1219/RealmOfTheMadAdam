@@ -9,6 +9,9 @@ public:
 	PhysicsComp( bool static_object );
 	~PhysicsComp();
 
+	virtual void Copy(const Component* copyFrom);
+	virtual eComponentType GetType();
+
 public:
 	float m_friction_per_sec = 10.0f;
 	float m_acceleration = 50.0f;

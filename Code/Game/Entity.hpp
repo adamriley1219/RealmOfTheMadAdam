@@ -13,18 +13,23 @@ public:
 	Entity();
 	virtual ~Entity();
 
-	void AddComponent( Component* component );
-	void RemoveComponent( Component* component );
+	Component* AddComponent( eComponentType type );
+	void RemoveComponent( eComponentType type );
 
-	Component* GetComponent( eComponentType type );
+	bool AddComponent( Component* component );
+	bool CopyComponent( Component* component );
 
-	std::vector<Component*> m_components;
+	Component* GetComponent( eComponentType type ) const;
 
+	bool HasComponent( eComponentType type ) const;
+
+	size_t m_bit_map_components = 0;
+	
 public:
-	EntityID m_id = 0;
+	EntityID m_id = -1;
+	bool m_claimed = false;
+
 	EntityAdmin* m_owner = nullptr;
 
-private:
-	static EntityID GetNextID();
 };
 

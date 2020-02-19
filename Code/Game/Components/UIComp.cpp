@@ -8,7 +8,7 @@
 UIComp::UIComp()
 	: Component()
 {
-	m_type = UI_COMP;
+	
 }
 
 //--------------------------------------------------------------------------
@@ -18,4 +18,22 @@ UIComp::UIComp()
 UIComp::~UIComp()
 {
 
+}
+
+//--------------------------------------------------------------------------
+/**
+* Copy
+*/
+void UIComp::Copy( const Component* copyFrom )
+{
+	*this = *( (UIComp*)copyFrom );
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetType
+*/
+eComponentType UIComp::GetType()
+{
+	return UI_COMP;
 }

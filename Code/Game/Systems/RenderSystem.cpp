@@ -49,36 +49,39 @@ void RenderSystem::Render() const
 	
 	// Go get everything the entities want to render
 	std::vector<Vertex_PCU> verts;
-	for( auto ent_par : admin.m_entities )
+	for( auto entity : admin.m_entities )
 	{
-		RenderSystemTuple* tuple = admin.GetRenderTuple( ent_par.first );
-		if( tuple )
+		if( entity.m_claimed )
 		{
-			// Can render something
-			
-			for( auto& group_pair : tuple->render_comp->m_verts_groups )
+			TransformComp* trans_comp = (TransformComp*)admin.GetComponent(entity.m_id, TRANSFORM_COMP);
+			RenderComp* render_comp = (RenderComp*)admin.GetComponent( entity.m_id, RENDER_COMP );
+			if( trans_comp && render_comp )
 			{
-				Vertex_Info_Group& group = (group_pair.second);
-				const std::string& file_path = group_pair.first; 
-				std::vector<Vertex_PCU>& group_verts = group.verts;
-
-				if( group_verts.size() > 0 )
+				// Can render something
+			
+				for( auto& group_pair : render_comp->m_verts_groups )
 				{
-					Matrix44 trans_matrix = group.transform.GetTransformMatrix();
-					texture_names_to_group_infos[file_path].is_text = group.is_text;
-					// Intended not to use a reference but a copy.
-					// We are changing the position according to the matrix.
-					for( Vertex_PCU vert : group_verts )
-					{
-						vert.position = trans_matrix.TransformPosition3D( vert.position );
-						texture_names_to_group_infos[file_path].verts.push_back( vert );
-					}
+					Vertex_Info_Group& group = (group_pair.second);
+					const std::string& file_path = group_pair.first; 
+					std::vector<Vertex_PCU>& group_verts = group.verts;
 
-					group_verts.clear();
+					if( group_verts.size() > 0 )
+					{
+						Matrix44 trans_matrix = group.transform.GetTransformMatrix();
+						texture_names_to_group_infos[file_path].is_text = group.is_text;
+						// Intended not to use a reference but a copy.
+						// We are changing the position according to the matrix.
+						for( Vertex_PCU vert : group_verts )
+						{
+							vert.position = trans_matrix.TransformPosition3D( vert.position );
+							texture_names_to_group_infos[file_path].verts.push_back( vert );
+						}
+
+						group_verts.clear();
+					}
 				}
 			}
 		}
-		SAFE_DELETE(tuple);
 	}
 
 	// Time to render everything
@@ -118,9 +121,8 @@ void RenderSystem::Render() const
 void RenderSystem::Update( float deltaTime ) const
 {
 	UNUSED( deltaTime );
-	for( auto ent_pair : GetCurrentAdmin().m_entities )
+	for( auto entity : GetCurrentAdmin().m_entities )
 	{
-		Entity& entity = *(ent_pair.second);
 		CameraComp* cam_comp = (CameraComp*)entity.GetComponent( CAMERA_COMP );
 		TransformComp* trans_comp = (TransformComp*)entity.GetComponent( TRANSFORM_COMP );
 		if( cam_comp && trans_comp && cam_comp->m_active )

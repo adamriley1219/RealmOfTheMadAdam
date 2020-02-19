@@ -7,7 +7,7 @@
 RenderComp::RenderComp()
 	: Component()
 {
-	m_type = RENDER_COMP;
+
 }
 
 //--------------------------------------------------------------------------
@@ -17,4 +17,22 @@ RenderComp::RenderComp()
 RenderComp::~RenderComp()
 {
 
+}
+
+//--------------------------------------------------------------------------
+/**
+* Copy
+*/
+void RenderComp::Copy(const Component* copyFrom)
+{
+	*this = *( (RenderComp*)copyFrom );
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetType
+*/
+eComponentType RenderComp::GetType()
+{
+	return RENDER_COMP;
 }

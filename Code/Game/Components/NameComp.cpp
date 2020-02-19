@@ -7,7 +7,7 @@
 NameComp::NameComp()
 	: Component()
 {
-	m_type = NAME_COMP;
+	
 }
 
 //--------------------------------------------------------------------------
@@ -17,7 +17,7 @@ NameComp::NameComp()
 NameComp::NameComp( const std::string& given_name )
 	: m_name( given_name )
 {
-	m_type = NAME_COMP;
+	
 }
 
 //--------------------------------------------------------------------------
@@ -27,4 +27,22 @@ NameComp::NameComp( const std::string& given_name )
 NameComp::~NameComp()
 {
 
+}
+
+//--------------------------------------------------------------------------
+/**
+* Copy
+*/
+void NameComp::Copy( const Component* copyFrom )
+{
+	*this = *( (NameComp*)copyFrom );
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetType
+*/
+eComponentType NameComp::GetType()
+{
+	return NAME_COMP;
 }

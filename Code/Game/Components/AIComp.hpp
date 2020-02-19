@@ -9,6 +9,9 @@ public:
 	AIComp();
 	~AIComp();
 
+	virtual void Copy(const Component* copyFrom);
+	virtual eComponentType GetType();
+
 private:
 
 };

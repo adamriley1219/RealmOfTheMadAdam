@@ -3,12 +3,23 @@
 #include <unordered_map>
 
 #include "Game/GameCommon.hpp"
+#include "Game/Entity.hpp"
 
 class System;
-class Entity;
 
 struct Component;
 struct InputComp;
+struct NameComp;
+struct PhysicsComp;
+struct RenderComp;
+struct TransformComp;
+struct UIComp;
+struct QuestGiverComp;
+struct QuestCarrierComp;
+struct IntentComp;
+struct AIComp;
+struct CameraComp;
+struct InteractComp;
 
 struct RenderSystemTuple;
 struct MovementTuple;
@@ -24,23 +35,34 @@ public:
 	void Update( float deltaTime );
 
 public:
-	Entity* CreateEntity();
-	void AddEntity( Entity* entity );
-	void AddComponent( Component* component );
-
-	void DeleteEntity( Entity* entity );
-	void RemoveEntity( Entity* entity );
-	void RemoveComponent( Component* component );
+	Component* GetComponent( EntityID id, eComponentType type );
 
 public:
-	RenderSystemTuple* GetRenderTuple( EntityID entity_id ) const;
-	MovementTuple* GetMovementTuple( EntityID entity_id ) const;
-	InputTuple* GetInputTuple( EntityID entity_id ) const;
+	Entity* CreateEntity();
+
+	// Adds an entity that's a copy of the entity passed in.
+	Entity* AddEntity( const Entity& entity );
+
+	void RemoveEntity( EntityID entity );
+	void RemoveComponent( EntityID id, eComponentType type );
 
 public:
 	static EntityAdmin m_master;
 	static std::vector<System*> m_systems;
-	std::vector<Component*> m_components;
-	std::unordered_map<EntityID, Entity*> m_entities; 
+
+	InputComp* m_input_comps = nullptr;
+	NameComp* m_name_comps = nullptr;
+	PhysicsComp* m_physics_comps = nullptr;
+	RenderComp* m_render_comps = nullptr;
+	TransformComp* m_Transform_comps = nullptr;
+	UIComp* m_UI_comps = nullptr;
+	QuestGiverComp* m_quest_giver_comps = nullptr;
+	QuestCarrierComp* m_quest_carrier_comps = nullptr;
+	IntentComp* m_intent_comps = nullptr;
+	AIComp* m_ai_comps = nullptr;
+	CameraComp* m_camera_comps = nullptr;
+	InteractComp* m_interact_comps = nullptr;
+
+	Entity m_entities[MAX_ENTITIES];
 };
 

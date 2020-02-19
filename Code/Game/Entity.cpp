@@ -8,7 +8,7 @@
 */
 Entity::Entity()
 {
-	m_id = GetNextID();
+
 }
 
 //--------------------------------------------------------------------------
@@ -20,69 +20,72 @@ Entity::~Entity()
 
 }
 
+
 //--------------------------------------------------------------------------
 /**
 * AddComponent
 */
-void Entity::AddComponent( Component* component )
+Component* Entity::AddComponent( eComponentType type )
 {
-	component->GetClaimed( m_id );
-	m_owner->AddComponent( component );
-	for( Component*& comp : m_components )
-	{
-		if( !comp )
-		{
-			comp = component;
-			return;
-		}
-	}
-	m_components.push_back( component );
+	SetBitFlags( m_bit_map_components, (size_t) 1 << type );
+	return GetComponent( type );
+}
+
+//--------------------------------------------------------------------------
+/**
+* AddComponent
+*/
+bool Entity::AddComponent( Component* component )
+{
+	AddComponent( component->GetType() );
+	return CopyComponent( component );
 }
 
 //--------------------------------------------------------------------------
 /**
 * RemoveComponent
 */
-void Entity::RemoveComponent(Component* component)
+void Entity::RemoveComponent( eComponentType type )
 {
-	m_owner->RemoveComponent( component );
-	for( Component*& comp : m_components )
+	size_t type_flag = (size_t) 1 << type;
+	ClearBitFlag( m_bit_map_components, type_flag );
+}
+
+//--------------------------------------------------------------------------
+/**
+* CopyComponent
+*/
+bool Entity::CopyComponent( Component* component )
+{
+	Component* owned_comp = m_owner->GetComponent( m_id, component->GetType() );
+	if( owned_comp )
 	{
-		if( comp == component )
-		{
-			component->GetClaimed( 0 );
-			comp = nullptr;
-			return;
-		}
+		owned_comp->Copy(component);
+		owned_comp->GetClaimed( m_id );
+		return true;
 	}
+	return false;
 }
 
 //--------------------------------------------------------------------------
 /**
 * GetComponent
 */
-Component* Entity::GetComponent( eComponentType type )
+Component* Entity::GetComponent( eComponentType type ) const
 {
-	for( Component* comp : m_components )
+	size_t flags = (size_t) 1 << type;
+	if( IsBitFlagSet( m_bit_map_components, flags ) )
 	{
-		if( comp->m_type == type )
-		{
-			return comp;
-		}
+		return m_owner->GetComponent( m_id, type );
 	}
 	return nullptr;
 }
 
 //--------------------------------------------------------------------------
 /**
-* GetNextID
+* HasComponent
 */
-EntityID Entity::GetNextID()
+bool Entity::HasComponent( eComponentType type ) const
 {
-	static EntityID entity_id_counter = 1;
-	if( entity_id_counter == 0 )
-	{
-		++entity_id_counter;
-	}
-	return entity_id_counter++;
+	return IsBitFlagSet( m_bit_map_components, (size_t) 1 << type );
 }

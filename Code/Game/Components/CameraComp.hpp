@@ -11,6 +11,9 @@ public:
 	CameraComp( Vec2 min_ortho, Vec2 max_ortho, bool active );
 	~CameraComp();
 
+	virtual void Copy(const Component* copyFrom);
+	virtual eComponentType GetType();
+
 public:
 	Camera m_camera;
 	bool m_active = false;

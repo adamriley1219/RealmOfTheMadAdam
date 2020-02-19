@@ -9,6 +9,9 @@ public:
 	UIComp();
 	~UIComp();
 
+	virtual void Copy(const Component* copyFrom);
+	virtual eComponentType GetType();
+
 private:
 
 };

@@ -8,7 +8,7 @@
 PhysicsComp::PhysicsComp()
 	: Component()
 {
-	m_type = PHYSICS_COMP;
+	
 }
 
 //--------------------------------------------------------------------------
@@ -18,7 +18,7 @@ PhysicsComp::PhysicsComp()
 PhysicsComp::PhysicsComp(bool static_object)
 	: Component(), m_static_object( static_object )
 {
-	m_type = PHYSICS_COMP;
+
 }
 
 //--------------------------------------------------------------------------
@@ -28,4 +28,22 @@ PhysicsComp::PhysicsComp(bool static_object)
 PhysicsComp::~PhysicsComp()
 {
 
+}
+
+//--------------------------------------------------------------------------
+/**
+* Copy
+*/
+void PhysicsComp::Copy(const Component* copyFrom)
+{
+	*this = *( (PhysicsComp*)copyFrom );
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetType
+*/
+eComponentType PhysicsComp::GetType()
+{
+	return PHYSICS_COMP;
 }

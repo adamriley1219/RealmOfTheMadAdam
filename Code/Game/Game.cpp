@@ -94,7 +94,7 @@ void Game::Startup()
 
 	m_terrain_sheet = new SpriteSheet( (TextureView*)g_theRenderer->CreateOrGetTextureViewFromFile("Data/Images/Terrain_8x8.png", true), IntVec2( 8, 8 ), Vec2::ALIGN_CENTERED, Vec2::ZERO );
 
-	EntityAdmin::m_master.m_systems.push_back( new GameInpuSystem() );
+	EntityAdmin::m_master.m_systems.push_back( new GameInputSystem() );
 	EntityAdmin::m_master.m_systems.push_back( new GamePhysicsSystem() );
 	EntityAdmin::m_master.m_systems.push_back( new CombatSystem() );
 	EntityAdmin::m_master.m_systems.push_back( new QuestSystem() );
@@ -106,30 +106,44 @@ void Game::Startup()
 	m_map_id = 0;
 	m_maps[m_map_id] = new Map( m_map_id, IntVec2( 10, 30 ), m_terrain_sheet, TileType::GRASS_TILE, TileType::STONE_TILE );
 
+	//--------------------------------------------------------------------------
+	// Player
 	Entity* player = m_maps[m_map_id]->m_admin.CreateEntity();
-	player->AddComponent( new NameComp( "player" ) );
-	player->AddComponent( new PhysicsComp( false ) );
-	player->AddComponent( new CameraComp( Vec2(-5, -2.5), Vec2( 5, 2.5 ), true ) );
-	player->AddComponent( new RenderComp( ) );
-	player->AddComponent( new IntentComp( ) );
-	player->AddComponent( new InputComp( ) );
-	player->AddComponent( new InteractComp() );
-	player->AddComponent( new QuestCarrierComp() );
-	player->AddComponent( new TransformComp( 4.5, 2.5 ) );
 
+	NameComp* player_name_comp = (NameComp*)player->AddComponent( NAME_COMP );
+	player_name_comp->m_name = "player";
 
+	PhysicsComp* player_physics_comp = (PhysicsComp*)player->AddComponent( PHYSICS_COMP );
+	player_physics_comp->m_static_object = false;
+
+	CameraComp* player_camera_comp = (CameraComp*)player->AddComponent( CAMERA_COMP );
+	player_camera_comp->m_active = true;
+	player_camera_comp->m_camera.SetOrthographicProjection( Vec2(-5, -2.5), Vec2( 5, 2.5 ) );
+
+	player->AddComponent( RENDER_COMP );
+	player->AddComponent( INTENT_COMP );
+	player->AddComponent( INPUT_COMP );
+	player->AddComponent( INTERACT_COMP );
+	player->AddComponent( QUEST_CARRIER_COMP );
+
+	TransformComp* player_transform_comp = (TransformComp*)player->AddComponent( TRANSFORM_COMP );
+	player_transform_comp->m_transform.m_position = Vec2( 4.5, 2.5 );
+
+	//--------------------------------------------------------------------------
+	// NPC
 	Entity* silent_joe = m_maps[m_map_id]->m_admin.CreateEntity();
-	silent_joe->AddComponent( new NameComp( "Silent Joe" ) );
-	silent_joe->AddComponent( new QuestGiverComp() );
-	silent_joe->AddComponent( new PhysicsComp( true ) );
-	silent_joe->AddComponent( new RenderComp() );
-	silent_joe->AddComponent( new InteractComp() );
-	silent_joe->AddComponent( new TransformComp( 6.0f, 3.0f ) );
-	silent_joe->AddComponent( new AIComp() );
+	silent_joe->AddComponent( QUEST_GIVER_COMP );
+	silent_joe->AddComponent( PHYSICS_COMP );
+	silent_joe->AddComponent( RENDER_COMP );
+	silent_joe->AddComponent( INTERACT_COMP );
+	silent_joe->AddComponent( AI_COMP );
 
+	NameComp* npc_name_comp = (NameComp*)silent_joe->AddComponent( NAME_COMP );
+	TransformComp* npc_transform_comp = (TransformComp*)silent_joe->AddComponent( TRANSFORM_COMP );
 
-	// Add singletons
-	EntityAdmin::m_master.AddComponent( new InputComp() );
+	npc_name_comp->m_name = "Silent Joe";
+	npc_transform_comp->m_transform.m_position = Vec2( 6.0f, 3.0f );
+
 }
 
 //--------------------------------------------------------------------------

@@ -8,7 +8,7 @@
 IntentComp::IntentComp()
 	: Component()
 {
-	m_type = INTENT_COMP;
+	
 }
 
 //--------------------------------------------------------------------------
@@ -18,4 +18,22 @@ IntentComp::IntentComp()
 IntentComp::~IntentComp()
 {
 
+}
+
+//--------------------------------------------------------------------------
+/**
+* Copy
+*/
+void IntentComp::Copy(const Component* copyFrom)
+{
+	*this = *( (IntentComp*)copyFrom );
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetType
+*/
+eComponentType IntentComp::GetType()
+{
+	return INTENT_COMP;
 }

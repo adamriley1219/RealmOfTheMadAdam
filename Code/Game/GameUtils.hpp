@@ -8,7 +8,8 @@ class EntityAdmin;
 class Camera;
 class Map;
 
-typedef uint EntityID;
+typedef int EntityID;
+//typedef int ComponentID;
 
 void DrawDisc( const Vertex_PCU translation, float radius );
 float GetRandomlyChosenFloat( float a, float b );

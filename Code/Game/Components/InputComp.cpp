@@ -1,6 +1,8 @@
 #include "Game/Components/InputComp.hpp"
 #include "Game/Systems/GameInputSystem.hpp"
 
+InputComp InputComp::s_prototype;
+
 //--------------------------------------------------------------------------
 /**
 * NameComp
@@ -8,15 +10,7 @@
 InputComp::InputComp()
 	: Component()
 {
-	m_type = INPUT_COMP;
-
-	m_button_states[INTERACT_KEY] = new KeyButtonState();
-	m_button_states[FIRE_KEY] = new KeyButtonState();
-	m_button_states[FIRE_SECONDARY_KEY] = new KeyButtonState();
-	m_button_states[MOVE_LEFT] = new KeyButtonState();
-	m_button_states[MOVE_RIGHT] = new KeyButtonState();
-	m_button_states[MOVE_UP] = new KeyButtonState();
-	m_button_states[MOVE_DOWN] = new KeyButtonState();
+	
 }
 
 //--------------------------------------------------------------------------
@@ -32,11 +26,26 @@ InputComp::~InputComp()
 /**
 * GetKeyState
 */
-KeyButtonState* InputComp::GetKeyState( Key key ) const
+KeyButtonState* InputComp::GetKeyState( eHotkeys key )
 {
-	if( m_button_states.find(key) != m_button_states.end() )
-	{
-		return m_button_states.at( key );
-	}
-	return nullptr;
+	return &m_button_states[key];
 }
+
+//--------------------------------------------------------------------------
+/**
+* Copy
+*/
+void InputComp::Copy(const Component* copyFrom)
+{
+	*this = *( (InputComp*)copyFrom );
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetType
+*/
+eComponentType InputComp::GetType()
+{
+	return INPUT_COMP;
+}
+

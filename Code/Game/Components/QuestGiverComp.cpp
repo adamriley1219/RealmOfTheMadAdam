@@ -8,7 +8,7 @@
 QuestGiverComp::QuestGiverComp()
 	: Component()
 {
-	m_type = QUEST_GIVER_COMP;
+	
 }
 
 //--------------------------------------------------------------------------
@@ -18,4 +18,22 @@ QuestGiverComp::QuestGiverComp()
 QuestGiverComp::~QuestGiverComp()
 {
 
+}
+
+//--------------------------------------------------------------------------
+/**
+* Copy
+*/
+void QuestGiverComp::Copy(const Component* copyFrom)
+{
+	*this = *( (QuestGiverComp*)copyFrom );
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetType
+*/
+eComponentType QuestGiverComp::GetType()
+{
+	return QUEST_GIVER_COMP;
 }

@@ -9,6 +9,9 @@ public:
 	TransformComp( float x, float y );
 	~TransformComp();
 
+	virtual void Copy(const Component* copyFrom);
+	virtual eComponentType GetType();
+
 public:
 	Transform2D m_transform;
 

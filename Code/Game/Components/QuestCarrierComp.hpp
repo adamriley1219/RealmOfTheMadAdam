@@ -11,6 +11,9 @@ public:
 
 	void AddQuest( QuestGiverComp* quest_giver );
 
+	virtual void Copy(const Component* copyFrom);
+	virtual eComponentType GetType();
+
 public:
 	std::vector< QuestGiverComp* > quest_givers;
 
