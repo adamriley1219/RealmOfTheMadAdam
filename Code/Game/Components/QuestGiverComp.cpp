@@ -37,3 +37,25 @@ eComponentType QuestGiverComp::GetType()
 {
 	return QUEST_GIVER_COMP;
 }
+
+//--------------------------------------------------------------------------
+/**
+* GetKillEnemiesText
+*/
+std::string QuestGiverComp::GetKillEnemiesText() const
+{
+	return Stringf( "Kill enemies %u/%u", num_enemies_killed, num_enemies_to_kill );
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetDialog
+*/
+std::string QuestGiverComp::GetDialog() const
+{
+	if( complete )
+	{
+		return complete_text;
+	}
+	return init_text;
+}

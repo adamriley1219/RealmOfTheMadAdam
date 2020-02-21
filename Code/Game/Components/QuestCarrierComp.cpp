@@ -26,7 +26,31 @@ QuestCarrierComp::~QuestCarrierComp()
 */
 void QuestCarrierComp::AddQuest( QuestGiverComp* quest_giver )
 {
+	for( QuestGiverComp*& giver : quest_givers )
+	{
+		if( !giver )
+		{
+			giver = quest_giver;
+			return;
+		}
+	}
 	quest_givers.push_back( quest_giver );
+}
+
+//--------------------------------------------------------------------------
+/**
+* RemoveQuest
+*/
+void QuestCarrierComp::RemoveQuest(QuestGiverComp* quest_giver)
+{
+	for( QuestGiverComp*& giver : quest_givers )
+	{
+		if( giver && giver == quest_giver )
+		{
+			giver = nullptr;
+			return;
+		}
+	}
 }
 
 //--------------------------------------------------------------------------
@@ -45,4 +69,20 @@ void QuestCarrierComp::Copy(const Component* copyFrom)
 eComponentType QuestCarrierComp::GetType()
 {
 	return QUEST_CARRIER_COMP;
+}
+
+//--------------------------------------------------------------------------
+/**
+* HasQuest
+*/
+bool QuestCarrierComp::HasQuest( QuestGiverComp* quest_giver )
+{
+	for( auto quester : quest_givers )
+	{
+		if( quester && quester == quest_giver )
+		{
+			return true;
+		}
+	}
+	return false;
 }

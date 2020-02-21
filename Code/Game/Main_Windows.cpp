@@ -111,35 +111,8 @@ void CreateWindowAndRenderContext( float clientAspect )
 {
 	g_theWindowContext = new WindowContext();
 	g_theWindowContext->Create( APP_NAME, clientAspect, .90f, AppWindowProc ); 
-
-	// this is the end of the windows part
-	// 	PIXELFORMATDESCRIPTOR pixelFormatDescriptor;
-	// 	memset( &pixelFormatDescriptor, 0, sizeof( pixelFormatDescriptor ) );
-	// 	pixelFormatDescriptor.nSize = sizeof( pixelFormatDescriptor );
-	// 	pixelFormatDescriptor.nVersion = 1;
-	// 	pixelFormatDescriptor.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
-	// 	pixelFormatDescriptor.iPixelType = PFD_TYPE_RGBA;
-	// 	pixelFormatDescriptor.cColorBits = 24;
-	// 	pixelFormatDescriptor.cDepthBits = 24;
-	// 	pixelFormatDescriptor.cAccumBits = 0;
-	// 	pixelFormatDescriptor.cStencilBits = 8;
-	// 
-	// 	int pixelFormatCode = ChoosePixelFormat( g_displayDeviceContext, &pixelFormatDescriptor );
-	// 	SetPixelFormat( g_displayDeviceContext, pixelFormatCode, &pixelFormatDescriptor );
-	// 	g_openGLRenderingContext = wglCreateContext( g_displayDeviceContext );
-	// 	wglMakeCurrent( g_displayDeviceContext, g_openGLRenderingContext );
-
-
 }
 
-
-//-----------------------------------------------------------------------------------------------
-// Processes all Windows messages (WM_xxx) for this app that have queued up since last frame.
-// For each message in the queue, our WindowsMessageHandlingProcedure (or "WinProc") function
-//	is called, telling us what happened (key up/down, minimized/restored, gained/lost focus, etc.)
-//
-// #SD1ToDo: We will move this function to a more appropriate place later on...
-//
 void RunMessagePump()
 {
 	g_theWindowContext->BeginFrame(); 

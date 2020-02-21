@@ -7,7 +7,10 @@ public:
 	UISystem();
 	~UISystem();
 
-public:
+	virtual void Render() const;
+
+private:
+	
 
 };
 

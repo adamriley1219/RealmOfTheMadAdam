@@ -11,6 +11,7 @@
 #include "Engine/Math/Vec2.hpp"
 
 #include "Engine/Core/Debug/DevConsole.hpp"
+#include "Engine/Core/Strings/NamedStrings.hpp"
 #include "Engine/Core/EventSystem.hpp"
 #include "Engine/Core/Time/Clock.hpp"
 #include "Engine/Memory/Debug/Profiler.hpp"
@@ -104,7 +105,7 @@ void Game::Startup()
 	EntityAdmin::m_master.m_systems.push_back( new MovementSystem() );
 
 	m_map_id = 0;
-	m_maps[m_map_id] = new Map( m_map_id, IntVec2( 10, 30 ), m_terrain_sheet, TileType::GRASS_TILE, TileType::STONE_TILE );
+	m_maps[m_map_id] = new Map( m_map_id, IntVec2( 10, 10 ), m_terrain_sheet, TileType::GRASS_TILE, TileType::STONE_TILE );
 
 	//--------------------------------------------------------------------------
 	// Player
@@ -118,9 +119,12 @@ void Game::Startup()
 
 	CameraComp* player_camera_comp = (CameraComp*)player->AddComponent( CAMERA_COMP );
 	player_camera_comp->m_active = true;
-	player_camera_comp->m_camera.SetOrthographicProjection( Vec2(-5, -2.5), Vec2( 5, 2.5 ) );
+	Vec2 camera_dims = g_gameConfigBlackboard.GetValue( "camera_dims", Vec2::ONE );
+	AABB2 screen( camera_dims.x, camera_dims.y );
+	g_gameConfigBlackboard.SetValue( "screen", ToString( screen ) );
+	player_camera_comp->m_camera.SetOrthographicProjection( screen.GetBottomLeft(), screen.GetTopRight() );
 
-	player->AddComponent( RENDER_COMP );
+
 	player->AddComponent( INTENT_COMP );
 	player->AddComponent( INPUT_COMP );
 	player->AddComponent( INTERACT_COMP );
@@ -129,20 +133,37 @@ void Game::Startup()
 	TransformComp* player_transform_comp = (TransformComp*)player->AddComponent( TRANSFORM_COMP );
 	player_transform_comp->m_transform.m_position = Vec2( 4.5, 2.5 );
 
+	RenderComp* render_comp_player = (RenderComp*)player->AddComponent( RENDER_COMP );
+	AddVertsForAABB2D( render_comp_player->m_main_group.verts, AABB2( player_physics_comp->m_radius * 2.0f, player_physics_comp->m_radius * 2.0f ), Rgba::WHITE, Vec2( 0.0f, 0.75f ), Vec2( 0.25f, 1.0f ) );
+	render_comp_player->m_main_texture = "Data/Images/DawnLike/Mage.png";
+
 	//--------------------------------------------------------------------------
 	// NPC
 	Entity* silent_joe = m_maps[m_map_id]->m_admin.CreateEntity();
-	silent_joe->AddComponent( QUEST_GIVER_COMP );
-	silent_joe->AddComponent( PHYSICS_COMP );
-	silent_joe->AddComponent( RENDER_COMP );
 	silent_joe->AddComponent( INTERACT_COMP );
 	silent_joe->AddComponent( AI_COMP );
+	QuestGiverComp* npc_quest_giver_comp = (QuestGiverComp*)silent_joe->AddComponent( QUEST_GIVER_COMP );
+	npc_quest_giver_comp->accept_text = "Thanks, for this. Please hurry...";
+	npc_quest_giver_comp->init_text = "....Please....Please help.... There's so many creatures...";
+	npc_quest_giver_comp->complete_text = "THANK YOU SO MUCH!";
+	npc_quest_giver_comp->fail_text = "...";
+	npc_quest_giver_comp->quest_name = "Kill the creatures.";
 
 	NameComp* npc_name_comp = (NameComp*)silent_joe->AddComponent( NAME_COMP );
 	TransformComp* npc_transform_comp = (TransformComp*)silent_joe->AddComponent( TRANSFORM_COMP );
+	
+	PhysicsComp* npc_physics_comp = (PhysicsComp*) silent_joe->AddComponent( PHYSICS_COMP );
+
+	RenderComp* npc_render_comp = (RenderComp*) silent_joe->AddComponent( RENDER_COMP );
+	AddVertsForAABB2D(npc_render_comp->m_main_group.verts, AABB2(npc_physics_comp->m_radius * 2.0f, npc_physics_comp->m_radius * 2.0f), Rgba::WHITE, Vec2( .75f, 0.9333f ), Vec2(0.875f, 1.0f) );
+	npc_render_comp->m_main_texture = "Data/Images/DawnLike/Player0.png";
 
 	npc_name_comp->m_name = "Silent Joe";
 	npc_transform_comp->m_transform.m_position = Vec2( 6.0f, 3.0f );
+
+	//--------------------------------------------------------------------------
+	// Enemy 1
+	Entity* enemy_1 = m_maps[m_map_id]->m_admin.CreateEntity();
 
 }
 

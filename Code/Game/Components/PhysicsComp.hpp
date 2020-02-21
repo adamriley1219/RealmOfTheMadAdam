@@ -18,5 +18,6 @@ public:
 	float m_speed_modifier = 1.0f;
 	float m_max_speed = 2.0f;
 	Vec2 m_velocity = Vec2::ZERO;
+	float m_radius = .25f;
 	bool m_static_object = true;
 };

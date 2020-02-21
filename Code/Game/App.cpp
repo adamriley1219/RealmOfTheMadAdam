@@ -10,6 +10,7 @@
 
 #include "Engine/Renderer/RenderContext.hpp"
 #include "Engine/Renderer/Debug/DebugRenderSystem.hpp"
+#include "Engine/Renderer/BitmapFont.hpp"
 
 #include "Engine/Math/RNG.hpp"
 
@@ -17,6 +18,9 @@
 #include "Engine/Input/InputSystem.hpp"
 #include "Engine/Audio/AudioSystem.hpp"
 #include "Engine/Physics/PhysicsSystem.hpp"
+
+#include "Engine/Core/Strings/NamedStrings.hpp"
+#include "Engine/Core/Strings/StringUtils.hpp"
 
 #include "Game/GameCommon.hpp"
 

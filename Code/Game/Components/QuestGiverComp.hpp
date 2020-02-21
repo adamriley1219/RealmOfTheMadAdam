@@ -12,6 +12,10 @@ public:
 	virtual void Copy(const Component* copyFrom);
 	virtual eComponentType GetType();
 
+
+	std::string GetKillEnemiesText() const;
+	std::string GetDialog() const;
+
 public:
 	uint map_loc_id;
 	std::string quest_name = "UNINITED QUEST NAME";
@@ -20,6 +24,10 @@ public:
 	std::string complete_text = "UNINITED QUEST COMPLETE";
 	std::string fail_text = "UNINITED QUEST FAIL";
 
+	uint num_enemies_to_kill = 0;
+	uint num_enemies_killed = 0;
+
+	bool triggered = false;
 	bool player_in_range = false;
 	bool complete = false;
 };

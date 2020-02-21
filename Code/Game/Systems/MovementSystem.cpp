@@ -63,14 +63,15 @@ void MovementSystem::Update( float deltaTime ) const
 
 				transform.m_position += phyx.m_velocity * deltaTime;
 
-				RenderComp* render_comp = (RenderComp*)entity.GetComponent(RENDER_COMP);
-				if (render_comp)
-				{
-					std::vector<Vertex_PCU>& verts = render_comp->m_verts_groups[""].verts;
-					AddVertsForRing2D(verts, Vec2::ZERO, .25f, .01f, Rgba::WHITE, 8);
+			}
 
-					render_comp->m_verts_groups[""].transform = transform;
-				}
+			
+			RenderComp* render_comp = (RenderComp*)entity.GetComponent(RENDER_COMP);
+			if ( render_comp && trans_comp && physics_comp )
+			{
+				Transform2D& transform = trans_comp->m_transform;
+				std::vector<Vertex_PCU>& verts = render_comp->m_verts_groups[""].verts;
+				AddVertsForRing2D(verts, trans_comp->m_transform.m_position, physics_comp->m_radius, .01f, Rgba::WHITE, 8);
 			}
 		}
 	}

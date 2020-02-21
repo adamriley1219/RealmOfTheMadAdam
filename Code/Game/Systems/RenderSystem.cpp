@@ -58,7 +58,15 @@ void RenderSystem::Render() const
 			if( trans_comp && render_comp )
 			{
 				// Can render something
-			
+				Matrix44 main_transform = render_comp->m_main_group.transform.GetTransformMatrix();
+				main_transform = main_transform.Concatenate( trans_comp->m_transform.GetTransformMatrix() );
+				texture_names_to_group_infos[render_comp->m_main_texture].is_text = false; // Cant have text as the main path
+				for ( Vertex_PCU vert : render_comp->m_main_group.verts )
+				{
+					vert.position = main_transform.TransformPosition3D( vert.position );
+					texture_names_to_group_infos[render_comp->m_main_texture].verts.push_back( vert );
+				}
+
 				for( auto& group_pair : render_comp->m_verts_groups )
 				{
 					Vertex_Info_Group& group = (group_pair.second);
@@ -107,11 +115,10 @@ void RenderSystem::Render() const
 					g_theRenderer->BindTextureView( TEXTURE_SLOT_ALBEDO, file_name.c_str() );
 				}
 			}
-			g_theRenderer->SetBlendMode( eBlendMode::BLEND_MODE_ADDITIVE );
+			g_theRenderer->SetBlendMode( eBlendMode::BLEND_MODE_ALPHA );
 			g_theRenderer->DrawVertexArray( group.verts );
 		}
 	}
-
 }
 
 //--------------------------------------------------------------------------

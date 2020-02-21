@@ -24,4 +24,6 @@ public:
 
 public:
 	std::map< std::string, Vertex_Info_Group > m_verts_groups;
+	std::string m_main_texture = "";
+	Vertex_Info_Group m_main_group;
 };
