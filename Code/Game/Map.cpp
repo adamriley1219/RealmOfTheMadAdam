@@ -43,6 +43,15 @@ Map::~Map()
 void Map::Update( float deltaSeconds )
 {
 	m_admin.Update( deltaSeconds );
+
+	// cleanup
+	for( Entity& entity : m_admin.m_entities )
+	{
+		if( entity.m_claimed && entity.m_destroy )
+		{
+			entity.m_claimed = false;
+		}
+	}
 }
 
 //--------------------------------------------------------------------------

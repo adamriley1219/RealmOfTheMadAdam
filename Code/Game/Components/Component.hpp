@@ -16,6 +16,7 @@ enum eComponentType
 	AI_COMP,
 	CAMERA_COMP,
 	INTERACT_COMP,
+	ABILITY_COMP,
 	NUM_COMP_TYPES
 };
 

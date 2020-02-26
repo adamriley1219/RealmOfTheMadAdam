@@ -8,6 +8,8 @@ public:
 	CombatSystem();
 	~CombatSystem();
 
+	void Update( float delta_time ) const;
+
 private:
 
 };

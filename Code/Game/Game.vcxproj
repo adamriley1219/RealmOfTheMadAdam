@@ -189,6 +189,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Components\AbilityComp.cpp" />
     <ClCompile Include="Components\AIComp.cpp" />
     <ClCompile Include="Components\CameraComp.cpp" />
     <ClCompile Include="Components\Component.cpp" />
@@ -222,6 +223,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.hpp" />
+    <ClInclude Include="Components\AbilityComp.hpp" />
     <ClInclude Include="Components\AIComp.hpp" />
     <ClInclude Include="Components\CameraComp.hpp" />
     <ClInclude Include="Components\Component.hpp" />

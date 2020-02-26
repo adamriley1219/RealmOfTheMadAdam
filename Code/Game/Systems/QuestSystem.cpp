@@ -130,16 +130,16 @@ void QuestSystem::Update(float deltaTime) const
 /**
 * TriggerQuestComplete
 */
-void QuestSystem::TriggerQuestComplete(QuestGiverComp* giver) const
+void QuestSystem::TriggerQuestComplete( QuestGiverComp* giver ) const
 {
-
+	// #TODO: Trigger Quest Complete logic 
 }
 
 //--------------------------------------------------------------------------
 /**
 * TriggerQuestAccepted
 */
-void QuestSystem::TriggerQuestAccepted(QuestGiverComp* giver) const
+void QuestSystem::TriggerQuestAccepted( QuestGiverComp* giver ) const
 {
-
+	// #TODO: Trigger Quest Accepted logic 
 }

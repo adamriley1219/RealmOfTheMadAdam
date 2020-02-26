@@ -2,6 +2,12 @@
 #include "Game/Components/Component.hpp"
 #include "Game/EntityAdmin.hpp"
 
+
+
+Entity Entity::s_protoEntity;
+
+
+
 //--------------------------------------------------------------------------
 /**
 * Entity
@@ -27,7 +33,7 @@ Entity::~Entity()
 */
 Component* Entity::AddComponent( eComponentType type )
 {
-	SetBitFlags( m_bit_map_components, (size_t) 1 << type );
+	SetBitFlags( m_bit_map_components, 1ll << type );
 	return GetComponent( type );
 }
 
@@ -47,7 +53,7 @@ bool Entity::AddComponent( Component* component )
 */
 void Entity::RemoveComponent( eComponentType type )
 {
-	size_t type_flag = (size_t) 1 << type;
+	int64_t type_flag = 1ll << type;
 	ClearBitFlag( m_bit_map_components, type_flag );
 }
 
@@ -73,7 +79,7 @@ bool Entity::CopyComponent( Component* component )
 */
 Component* Entity::GetComponent( eComponentType type ) const
 {
-	size_t flags = (size_t) 1 << type;
+	int64_t flags = 1ll << type;
 	if( IsBitFlagSet( m_bit_map_components, flags ) )
 	{
 		return m_owner->GetComponent( m_id, type );
@@ -87,5 +93,5 @@ Component* Entity::GetComponent( eComponentType type ) const
 */
 bool Entity::HasComponent( eComponentType type ) const
 {
-	return IsBitFlagSet( m_bit_map_components, (size_t) 1 << type );
+	return IsBitFlagSet( m_bit_map_components, 1ll << type );
 }

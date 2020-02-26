@@ -1,7 +1,14 @@
 #include "Game/Systems/GameInputSystem.hpp"
 
 #include "Game/EntityAdmin.hpp"
+#include "Game/Game.hpp"
+
 #include "Game/Components/IntentComp.hpp"
+#include "Game/Components/TransformComp.hpp"
+#include "Game/Components/CameraComp.hpp"
+
+#include "Engine/Core/WindowContext.hpp"
+#include "Engine/Renderer/Camera.hpp"
 
 //--------------------------------------------------------------------------
 /**
@@ -31,6 +38,10 @@ void GameInputSystem::Update( float deltaTime ) const
 	EntityAdmin& admin = GetCurrentAdmin();
 	for( Entity& entity : admin.m_entities )
 	{
+		if (!entity.m_claimed)
+		{
+			continue;
+		}
 
 		InputComp* input_comp_ptr = (InputComp*)entity.GetComponent(INPUT_COMP);
 		if( input_comp_ptr )
@@ -45,8 +56,8 @@ void GameInputSystem::Update( float deltaTime ) const
 			input_comp.GetKeyState(INTERACT_HOTKEY)->UpdateStatus(g_theInputSystem->KeyIsDown(GetKeyFromHotkey(INTERACT_HOTKEY)));
 
 
-			IntentComp* interact_comp_ptr = (IntentComp*)entity.GetComponent( INTENT_COMP );
-			if( interact_comp_ptr )
+			IntentComp* intent_comp_ptr = (IntentComp*)entity.GetComponent( INTENT_COMP );
+			if( intent_comp_ptr )
 			{
 				Vec2 dir(0, 0);
 				if (input_comp.GetKeyState(MOVE_LEFT_HOTKEY)->IsPressed())
@@ -66,10 +77,21 @@ void GameInputSystem::Update( float deltaTime ) const
 					dir.x += 1.0f;
 				}
 
-				interact_comp_ptr->m_wants_to_interact = input_comp.GetKeyState(INTERACT_HOTKEY)->IsPressed();
-				interact_comp_ptr->m_wants_to_fire = input_comp.GetKeyState(FIRE_HOTKEY)->IsPressed();
-				interact_comp_ptr->m_wants_to_fire_secondary = input_comp.GetKeyState(FIRE_SECONDARY_HOTKEY)->IsPressed();
-				interact_comp_ptr->m_desired_move_direction = dir.GetNormalized();;
+				intent_comp_ptr->m_wants_to_interact = input_comp.GetKeyState(INTERACT_HOTKEY)->IsPressed();
+				intent_comp_ptr->m_wants_to_fire = input_comp.GetKeyState(FIRE_HOTKEY)->IsPressed();
+				intent_comp_ptr->m_wants_to_fire_secondary = input_comp.GetKeyState(FIRE_SECONDARY_HOTKEY)->IsPressed();
+
+				intent_comp_ptr->m_desired_move_direction = dir.GetNormalized();;
+
+				TransformComp* trans_comp = (TransformComp*) entity.GetComponent( TRANSFORM_COMP );
+				CameraComp* camera_comp = (CameraComp*) entity.GetComponent( CAMERA_COMP );
+				if( trans_comp && ( intent_comp_ptr->m_wants_to_fire || intent_comp_ptr->m_wants_to_fire_secondary ) )
+				{
+					IntVec2 raw_mouse_pos = g_theWindowContext->GetClientMousePosition();
+					Vec3 world_pos = camera_comp->m_camera.GetClientToWorld( raw_mouse_pos );
+
+					intent_comp_ptr->m_desired_fire_direction = ( Vec2( world_pos  ) - trans_comp->m_transform.m_position ).GetNormalized();
+				}
 			}
 		}
 		

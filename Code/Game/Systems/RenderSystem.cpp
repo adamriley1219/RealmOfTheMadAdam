@@ -51,42 +51,44 @@ void RenderSystem::Render() const
 	std::vector<Vertex_PCU> verts;
 	for( auto entity : admin.m_entities )
 	{
-		if( entity.m_claimed )
+		if (!entity.m_claimed)
 		{
-			TransformComp* trans_comp = (TransformComp*)admin.GetComponent(entity.m_id, TRANSFORM_COMP);
-			RenderComp* render_comp = (RenderComp*)admin.GetComponent( entity.m_id, RENDER_COMP );
-			if( trans_comp && render_comp )
+			continue;
+		}
+		
+		TransformComp* trans_comp = (TransformComp*)admin.GetComponent(entity.m_id, TRANSFORM_COMP);
+		RenderComp* render_comp = (RenderComp*)admin.GetComponent( entity.m_id, RENDER_COMP );
+		if( trans_comp && render_comp )
+		{
+			// Can render something
+			Matrix44 main_transform = render_comp->m_main_group.transform.GetTransformMatrix();
+			main_transform = main_transform.Concatenate( trans_comp->m_transform.GetTransformMatrix() );
+			texture_names_to_group_infos[render_comp->m_main_texture].is_text = false; // Cant have text as the main path
+			for ( Vertex_PCU vert : render_comp->m_main_group.verts )
 			{
-				// Can render something
-				Matrix44 main_transform = render_comp->m_main_group.transform.GetTransformMatrix();
-				main_transform = main_transform.Concatenate( trans_comp->m_transform.GetTransformMatrix() );
-				texture_names_to_group_infos[render_comp->m_main_texture].is_text = false; // Cant have text as the main path
-				for ( Vertex_PCU vert : render_comp->m_main_group.verts )
-				{
-					vert.position = main_transform.TransformPosition3D( vert.position );
-					texture_names_to_group_infos[render_comp->m_main_texture].verts.push_back( vert );
-				}
+				vert.position = main_transform.TransformPosition3D( vert.position );
+				texture_names_to_group_infos[render_comp->m_main_texture].verts.push_back( vert );
+			}
 
-				for( auto& group_pair : render_comp->m_verts_groups )
-				{
-					Vertex_Info_Group& group = (group_pair.second);
-					const std::string& file_path = group_pair.first; 
-					std::vector<Vertex_PCU>& group_verts = group.verts;
+			for( auto& group_pair : render_comp->m_verts_groups )
+			{
+				Vertex_Info_Group& group = (group_pair.second);
+				const std::string& file_path = group_pair.first; 
+				std::vector<Vertex_PCU>& group_verts = group.verts;
 
-					if( group_verts.size() > 0 )
+				if( group_verts.size() > 0 )
+				{
+					Matrix44 trans_matrix = group.transform.GetTransformMatrix();
+					texture_names_to_group_infos[file_path].is_text = group.is_text;
+					// Intended not to use a reference but a copy.
+					// We are changing the position according to the matrix.
+					for( Vertex_PCU vert : group_verts )
 					{
-						Matrix44 trans_matrix = group.transform.GetTransformMatrix();
-						texture_names_to_group_infos[file_path].is_text = group.is_text;
-						// Intended not to use a reference but a copy.
-						// We are changing the position according to the matrix.
-						for( Vertex_PCU vert : group_verts )
-						{
-							vert.position = trans_matrix.TransformPosition3D( vert.position );
-							texture_names_to_group_infos[file_path].verts.push_back( vert );
-						}
-
-						group_verts.clear();
+						vert.position = trans_matrix.TransformPosition3D( vert.position );
+						texture_names_to_group_infos[file_path].verts.push_back( vert );
 					}
+
+					group_verts.clear();
 				}
 			}
 		}

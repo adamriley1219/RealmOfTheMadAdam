@@ -20,10 +20,8 @@ struct IntentComp;
 struct AIComp;
 struct CameraComp;
 struct InteractComp;
+struct AbilityComp;
 
-struct RenderSystemTuple;
-struct MovementTuple;
-struct InputTuple;
 
 class EntityAdmin
 {
@@ -46,8 +44,10 @@ public:
 	void RemoveEntity( EntityID entity );
 	void RemoveComponent( EntityID id, eComponentType type );
 
+	uint GetNumEntites() const;
+
 public:
-	static EntityAdmin m_master;
+	static EntityAdmin* GetMaster();
 	static std::vector<System*> m_systems;
 
 	InputComp* m_input_comps = nullptr;
@@ -62,6 +62,7 @@ public:
 	AIComp* m_ai_comps = nullptr;
 	CameraComp* m_camera_comps = nullptr;
 	InteractComp* m_interact_comps = nullptr;
+	AbilityComp* m_ability_comps = nullptr;
 
 	Entity m_entities[MAX_ENTITIES];
 };

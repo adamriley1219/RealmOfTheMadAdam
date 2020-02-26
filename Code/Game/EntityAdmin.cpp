@@ -22,11 +22,11 @@
 #include "Game/Components/CameraComp.hpp"
 #include "Game/Components/InteractComp.hpp"
 #include "Game/Components/AIComp.hpp"
+#include "Game/Components/AbilityComp.hpp"
 
 #include "Game/Entity.hpp"
 
 std::vector<System*> EntityAdmin::m_systems;
-EntityAdmin EntityAdmin::m_master;
 
 //--------------------------------------------------------------------------
 /**
@@ -46,6 +46,7 @@ EntityAdmin::EntityAdmin()
 	m_ai_comps = new AIComp[MAX_ENTITIES];
 	m_camera_comps = new CameraComp[MAX_ENTITIES];
 	m_interact_comps = new InteractComp[MAX_ENTITIES];
+	m_ability_comps = new AbilityComp[MAX_ENTITIES];
 }
 
 //--------------------------------------------------------------------------
@@ -66,6 +67,7 @@ EntityAdmin::~EntityAdmin()
 	delete[] m_intent_comps;
 	delete[] m_ai_comps;
 	delete[] m_camera_comps;
+	delete[] m_ability_comps;
 }
 
 //--------------------------------------------------------------------------
@@ -142,6 +144,9 @@ Component* EntityAdmin::GetComponent( EntityID id, eComponentType type )
 			case INTERACT_COMP:
 				return &m_interact_comps[id];
 				break;
+			case ABILITY_COMP:
+				return &m_ability_comps[id];
+				break;
 			default:
 				break;
 			}
@@ -162,6 +167,7 @@ Entity* EntityAdmin::CreateEntity()
 		Entity& entity = m_entities[ent_idx];
 		if( !entity.m_claimed )
 		{
+			entity = Entity::s_protoEntity;
 			entity.m_id = ent_idx;
 			entity.m_claimed = true;
 			entity.m_owner = this;
@@ -208,5 +214,32 @@ void EntityAdmin::RemoveEntity( EntityID id )
 void EntityAdmin::RemoveComponent( EntityID id, eComponentType type )
 {
 	m_entities[id].RemoveComponent( type );
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetNumEntites
+*/
+uint EntityAdmin::GetNumEntites() const
+{
+	uint count = 0;
+	for( const Entity& entity : m_entities )
+	{
+		if( entity.m_claimed )
+		{
+			++count;
+		}
+	}
+	return count;
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetMaster
+*/
+EntityAdmin* EntityAdmin::GetMaster()
+{
+	static EntityAdmin* master = new EntityAdmin();
+	return master;
 }
 

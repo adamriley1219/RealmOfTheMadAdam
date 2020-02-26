@@ -2,14 +2,13 @@
 #include "Game/Components/Component.hpp"
 
 
-struct AIComp : public Component
+struct AbilityComp : public Component
 {
 public:
-	AIComp();
-	~AIComp();
+	AbilityComp();
+	~AbilityComp();
 
 	virtual void Copy(const Component* copyFrom);
 	virtual eComponentType GetType();
 
-	float m_trigger_range = 0.0f;
 };

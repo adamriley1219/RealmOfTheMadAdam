@@ -23,11 +23,14 @@ public:
 
 	bool HasComponent( eComponentType type ) const;
 
-	size_t m_bit_map_components = 0;
+	int64_t m_bit_map_components = 0;
 	
 public:
 	EntityID m_id = -1;
 	bool m_claimed = false;
+	bool m_destroy = false;
+
+	static Entity s_protoEntity;
 
 	EntityAdmin* m_owner = nullptr;
 

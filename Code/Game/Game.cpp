@@ -5,6 +5,8 @@
 #include "Engine/Renderer/Shaders/Shader.hpp"
 #include "Engine/Renderer/SpriteAnimDefinition.hpp"
 #include "Engine/Renderer/Debug/DebugRenderSystem.hpp"
+#include "Engine/Renderer/SpriteSheet.hpp"
+#include "Engine/Renderer/SpriteDefinition.hpp"
 
 #include "Engine/Math/AABB2.hpp"
 #include "Engine/Math/IntVec2.hpp"
@@ -67,14 +69,7 @@ Game::Game()
 */
 Game::~Game()
 {
-	for( auto& map_pair : m_maps )
-	{
-		SAFE_DELETE( map_pair.second );
-	}
-	for( auto& system : EntityAdmin::m_master.m_systems )
-	{
-		SAFE_DELETE( system );
-	}
+
 }
 
 //--------------------------------------------------------------------------
@@ -95,14 +90,16 @@ void Game::Startup()
 
 	m_terrain_sheet = new SpriteSheet( (TextureView*)g_theRenderer->CreateOrGetTextureViewFromFile("Data/Images/Terrain_8x8.png", true), IntVec2( 8, 8 ), Vec2::ALIGN_CENTERED, Vec2::ZERO );
 
-	EntityAdmin::m_master.m_systems.push_back( new GameInputSystem() );
-	EntityAdmin::m_master.m_systems.push_back( new GamePhysicsSystem() );
-	EntityAdmin::m_master.m_systems.push_back( new CombatSystem() );
-	EntityAdmin::m_master.m_systems.push_back( new QuestSystem() );
-	EntityAdmin::m_master.m_systems.push_back( new TriggerSystem() );
-	EntityAdmin::m_master.m_systems.push_back( new UISystem() );
-	EntityAdmin::m_master.m_systems.push_back( new RenderSystem() );
-	EntityAdmin::m_master.m_systems.push_back( new MovementSystem() );
+	EntityAdmin::GetMaster();
+
+	EntityAdmin::GetMaster()->m_systems.push_back( new GameInputSystem() );
+	EntityAdmin::GetMaster()->m_systems.push_back( new GamePhysicsSystem() );
+	EntityAdmin::GetMaster()->m_systems.push_back( new CombatSystem() );
+	EntityAdmin::GetMaster()->m_systems.push_back( new QuestSystem() );
+	EntityAdmin::GetMaster()->m_systems.push_back( new TriggerSystem() );
+	EntityAdmin::GetMaster()->m_systems.push_back( new UISystem() );
+	EntityAdmin::GetMaster()->m_systems.push_back( new RenderSystem() );
+	EntityAdmin::GetMaster()->m_systems.push_back( new MovementSystem() );
 
 	m_map_id = 0;
 	m_maps[m_map_id] = new Map( m_map_id, IntVec2( 10, 10 ), m_terrain_sheet, TileType::GRASS_TILE, TileType::STONE_TILE );
@@ -123,7 +120,6 @@ void Game::Startup()
 	AABB2 screen( camera_dims.x, camera_dims.y );
 	g_gameConfigBlackboard.SetValue( "screen", ToString( screen ) );
 	player_camera_comp->m_camera.SetOrthographicProjection( screen.GetBottomLeft(), screen.GetTopRight() );
-
 
 	player->AddComponent( INTENT_COMP );
 	player->AddComponent( INPUT_COMP );
@@ -161,10 +157,69 @@ void Game::Startup()
 	npc_name_comp->m_name = "Silent Joe";
 	npc_transform_comp->m_transform.m_position = Vec2( 6.0f, 3.0f );
 
+	// Enemy graphic
+	SpriteSheet sheet((TextureView*)g_theRenderer->CreateOrGetTextureViewFromFile("Data/Images/DawnLike/Avian0.png"), IntVec2(8, 13));
+	const SpriteDefinition& def = sheet.GetSpriteDefinition(3, 9);
+	Vec2 bot_left_uvs;
+	Vec2 top_right_uvs;
+	def.GetUVs(bot_left_uvs, top_right_uvs);
+
+	//--------------------------------------------------------------------------
+	// Enemy 3
+	Entity* enemy_3 = m_maps[m_map_id]->m_admin.CreateEntity();
+	NameComp* enemy_3_name_comp = (NameComp*)enemy_3->AddComponent(NAME_COMP);
+	AIComp* enemy_3_ai_comp = (AIComp*)enemy_3->AddComponent(AI_COMP);
+	TransformComp* enemy_3_transform_comp = (TransformComp*)enemy_3->AddComponent(TRANSFORM_COMP);
+
+	RenderComp* enemy_3_render_comp = (RenderComp*)enemy_3->AddComponent(RENDER_COMP);
+	PhysicsComp* enemy_3_physics_comp = (PhysicsComp*)enemy_3->AddComponent(PHYSICS_COMP);
+
+	enemy_3->AddComponent( INTENT_COMP );
+
+	AddVertsForAABB2D(enemy_3_render_comp->m_main_group.verts, AABB2(enemy_3_physics_comp->m_radius * 2.0f, enemy_3_physics_comp->m_radius * 2.0f), Rgba::WHITE, bot_left_uvs, top_right_uvs);
+	enemy_3_render_comp->m_main_texture = "Data/Images/DawnLike/Avian0.png";
+
+	enemy_3_name_comp->m_name = "Enemy_2";
+	enemy_3_transform_comp->m_transform.m_position = Vec2(2.0f, 7.41f);
+	enemy_3_ai_comp->m_trigger_range = 2.0f;
+
+	//--------------------------------------------------------------------------
+	// Enemy 2
+	Entity* enemy_2 = m_maps[m_map_id]->m_admin.CreateEntity();
+	NameComp* enemy_2_name_comp = (NameComp*)enemy_2->AddComponent(NAME_COMP);
+	AIComp* enemy_2_ai_comp = (AIComp*)enemy_2->AddComponent(AI_COMP);
+	TransformComp* enemy_2_transform_comp = (TransformComp*)enemy_2->AddComponent(TRANSFORM_COMP);
+
+	RenderComp* enemy_2_render_comp = (RenderComp*)enemy_2->AddComponent(RENDER_COMP);
+	PhysicsComp* enemy_2_physics_comp = (PhysicsComp*)enemy_2->AddComponent(PHYSICS_COMP);
+
+	enemy_2->AddComponent( INTENT_COMP );
+
+	AddVertsForAABB2D(enemy_2_render_comp->m_main_group.verts, AABB2(enemy_2_physics_comp->m_radius * 2.0f, enemy_2_physics_comp->m_radius * 2.0f), Rgba::WHITE, bot_left_uvs, top_right_uvs);
+	enemy_2_render_comp->m_main_texture = "Data/Images/DawnLike/Avian0.png";
+
+	enemy_2_name_comp->m_name = "Enemy_2";
+	enemy_2_transform_comp->m_transform.m_position = Vec2(2.59f, 8.0f);
+	enemy_2_ai_comp->m_trigger_range = 2.0f;
+
 	//--------------------------------------------------------------------------
 	// Enemy 1
 	Entity* enemy_1 = m_maps[m_map_id]->m_admin.CreateEntity();
+	NameComp* enemy_1_name_comp = (NameComp*)enemy_1->AddComponent( NAME_COMP );
+	AIComp* enemy_1_ai_comp = (AIComp*) enemy_1->AddComponent( AI_COMP );
+	TransformComp* enemy_1_transform_comp = (TransformComp*) enemy_1->AddComponent( TRANSFORM_COMP );
 
+	RenderComp* enemy_1_render_comp = (RenderComp*)enemy_1->AddComponent( RENDER_COMP );
+	PhysicsComp* enemy_1_physics_comp = (PhysicsComp*)enemy_1->AddComponent( PHYSICS_COMP );
+
+	enemy_1->AddComponent( INTENT_COMP );
+
+	AddVertsForAABB2D(enemy_1_render_comp->m_main_group.verts, AABB2(enemy_1_physics_comp->m_radius * 2.0f, enemy_1_physics_comp->m_radius * 2.0f), Rgba::WHITE, bot_left_uvs, top_right_uvs );
+	enemy_1_render_comp->m_main_texture = "Data/Images/DawnLike/Avian0.png";
+
+	enemy_1_name_comp->m_name = "Enemy_1";
+	enemy_1_transform_comp->m_transform.m_position = Vec2( 2.0f, 8.0f );
+	enemy_1_ai_comp->m_trigger_range = 2.0f;
 }
 
 //--------------------------------------------------------------------------
@@ -175,12 +230,17 @@ void Game::Shutdown()
 {
 	TileDefinition::DeconstructDefinitions();
 
-	// TODO: Delete maps 
-
-	for( System*& sys : EntityAdmin::m_master.m_systems )
+	for (auto& map_pair : m_maps)
 	{
-		SAFE_DELETE( sys );
+		SAFE_DELETE(map_pair.second);
 	}
+
+	for (auto& system : EntityAdmin::GetMaster()->m_systems)
+	{
+		SAFE_DELETE(system);
+	}
+
+	delete EntityAdmin::GetMaster();
 }
 
 static int g_index = 0;

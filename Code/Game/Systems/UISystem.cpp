@@ -9,6 +9,8 @@
 #include "Game/Components/QuestGiverComp.hpp"
 #include "Game/Components/InteractComp.hpp"
 
+#include "Game/App.hpp"
+
 #include "Engine/Core/Strings/NamedStrings.hpp"
 #include "Engine/Core/Time/Clock.hpp"
 
@@ -47,6 +49,7 @@ void UISystem::Render() const
 		{
 			continue;
 		}
+
 		CameraComp* camera_comp = (CameraComp*)entity.GetComponent( CAMERA_COMP );
 		RenderComp* render_comp = (RenderComp*)entity.GetComponent( RENDER_COMP );
 		TransformComp* trans_comp = (TransformComp*)entity.GetComponent( TRANSFORM_COMP );
@@ -57,14 +60,23 @@ void UISystem::Render() const
 			if( render_comp && trans_comp )
 			{
 				// Hacking in FPS counter....
+				// #TODO: Remove later
 				//--------------------------------------------------------------------------
 				AABB2 screen = g_gameConfigBlackboard.GetValue("screen", AABB2::ONE_BY_ONE);
 				screen.AddPosition( trans_comp->m_transform.m_position );
+				AABB2 carved_bot = screen.CarveBoxOffBottom( 0.0f, 0.15f );
 				uint fps = Clock::Master.GetFPS();
 
 				BitmapFont* font = g_theRenderer->CreateOrGetBitmapFromFile("SquirrelFixedFont");
 				render_comp->m_verts_groups["SquirrelFixedFont"].is_text = true;
-				font->AddVertsFor2DTextAlignedInBox(render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, ToString(fps).c_str(), screen, Vec2::ALIGN_BOTTOM_LEFT, BITMAP_MODE_UNCHANGED, 0.7f);
+				font->AddVertsFor2DTextAlignedInBox(render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, ToString(fps).c_str(), carved_bot, Vec2::ALIGN_BOTTOM_LEFT, BITMAP_MODE_UNCHANGED, 0.7f);
+				
+				// Hack num entites
+				// Num entities
+				font->AddVertsFor2DTextAlignedInBox(render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, Stringf( "Entities: %u", admin.GetNumEntites() ).c_str(), screen.CarveBoxOffBottom(0.0f, 0.15f), Vec2::ALIGN_BOTTOM_LEFT, BITMAP_MODE_UNCHANGED, 0.7f);
+				
+				font->AddVertsFor2DTextAlignedInBox(render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, Stringf( "Time: %.03f", g_theApp->GetGameClock()->GetTotalTime() ).c_str(), screen.CarveBoxOffBottom(0.0f, 0.15f), Vec2::ALIGN_BOTTOM_LEFT, BITMAP_MODE_UNCHANGED, 0.7f);
+				
 				//--------------------------------------------------------------------------
 
 
