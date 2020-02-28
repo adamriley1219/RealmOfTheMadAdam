@@ -67,6 +67,7 @@ void CombatSystem::Update( float delta_time ) const
 				bullet_physics->m_static_object = false;
 				bullet_physics->m_max_speed = 4.0f;
 				bullet_physics->m_acceleration = 100.0f;
+				bullet_physics->m_isTrigger = true;
 
 				bullet_transform->m_transform = trans_comp->m_transform;
 				

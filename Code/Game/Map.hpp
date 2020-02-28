@@ -25,6 +25,9 @@ public:
 	const Tile* GetTilePointIsOn( const Vec2& point ) const;
 	const Tile* GetTileByMapCoordinates( int x, int y ) const;
 
+	int GetWidth() { return m_dimensions.x; }
+	int GetHeight() { return m_dimensions.y; }
+
 public:
 	EntityAdmin m_admin;
 

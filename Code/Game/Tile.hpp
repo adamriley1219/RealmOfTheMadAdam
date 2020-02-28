@@ -27,6 +27,8 @@ public:
 
 	bool IsPointOnTile( const Vec2& point ) const;
 
+	const AABB2& GetBoarder() const { return m_boarder; }
+
 private:
 	const SpriteSheet*	m_textureSpriteSheet;
 	TileType			m_tileType;

@@ -16,5 +16,5 @@ TriggerSystem::TriggerSystem()
 */
 TriggerSystem::~TriggerSystem()
 {
-
+	
 }
