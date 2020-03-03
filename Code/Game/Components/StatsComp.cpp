@@ -48,3 +48,12 @@ void StatsComp::Reset()
 {
 	*this = s_prototype;
 }
+
+//--------------------------------------------------------------------------
+/**
+* IsEnemy
+*/
+bool StatsComp::IsEnemy( eTeam team ) const
+{
+	return team != NUTRAL_TEAM ? m_team != team : false;
+}

@@ -51,7 +51,7 @@ void MovementSystem::Update( float deltaTime ) const
 		TransformComp* trans_comp = (TransformComp*)admin.GetComponent(entity.m_id, TRANSFORM_COMP);
 		PhysicsComp* physics_comp = (PhysicsComp*)admin.GetComponent(entity.m_id, PHYSICS_COMP);
 		IntentComp* intent_comp = (IntentComp*)admin.GetComponent(entity.m_id, INTENT_COMP);
-		if (trans_comp && physics_comp && intent_comp)
+		if ( trans_comp && physics_comp && intent_comp && !physics_comp->m_static_object )
 		{
 			Transform2D& transform = trans_comp->m_transform;
 			PhysicsComp& phyx = *physics_comp;

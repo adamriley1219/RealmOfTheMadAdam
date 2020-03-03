@@ -19,6 +19,8 @@ public:
 	virtual eComponentType GetType();
 	virtual void Reset();
 
+	bool IsEnemy( eTeam team ) const;
+
 public:
 	float	m_health = 10.0f;
 	eTeam	m_team = ALLIED_TEAM;

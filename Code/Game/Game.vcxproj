@@ -211,6 +211,7 @@
     <ClCompile Include="GameUtils.cpp" />
     <ClCompile Include="Main_Windows.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Systems\AISystem.cpp" />
     <ClCompile Include="Systems\CombatSystem.cpp" />
     <ClCompile Include="Systems\GameInputSystem.cpp" />
     <ClCompile Include="Systems\GamePhysicsSystem.cpp" />
@@ -248,6 +249,7 @@
     <ClInclude Include="GameCommon.hpp" />
     <ClInclude Include="GameUtils.hpp" />
     <ClInclude Include="Map.hpp" />
+    <ClInclude Include="Systems\AISystem.hpp" />
     <ClInclude Include="Systems\CombatSystem.hpp" />
     <ClInclude Include="Systems\GameInputSystem.hpp" />
     <ClInclude Include="Systems\GamePhysicsSystem.hpp" />

@@ -126,6 +126,9 @@
     <ClCompile Include="Components\StatsComp.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Systems\AISystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.hpp">
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="Components\StatsComp.hpp">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\AISystem.hpp">
+      <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

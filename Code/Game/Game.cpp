@@ -36,6 +36,7 @@
 #include "Game/Systems/UISystem.hpp"
 #include "Game/Systems/RenderSystem.hpp"
 #include "Game/Systems/MovementSystem.hpp"
+#include "Game/Systems/AISystem.hpp"
 
 #include "Game/Components/InputComp.hpp"
 #include "Game/Components/NameComp.hpp"
@@ -94,6 +95,7 @@ void Game::Startup()
 	EntityAdmin::GetMaster();
 
 	EntityAdmin::GetMaster()->m_systems.push_back( new GameInputSystem() );
+	EntityAdmin::GetMaster()->m_systems.push_back( new AISystem() );
 	EntityAdmin::GetMaster()->m_systems.push_back( new GamePhysicsSystem() );
 	EntityAdmin::GetMaster()->m_systems.push_back( new CombatSystem() );
 	EntityAdmin::GetMaster()->m_systems.push_back( new QuestSystem() );
@@ -127,7 +129,9 @@ void Game::Startup()
 	player->AddComponent( INTERACT_COMP );
 	player->AddComponent( QUEST_CARRIER_COMP );
 	player->AddComponent( TRIGGER_COMP );
-	player->AddComponent( STATS_COMP );
+
+	StatsComp* player_stats = (StatsComp*) player->AddComponent( STATS_COMP );
+	player_stats->m_health = 40.0f;
 
 	TransformComp* player_transform_comp = (TransformComp*)player->AddComponent( TRANSFORM_COMP );
 	player_transform_comp->m_transform.m_position = Vec2( 4.5, 2.5 );
@@ -177,6 +181,9 @@ void Game::Startup()
 	RenderComp* enemy_3_render_comp = (RenderComp*)enemy_3->AddComponent(RENDER_COMP);
 	PhysicsComp* enemy_3_physics_comp = (PhysicsComp*)enemy_3->AddComponent(PHYSICS_COMP);
 
+	enemy_3_physics_comp->m_max_speed = 0.4f;
+	enemy_3_physics_comp->m_static_object = false;
+
 	enemy_3->AddComponent( INTENT_COMP );
 	enemy_3->AddComponent( TRIGGER_COMP );
 	((StatsComp*) enemy_3->AddComponent( STATS_COMP ))->m_team = ENEMY_TEAM;
@@ -186,7 +193,7 @@ void Game::Startup()
 
 	enemy_3_name_comp->m_name = "Enemy_2";
 	enemy_3_transform_comp->m_transform.m_position = Vec2(2.0f, 7.41f);
-	enemy_3_ai_comp->m_trigger_range = 2.0f;
+	enemy_3_ai_comp->m_vision_radius = 2.0f;
 
 	//--------------------------------------------------------------------------
 	// Enemy 2
@@ -198,6 +205,9 @@ void Game::Startup()
 	RenderComp* enemy_2_render_comp = (RenderComp*)enemy_2->AddComponent(RENDER_COMP);
 	PhysicsComp* enemy_2_physics_comp = (PhysicsComp*)enemy_2->AddComponent(PHYSICS_COMP);
 
+	enemy_2_physics_comp->m_max_speed = 0.4f;
+	enemy_2_physics_comp->m_static_object = false;
+
 	enemy_2->AddComponent( INTENT_COMP );
 	enemy_2->AddComponent( TRIGGER_COMP );
 	((StatsComp*)enemy_2->AddComponent(STATS_COMP))->m_team = ENEMY_TEAM;
@@ -207,7 +217,7 @@ void Game::Startup()
 
 	enemy_2_name_comp->m_name = "Enemy_2";
 	enemy_2_transform_comp->m_transform.m_position = Vec2(2.59f, 8.0f);
-	enemy_2_ai_comp->m_trigger_range = 2.0f;
+	enemy_2_ai_comp->m_vision_radius = 2.0f;
 
 	//--------------------------------------------------------------------------
 	// Enemy 1
@@ -219,6 +229,9 @@ void Game::Startup()
 	RenderComp* enemy_1_render_comp = (RenderComp*)enemy_1->AddComponent( RENDER_COMP );
 	PhysicsComp* enemy_1_physics_comp = (PhysicsComp*)enemy_1->AddComponent( PHYSICS_COMP );
 
+	enemy_1_physics_comp->m_max_speed = 0.4f;
+	enemy_1_physics_comp->m_static_object = false;
+
 	enemy_1->AddComponent( INTENT_COMP );
 	enemy_1->AddComponent( TRIGGER_COMP );
 	((StatsComp*)enemy_1->AddComponent(STATS_COMP))->m_team = ENEMY_TEAM;
@@ -228,7 +241,7 @@ void Game::Startup()
 
 	enemy_1_name_comp->m_name = "Enemy_1";
 	enemy_1_transform_comp->m_transform.m_position = Vec2( 2.0f, 8.0f );
-	enemy_1_ai_comp->m_trigger_range = 2.0f;
+	enemy_1_ai_comp->m_vision_radius = 2.0f;
 }
 
 //--------------------------------------------------------------------------
