@@ -49,6 +49,7 @@
 #include "Game/Components/CameraComp.hpp"
 #include "Game/Components/InteractComp.hpp"
 #include "Game/Components/AIComp.hpp"
+#include "Game/Components/StatsComp.hpp"
 
 
 #include <vector>
@@ -125,6 +126,8 @@ void Game::Startup()
 	player->AddComponent( INPUT_COMP );
 	player->AddComponent( INTERACT_COMP );
 	player->AddComponent( QUEST_CARRIER_COMP );
+	player->AddComponent( TRIGGER_COMP );
+	player->AddComponent( STATS_COMP );
 
 	TransformComp* player_transform_comp = (TransformComp*)player->AddComponent( TRANSFORM_COMP );
 	player_transform_comp->m_transform.m_position = Vec2( 4.5, 2.5 );
@@ -175,6 +178,8 @@ void Game::Startup()
 	PhysicsComp* enemy_3_physics_comp = (PhysicsComp*)enemy_3->AddComponent(PHYSICS_COMP);
 
 	enemy_3->AddComponent( INTENT_COMP );
+	enemy_3->AddComponent( TRIGGER_COMP );
+	((StatsComp*) enemy_3->AddComponent( STATS_COMP ))->m_team = ENEMY_TEAM;
 
 	AddVertsForAABB2D(enemy_3_render_comp->m_main_group.verts, AABB2(enemy_3_physics_comp->m_radius * 2.0f, enemy_3_physics_comp->m_radius * 2.0f), Rgba::WHITE, bot_left_uvs, top_right_uvs);
 	enemy_3_render_comp->m_main_texture = "Data/Images/DawnLike/Avian0.png";
@@ -194,6 +199,8 @@ void Game::Startup()
 	PhysicsComp* enemy_2_physics_comp = (PhysicsComp*)enemy_2->AddComponent(PHYSICS_COMP);
 
 	enemy_2->AddComponent( INTENT_COMP );
+	enemy_2->AddComponent( TRIGGER_COMP );
+	((StatsComp*)enemy_2->AddComponent(STATS_COMP))->m_team = ENEMY_TEAM;
 
 	AddVertsForAABB2D(enemy_2_render_comp->m_main_group.verts, AABB2(enemy_2_physics_comp->m_radius * 2.0f, enemy_2_physics_comp->m_radius * 2.0f), Rgba::WHITE, bot_left_uvs, top_right_uvs);
 	enemy_2_render_comp->m_main_texture = "Data/Images/DawnLike/Avian0.png";
@@ -213,6 +220,8 @@ void Game::Startup()
 	PhysicsComp* enemy_1_physics_comp = (PhysicsComp*)enemy_1->AddComponent( PHYSICS_COMP );
 
 	enemy_1->AddComponent( INTENT_COMP );
+	enemy_1->AddComponent( TRIGGER_COMP );
+	((StatsComp*)enemy_1->AddComponent(STATS_COMP))->m_team = ENEMY_TEAM;
 
 	AddVertsForAABB2D(enemy_1_render_comp->m_main_group.verts, AABB2(enemy_1_physics_comp->m_radius * 2.0f, enemy_1_physics_comp->m_radius * 2.0f), Rgba::WHITE, bot_left_uvs, top_right_uvs );
 	enemy_1_render_comp->m_main_texture = "Data/Images/DawnLike/Avian0.png";

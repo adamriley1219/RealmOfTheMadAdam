@@ -1,5 +1,7 @@
 #include "Game/Components/TransformComp.hpp"
 
+TransformComp TransformComp::s_prototype;
+
 //--------------------------------------------------------------------------
 /**
 * TransformComp
@@ -7,7 +9,9 @@
 TransformComp::TransformComp()
 	: Component()
 {
-	
+	m_transform.m_scale = Vec2( 1.0f, 1.0f );
+	m_transform.m_position = Vec2( 0.0f, 0.0f );
+	m_transform.m_rotation = 0.0f;
 }
 
 //--------------------------------------------------------------------------
@@ -45,4 +49,13 @@ void TransformComp::Copy( const Component* copyFrom )
 eComponentType TransformComp::GetType()
 {
 	return TRANSFORM_COMP;
+}
+
+//--------------------------------------------------------------------------
+/**
+* Reset
+*/
+void TransformComp::Reset()
+{
+	*this = s_prototype;
 }

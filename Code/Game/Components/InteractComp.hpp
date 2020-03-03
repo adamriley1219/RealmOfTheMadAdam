@@ -12,8 +12,11 @@ public:
 
 	virtual void Copy(const Component* copyFrom);
 	virtual eComponentType GetType();
+	virtual void Reset();
 
 public:
 	float m_interact_range = 1.0f;
 
+private:
+	static InteractComp s_prototype;
 };

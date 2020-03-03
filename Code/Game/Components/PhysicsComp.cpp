@@ -1,6 +1,8 @@
 #include "Game/Components/PhysicsComp.hpp"
 
 
+PhysicsComp PhysicsComp::s_prototype;
+
 //--------------------------------------------------------------------------
 /**
 * PhysicsComp
@@ -46,4 +48,13 @@ void PhysicsComp::Copy(const Component* copyFrom)
 eComponentType PhysicsComp::GetType()
 {
 	return PHYSICS_COMP;
+}
+
+//--------------------------------------------------------------------------
+/**
+* Reset
+*/
+void PhysicsComp::Reset()
+{
+	*this = s_prototype;
 }

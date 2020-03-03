@@ -1,13 +1,13 @@
-#include "Game/Components/UIComp.hpp"
+#include "Game/Components/TriggerComp.hpp"
 
 
-UIComp UIComp::s_prototype;
+TriggerComp TriggerComp::s_prototype;
 
 //--------------------------------------------------------------------------
 /**
 * UIComp
 */
-UIComp::UIComp()
+TriggerComp::TriggerComp()
 	: Component()
 {
 	
@@ -17,7 +17,7 @@ UIComp::UIComp()
 /**
 * ~UIComp
 */
-UIComp::~UIComp()
+TriggerComp::~TriggerComp()
 {
 
 }
@@ -26,25 +26,25 @@ UIComp::~UIComp()
 /**
 * Copy
 */
-void UIComp::Copy( const Component* copyFrom )
+void TriggerComp::Copy( const Component* copyFrom )
 {
-	*this = *( (UIComp*)copyFrom );
+	*this = *( (TriggerComp*)copyFrom );
 }
 
 //--------------------------------------------------------------------------
 /**
 * GetType
 */
-eComponentType UIComp::GetType()
+eComponentType TriggerComp::GetType()
 {
-	return UI_COMP;
+	return TRIGGER_COMP;
 }
 
 //--------------------------------------------------------------------------
 /**
 * Reset
 */
-void UIComp::Reset()
+void TriggerComp::Reset()
 {
 	*this = s_prototype;
 }

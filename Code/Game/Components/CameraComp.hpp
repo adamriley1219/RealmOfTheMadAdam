@@ -13,8 +13,12 @@ public:
 
 	virtual void Copy(const Component* copyFrom);
 	virtual eComponentType GetType();
+	virtual void Reset();
 
 public:
 	Camera m_camera;
 	bool m_active = false;
+
+private:
+	static CameraComp s_protoCameraComp;
 };

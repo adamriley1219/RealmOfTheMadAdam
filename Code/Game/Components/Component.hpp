@@ -17,6 +17,8 @@ enum eComponentType
 	CAMERA_COMP,
 	INTERACT_COMP,
 	ABILITY_COMP,
+	TRIGGER_COMP,
+	STATS_COMP,
 	NUM_COMP_TYPES
 };
 
@@ -36,5 +38,6 @@ public:
 public:
 	virtual void Copy( const Component* copyFrom ) = 0;
 	virtual eComponentType GetType() = 0;
+	virtual void Reset() = 0;
 
 };

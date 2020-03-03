@@ -10,5 +10,8 @@ public:
 
 	virtual void Copy(const Component* copyFrom);
 	virtual eComponentType GetType();
+	virtual void Reset();
 
+private:
+	static AbilityComp s_protoAblityComp;
 };

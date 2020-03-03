@@ -21,9 +21,14 @@ public:
 
 	virtual void Copy( const Component* copyFrom );
 	virtual eComponentType GetType();
+	virtual void Reset();
 
 public:
 	std::map< std::string, Vertex_Info_Group > m_verts_groups;
 	std::string m_main_texture = "";
 	Vertex_Info_Group m_main_group;
+
+private:
+	static RenderComp s_prototype;
+
 };

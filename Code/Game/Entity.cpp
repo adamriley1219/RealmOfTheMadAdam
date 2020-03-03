@@ -34,7 +34,10 @@ Entity::~Entity()
 Component* Entity::AddComponent( eComponentType type )
 {
 	SetBitFlags( m_bit_map_components, 1ll << type );
-	return GetComponent( type );
+	// Reset to default state
+	Component* comp = GetComponent( type );
+	comp->Reset();
+	return comp;
 }
 
 //--------------------------------------------------------------------------

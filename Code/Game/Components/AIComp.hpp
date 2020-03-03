@@ -10,6 +10,10 @@ public:
 
 	virtual void Copy(const Component* copyFrom);
 	virtual eComponentType GetType();
+	virtual void Reset();
 
 	float m_trigger_range = 0.0f;
+
+private:
+	static AIComp s_protoAIComp;
 };

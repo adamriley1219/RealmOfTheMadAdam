@@ -1,6 +1,8 @@
 #include "Game/Components/IntentComp.hpp"
 #include "Game/App.hpp"
 
+
+
 //--------------------------------------------------------------------------
 /**
 * UIComp
@@ -38,4 +40,20 @@ void IntentComp::Copy(const Component* copyFrom)
 eComponentType IntentComp::GetType()
 {
 	return INTENT_COMP;
+}
+
+//--------------------------------------------------------------------------
+/**
+* Reset
+*/
+void IntentComp::Reset()
+{
+	m_desired_move_direction = Vec2::ZERO;
+	m_wants_to_interact = false;
+
+	m_desired_fire_direction = Vec2::ZERO;
+	m_wants_to_fire = false;
+	m_wants_to_fire_secondary = false;
+	m_fire_name = "UNINIT_FIRE_NAME";
+	m_fire_secondary_name = "UNINIT_FIRE_SEC_NAME";
 }

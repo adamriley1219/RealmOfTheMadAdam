@@ -23,6 +23,8 @@
 #include "Game/Components/InteractComp.hpp"
 #include "Game/Components/AIComp.hpp"
 #include "Game/Components/AbilityComp.hpp"
+#include "Game/Components/TriggerComp.hpp"
+#include "Game/Components/StatsComp.hpp"
 
 #include "Game/Entity.hpp"
 
@@ -47,6 +49,8 @@ EntityAdmin::EntityAdmin()
 	m_camera_comps = new CameraComp[MAX_ENTITIES];
 	m_interact_comps = new InteractComp[MAX_ENTITIES];
 	m_ability_comps = new AbilityComp[MAX_ENTITIES];
+	m_trigger_comps = new TriggerComp[MAX_ENTITIES];
+	m_stats_comps = new StatsComp[MAX_ENTITIES];
 }
 
 //--------------------------------------------------------------------------
@@ -68,6 +72,8 @@ EntityAdmin::~EntityAdmin()
 	delete[] m_ai_comps;
 	delete[] m_camera_comps;
 	delete[] m_ability_comps;
+	delete[] m_trigger_comps;
+	delete[] m_stats_comps;
 }
 
 //--------------------------------------------------------------------------
@@ -146,6 +152,12 @@ Component* EntityAdmin::GetComponent( EntityID id, eComponentType type )
 				break;
 			case ABILITY_COMP:
 				return &m_ability_comps[id];
+				break;
+			case TRIGGER_COMP:
+				return &m_trigger_comps[id];
+				break;
+			case STATS_COMP:
+				return &m_stats_comps[id];
 				break;
 			default:
 				break;

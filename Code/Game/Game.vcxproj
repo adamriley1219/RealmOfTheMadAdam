@@ -201,7 +201,9 @@
     <ClCompile Include="Components\QuestCarrierComp.cpp" />
     <ClCompile Include="Components\QuestGiverComp.cpp" />
     <ClCompile Include="Components\RenderComp.cpp" />
+    <ClCompile Include="Components\StatsComp.cpp" />
     <ClCompile Include="Components\TransformComp.cpp" />
+    <ClCompile Include="Components\TriggerComp.cpp" />
     <ClCompile Include="Components\UIComp.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityAdmin.cpp" />
@@ -235,7 +237,9 @@
     <ClInclude Include="Components\QuestCarrierComp.hpp" />
     <ClInclude Include="Components\QuestGiverComp.hpp" />
     <ClInclude Include="Components\RenderComp.hpp" />
+    <ClInclude Include="Components\StatsComp.hpp" />
     <ClInclude Include="Components\TransformComp.hpp" />
+    <ClInclude Include="Components\TriggerComp.hpp" />
     <ClInclude Include="Components\UIComp.hpp" />
     <ClInclude Include="EngineBuildPreferences.hpp" />
     <ClInclude Include="Entity.hpp" />

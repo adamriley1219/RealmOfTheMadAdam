@@ -12,7 +12,10 @@ public:
 
 	virtual void Copy(const Component* copyFrom);
 	virtual eComponentType GetType();
+	virtual void Reset();
 
 public:
 	std::string m_name = "Unused";
+private:
+	static NameComp s_prototype;
 };

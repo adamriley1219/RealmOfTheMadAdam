@@ -1,4 +1,5 @@
 #include "Game/Systems/GamePhysicsSystem.hpp"
+#include "Game/Components/TriggerComp.hpp"
 
 #include "Game/Map.hpp"
 #include "Game/Game.hpp"
@@ -41,7 +42,10 @@ void GamePhysicsSystem::Update( float deltaTime ) const
 		}
 
 		PhysicsComp* physics_comp = (PhysicsComp*) entity.GetComponent( PHYSICS_COMP );
-		if( physics_comp && ( physics_comp->m_static_object || physics_comp->m_isTrigger ) )
+		TriggerComp* trigger_comp = (TriggerComp*) entity.GetComponent( TRIGGER_COMP );
+		bool is_trigger = trigger_comp && trigger_comp->m_isTrigger;
+
+		if( physics_comp && ( physics_comp->m_static_object || is_trigger ) )
 		{
 			// Don't move static objects or deal with triggers
 			continue;
@@ -51,11 +55,8 @@ void GamePhysicsSystem::Update( float deltaTime ) const
 
 		if( physics_comp && trans_comp )
 		{
-			bool is_trigger = physics_comp->m_isTrigger;
 
-			// Clearing before check on all entites
 			physics_comp->m_push_out_dir_amount = Vec2::ZERO;
-			physics_comp->m_triggers.clear();
 
 			// Check on other entities
 			for (Entity& other_entity : admin.m_entities)
@@ -66,18 +67,13 @@ void GamePhysicsSystem::Update( float deltaTime ) const
 					continue;
 				}
 
-				PhysicsComp* other_physics_comp = (PhysicsComp*)other_entity.GetComponent(PHYSICS_COMP);
-				TransformComp* other_trans_comp = (TransformComp*)other_entity.GetComponent(TRANSFORM_COMP);
+				PhysicsComp* other_physics_comp = (PhysicsComp*)other_entity.GetComponent( PHYSICS_COMP );
+				TransformComp* other_trans_comp = (TransformComp*)other_entity.GetComponent( TRANSFORM_COMP );
+				TriggerComp* other_trigger_comp = (TriggerComp*)other_entity.GetComponent( TRIGGER_COMP );
 				// Check if I can push out from other entity
 				if( other_physics_comp && other_trans_comp )
 				{
-					bool other_is_trigger = other_physics_comp->m_isTrigger;
-
-					// Triggers don't react to each other
-					if( is_trigger && other_is_trigger )
-					{
-						continue;
-					}
+					bool other_is_trigger = other_trigger_comp && other_trigger_comp->m_isTrigger;
 
 					Vec2 push_amount = Vec2::ZERO;
 					if( other_physics_comp->m_static_object )
@@ -91,11 +87,7 @@ void GamePhysicsSystem::Update( float deltaTime ) const
 
 					if( push_amount != Vec2::ZERO )
 					{
-						if (other_is_trigger)
-						{
-							physics_comp->m_triggers.push_back(other_entity.m_id);
-						}
-						else
+						if( !other_is_trigger )
 						{
 							physics_comp->m_push_out_dir_amount += push_amount;
 						}
@@ -124,9 +116,6 @@ void GamePhysicsSystem::Update( float deltaTime ) const
 		
 		if( physics_comp && trans_comp )
 		{
-			// Apply movement from other enities
-			trans_comp->m_transform.m_position += physics_comp->m_push_out_dir_amount;
-
 			// Check against map tiles. Done here to force object fully out of solid tiles.
 			const Tile* tile = map.GetTilePointIsOn(trans_comp->m_transform.m_position);
 			if( tile )

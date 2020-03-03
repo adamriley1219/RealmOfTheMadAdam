@@ -1,5 +1,9 @@
 #include "Game/Components/NameComp.hpp"
 
+
+NameComp NameComp::s_prototype;
+
+
 //--------------------------------------------------------------------------
 /**
 * NameComp
@@ -45,4 +49,13 @@ void NameComp::Copy( const Component* copyFrom )
 eComponentType NameComp::GetType()
 {
 	return NAME_COMP;
+}
+
+//--------------------------------------------------------------------------
+/**
+* Reset
+*/
+void NameComp::Reset()
+{
+	*this = s_prototype;
 }

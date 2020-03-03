@@ -11,6 +11,7 @@ public:
 
 	virtual void Copy(const Component* copyFrom);
 	virtual eComponentType GetType();
+	virtual void Reset();
 
 public:
 	Vec2 m_desired_move_direction = Vec2::ZERO;
@@ -24,4 +25,7 @@ public:
 	StopWatch m_fire_timer;
 
 	StopWatch m_death_timer;
+
+private:
+	// cant do with timers static IntentComp s_prototype;
 };

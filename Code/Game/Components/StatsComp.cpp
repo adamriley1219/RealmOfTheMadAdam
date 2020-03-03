@@ -1,13 +1,13 @@
-#include "Game/Components/UIComp.hpp"
+#include "Game/Components/StatsComp.hpp"
 
 
-UIComp UIComp::s_prototype;
+StatsComp StatsComp::s_prototype;
 
 //--------------------------------------------------------------------------
 /**
 * UIComp
 */
-UIComp::UIComp()
+StatsComp::StatsComp()
 	: Component()
 {
 	
@@ -17,7 +17,7 @@ UIComp::UIComp()
 /**
 * ~UIComp
 */
-UIComp::~UIComp()
+StatsComp::~StatsComp()
 {
 
 }
@@ -26,25 +26,25 @@ UIComp::~UIComp()
 /**
 * Copy
 */
-void UIComp::Copy( const Component* copyFrom )
+void StatsComp::Copy( const Component* copyFrom )
 {
-	*this = *( (UIComp*)copyFrom );
+	*this = *( (StatsComp*)copyFrom );
 }
 
 //--------------------------------------------------------------------------
 /**
 * GetType
 */
-eComponentType UIComp::GetType()
+eComponentType StatsComp::GetType()
 {
-	return UI_COMP;
+	return STATS_COMP;
 }
 
 //--------------------------------------------------------------------------
 /**
 * Reset
 */
-void UIComp::Reset()
+void StatsComp::Reset()
 {
 	*this = s_prototype;
 }

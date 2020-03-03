@@ -11,7 +11,7 @@ public:
 
 	virtual void Copy(const Component* copyFrom);
 	virtual eComponentType GetType();
-
+	virtual void Reset();
 
 	std::string GetKillEnemiesText() const;
 	std::string GetDialog() const;
@@ -30,4 +30,8 @@ public:
 	bool triggered = false;
 	bool player_in_range = false;
 	bool complete = false;
+
+private:
+	static QuestGiverComp s_prototype;
+
 };

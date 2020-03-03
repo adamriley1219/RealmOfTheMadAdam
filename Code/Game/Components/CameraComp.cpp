@@ -1,6 +1,8 @@
 #include "Game/Components/CameraComp.hpp"
 
 
+CameraComp CameraComp::s_protoCameraComp;
+
 //--------------------------------------------------------------------------
 /**
 * UIComp
@@ -46,4 +48,14 @@ void CameraComp::Copy(const Component* copyFrom)
 eComponentType CameraComp::GetType()
 {
 	return CAMERA_COMP;
+}
+
+//--------------------------------------------------------------------------
+/**
+* Reset
+*/
+void CameraComp::Reset()
+{
+	m_camera = Camera();
+	m_active = false;
 }

@@ -14,10 +14,12 @@ public:
 
 	virtual void Copy(const Component* copyFrom);
 	virtual eComponentType GetType();
+	virtual void Reset();
 
 	bool HasQuest( QuestGiverComp* quest_giver );
 
 public:
 	std::vector< QuestGiverComp* > quest_givers;
-
+private:
+	static QuestCarrierComp s_prototype;
 };

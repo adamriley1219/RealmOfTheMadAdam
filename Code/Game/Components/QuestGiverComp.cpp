@@ -1,6 +1,8 @@
 #include "Game/Components/QuestGiverComp.hpp"
 
 
+QuestGiverComp QuestGiverComp::s_prototype;
+
 //--------------------------------------------------------------------------
 /**
 * UIComp
@@ -36,6 +38,15 @@ void QuestGiverComp::Copy(const Component* copyFrom)
 eComponentType QuestGiverComp::GetType()
 {
 	return QUEST_GIVER_COMP;
+}
+
+//--------------------------------------------------------------------------
+/**
+* Reset
+*/
+void QuestGiverComp::Reset()
+{
+	*this = s_prototype;
 }
 
 //--------------------------------------------------------------------------

@@ -1,5 +1,7 @@
 #include "Game/Components/RenderComp.hpp"
 
+RenderComp RenderComp::s_prototype;
+
 //--------------------------------------------------------------------------
 /**
 * RenderComp
@@ -36,3 +38,13 @@ eComponentType RenderComp::GetType()
 {
 	return RENDER_COMP;
 }
+
+//--------------------------------------------------------------------------
+/**
+* Reset
+*/
+void RenderComp::Reset()
+{
+	*this = s_prototype;
+}
+

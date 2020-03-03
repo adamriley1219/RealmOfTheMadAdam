@@ -21,6 +21,8 @@ struct AIComp;
 struct CameraComp;
 struct InteractComp;
 struct AbilityComp;
+struct TriggerComp;
+struct StatsComp;
 
 
 class EntityAdmin
@@ -63,6 +65,8 @@ public:
 	CameraComp* m_camera_comps = nullptr;
 	InteractComp* m_interact_comps = nullptr;
 	AbilityComp* m_ability_comps = nullptr;
+	TriggerComp* m_trigger_comps = nullptr;
+	StatsComp* m_stats_comps = nullptr;
 
 	Entity m_entities[MAX_ENTITIES];
 };

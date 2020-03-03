@@ -11,6 +11,8 @@ QuestCarrierComp::QuestCarrierComp()
 	
 }
 
+QuestCarrierComp QuestCarrierComp::s_prototype;
+
 //--------------------------------------------------------------------------
 /**
 * ~UIComp
@@ -69,6 +71,15 @@ void QuestCarrierComp::Copy(const Component* copyFrom)
 eComponentType QuestCarrierComp::GetType()
 {
 	return QUEST_CARRIER_COMP;
+}
+
+//--------------------------------------------------------------------------
+/**
+* Reset
+*/
+void QuestCarrierComp::Reset()
+{
+	*this = s_prototype;
 }
 
 //--------------------------------------------------------------------------

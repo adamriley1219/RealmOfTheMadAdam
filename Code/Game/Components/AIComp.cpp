@@ -1,6 +1,8 @@
 #include "Game/Components/AIComp.hpp"
 
 
+AIComp AIComp::s_protoAIComp;
+
 //--------------------------------------------------------------------------
 /**
 * UIComp
@@ -36,4 +38,13 @@ void AIComp::Copy(const Component* copyFrom)
 eComponentType AIComp::GetType()
 {
 	return AI_COMP;
+}
+
+//--------------------------------------------------------------------------
+/**
+* Reset
+*/
+void AIComp::Reset()
+{
+	*this = s_protoAIComp;
 }

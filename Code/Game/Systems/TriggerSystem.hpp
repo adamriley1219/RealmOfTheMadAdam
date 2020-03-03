@@ -8,6 +8,7 @@ public:
 	TriggerSystem();
 	~TriggerSystem();
 
-private:
+public:
+	void Update( float deltaTime ) const;
 
 };

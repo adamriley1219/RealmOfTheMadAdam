@@ -11,8 +11,11 @@ public:
 
 	virtual void Copy(const Component* copyFrom);
 	virtual eComponentType GetType();
+	virtual void Reset();
 
 public:
 	Transform2D m_transform;
 
+private:
+	static TransformComp s_prototype;
 };

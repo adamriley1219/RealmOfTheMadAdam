@@ -49,3 +49,12 @@ eComponentType InputComp::GetType()
 	return INPUT_COMP;
 }
 
+//--------------------------------------------------------------------------
+/**
+* Reset
+*/
+void InputComp::Reset()
+{
+	*this = s_prototype;
+}
+

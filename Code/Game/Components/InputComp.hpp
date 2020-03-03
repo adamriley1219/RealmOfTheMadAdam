@@ -27,8 +27,13 @@ public:
 
 	virtual void Copy( const Component* copyFrom );
 	virtual eComponentType GetType();
+	virtual void Reset();
 
 public:
-	static InputComp s_prototype;
 	KeyButtonState m_button_states[NUM_HOTKEYS];
+
+private:
+	static InputComp s_prototype;
+
+
 };

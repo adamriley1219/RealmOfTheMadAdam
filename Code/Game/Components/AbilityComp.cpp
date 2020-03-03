@@ -1,6 +1,8 @@
 #include "Game/Components/AbilityComp.hpp"
 
 
+AbilityComp AbilityComp::s_protoAblityComp;
+
 //--------------------------------------------------------------------------
 /**
 * UIComp
@@ -36,4 +38,13 @@ void AbilityComp::Copy(const Component* copyFrom)
 eComponentType AbilityComp::GetType()
 {
 	return ABILITY_COMP;
+}
+
+//--------------------------------------------------------------------------
+/**
+* Reset
+*/
+void AbilityComp::Reset()
+{
+	*this = s_protoAblityComp;
 }

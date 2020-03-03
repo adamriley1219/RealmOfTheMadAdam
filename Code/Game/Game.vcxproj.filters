@@ -120,6 +120,12 @@
     <ClCompile Include="Components\AbilityComp.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Components\TriggerComp.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\StatsComp.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.hpp">
@@ -219,6 +225,12 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Components\AbilityComp.hpp">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\TriggerComp.hpp">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\StatsComp.hpp">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>

@@ -11,6 +11,7 @@ public:
 
 	virtual void Copy(const Component* copyFrom);
 	virtual eComponentType GetType();
+	virtual void Reset();
 
 public:
 	float	m_friction_per_sec		= 10.0f;
@@ -21,8 +22,10 @@ public:
 	float	m_radius				= .25f;
 	bool	m_static_object			= true;
 
-	bool	m_isTrigger				= false;
-	Vec2	m_push_out_dir_amount	= Vec2::ZERO;
+	// Used by physics system to keep track of how much to move objects out.
+	Vec2	m_push_out_dir_amount = Vec2::ZERO;
 
-	std::vector<uint> m_triggers;
+private:
+	static PhysicsComp s_prototype;
+
 };

@@ -1,5 +1,7 @@
 #include "Game/Components/InteractComp.hpp"
 
+InteractComp InteractComp::s_prototype;
+
 
 //--------------------------------------------------------------------------
 /**
@@ -46,4 +48,13 @@ void InteractComp::Copy(const Component* copyFrom)
 eComponentType InteractComp::GetType()
 {
 	return INTERACT_COMP;
+}
+
+//--------------------------------------------------------------------------
+/**
+* Reset
+*/
+void InteractComp::Reset()
+{
+	*this = s_prototype;
 }

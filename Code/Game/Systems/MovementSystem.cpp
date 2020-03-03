@@ -65,7 +65,9 @@ void MovementSystem::Update( float deltaTime ) const
 			phyx.m_velocity.ClampLength(phyx.m_max_speed);
 
 			transform.m_position += phyx.m_velocity * deltaTime;
-
+			
+			// apply push out from physics collision work
+			transform.m_position += phyx.m_push_out_dir_amount;
 		}
 
 
