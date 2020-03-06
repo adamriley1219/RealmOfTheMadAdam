@@ -5,7 +5,7 @@
 
 #include "Game/Components/StatsComp.hpp"
 
-struct Entity;
+class Entity;
 
 class AISystem : public System
 {
