@@ -113,7 +113,8 @@ void GamePhysicsSystem::Update( float deltaTime ) const
 			continue;
 		}
 		TransformComp* trans_comp = (TransformComp*) entity.GetComponent( TRANSFORM_COMP );
-		
+		AbilityComp* ability_comp = (AbilityComp*) entity.GetComponent( ABILITY_COMP );
+
 		if( physics_comp && trans_comp )
 		{
 			// Check against map tiles. Done here to force object fully out of solid tiles.
@@ -121,7 +122,8 @@ void GamePhysicsSystem::Update( float deltaTime ) const
 			if( tile )
 			{
 				// We are within the map.
-				TryToPushOutOfTile( *physics_comp, *trans_comp, *tile );
+				HandleCollisionWithTile( *physics_comp, *trans_comp, *tile, ability_comp, &entity );
+				
 
 				IntVec2 cur_tile_coords = tile->GetTileMapCoordinates();
 
@@ -131,7 +133,7 @@ void GamePhysicsSystem::Update( float deltaTime ) const
 					const Tile* adjacent_tile = map.GetTileByMapCoordinates( cur_tile_coords.x - 1, cur_tile_coords.y );
 					if ( adjacent_tile )
 					{
-						TryToPushOutOfTile(*physics_comp, *trans_comp, *adjacent_tile);
+						HandleCollisionWithTile( *physics_comp, *trans_comp, *adjacent_tile, ability_comp, &entity);
 					}
 				}
 
@@ -141,27 +143,27 @@ void GamePhysicsSystem::Update( float deltaTime ) const
 					const Tile* adjacent_tile = map.GetTileByMapCoordinates( cur_tile_coords.x, cur_tile_coords.y - 1 );
 					if ( adjacent_tile )
 					{
-						TryToPushOutOfTile(*physics_comp, *trans_comp, *adjacent_tile);
+						HandleCollisionWithTile( *physics_comp, *trans_comp, *adjacent_tile, ability_comp, &entity);
 					}
 				}
 
-				//Check right
+				// Check right
 				if( cur_tile_coords.x < map.GetWidth() )
 				{
 					const Tile* adjacent_tile = map.GetTileByMapCoordinates( cur_tile_coords.x + 1, cur_tile_coords.y );
 					if ( adjacent_tile )
 					{
-						TryToPushOutOfTile(*physics_comp, *trans_comp, *adjacent_tile);
+						HandleCollisionWithTile( *physics_comp, *trans_comp, *adjacent_tile, ability_comp, &entity);
 					}
 				}
 
-				//Check up
+				// Check up
 				if( cur_tile_coords.y < map.GetHeight() )
 				{
 					const Tile* adjacent_tile = map.GetTileByMapCoordinates( cur_tile_coords.x, cur_tile_coords.y + 1 );
 					if( adjacent_tile )
 					{
-						TryToPushOutOfTile( *physics_comp, *trans_comp, *adjacent_tile );
+						HandleCollisionWithTile( *physics_comp, *trans_comp, *adjacent_tile, ability_comp, &entity );
 					}
 				}
 			}
@@ -226,11 +228,11 @@ Vec2 GamePhysicsSystem::GetPushAmountWithDirDynamicVsStatic( const PhysicsComp& 
 /**
 * PushOutOfTile
 */
-void GamePhysicsSystem::TryToPushOutOfTile( const PhysicsComp& phys_comp, TransformComp& trans_comp, const Tile& tile ) const
+bool  GamePhysicsSystem::TryToPushOutOfTile( const PhysicsComp& phys_comp, TransformComp& trans_comp, const Tile& tile ) const
 {
 	if( !tile.IsSolid() )
 	{
-		return;
+		return false;
 	}
 
 	const AABB2& boarder = tile.GetBoarder();
@@ -248,5 +250,22 @@ void GamePhysicsSystem::TryToPushOutOfTile( const PhysicsComp& phys_comp, Transf
 		displacement_from_tile_to_position.SetLength( distance_to_push );
 
 		position += displacement_from_tile_to_position;
+		return true;
+	}
+	return false;
+}
+
+//--------------------------------------------------------------------------
+/**
+* HandleCollisionWithTile
+*/
+void GamePhysicsSystem::HandleCollisionWithTile( const PhysicsComp& phys_comp, TransformComp& trans_comp, const Tile& tile, AbilityComp* ability_comp /*= nullptr*/, Entity* entity /*= nullptr*/ ) const
+{
+	if ( TryToPushOutOfTile( phys_comp, trans_comp, tile ) )
+	{
+		if ( ability_comp && entity )
+		{
+			entity->m_destroy = true;
+		}
 	}
 }

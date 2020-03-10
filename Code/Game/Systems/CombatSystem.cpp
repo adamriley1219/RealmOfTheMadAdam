@@ -8,7 +8,9 @@
 #include "Game/Components/TransformComp.hpp"
 #include "Game/Components/PhysicsComp.hpp"
 #include "Game/Components/TriggerComp.hpp"
-#include "Game/Components/StatsComp.hpp"
+
+#include "Engine/Renderer/RenderContext.hpp"
+#include "Engine/Renderer/SpriteSheet.hpp"
 
 //--------------------------------------------------------------------------
 /**
@@ -56,29 +58,7 @@ void CombatSystem::Update( float delta_time ) const
 			if( intent->m_wants_to_fire )
 			{
 				// Spawn bullet
-				Entity* bullet = admin.CreateEntity();
-				IntentComp* bullet_intent = (IntentComp*) bullet->AddComponent( INTENT_COMP );
-				PhysicsComp* bullet_physics = (PhysicsComp*) bullet->AddComponent( PHYSICS_COMP );
-				TriggerComp* bullet_trigger = (TriggerComp*) bullet->AddComponent( TRIGGER_COMP );
-				TransformComp* bullet_transform = (TransformComp*) bullet->AddComponent( TRANSFORM_COMP );
-				AbilityComp* bullet_ability = (AbilityComp*) bullet->AddComponent( ABILITY_COMP );
-				RenderComp* bullet_render = (RenderComp*) bullet->AddComponent( RENDER_COMP );
-				((StatsComp*) bullet->AddComponent( STATS_COMP ))->m_team = stats_comp->m_team;
-				bullet_intent->m_desired_move_direction = intent->m_desired_fire_direction;
-				bullet_intent->m_death_timer.SetAndReset( 0.75f );
-
-				// Physics
-				bullet_physics->m_radius = 0.15f;
-				bullet_physics->m_static_object = false;
-				bullet_physics->m_max_speed = 4.0f;
-				bullet_physics->m_acceleration = 100.0f;
-
-				// Trigger setup
-				bullet_trigger->m_isTrigger = true;
-				bullet_trigger->m_die_on_contect = true;
-				bullet_trigger->m_damage_on_triggered = 2.0f;
-
-				bullet_transform->m_transform = trans_comp->m_transform;
+				Fire( "not_used_yet", intent->m_desired_fire_direction, trans_comp->m_transform, stats_comp->m_team );
 				
 				intent->m_fire_timer.Reset();
 			}
@@ -104,4 +84,48 @@ void CombatSystem::Update( float delta_time ) const
 			}
 		}
 	}
+}
+
+//--------------------------------------------------------------------------
+/**
+* Fire
+*/
+void CombatSystem::Fire( const std::string& ability_name, const Vec2& direction, const Transform2D& starting_treansform, eTeam team ) const
+{
+	UNUSED( ability_name );
+	Entity* ability = GetCurrentAdmin().CreateEntity();
+	IntentComp* ability_intent = (IntentComp*)ability->AddComponent(INTENT_COMP);
+	PhysicsComp* ability_physics = (PhysicsComp*)ability->AddComponent(PHYSICS_COMP);
+	TriggerComp* ability_trigger = (TriggerComp*)ability->AddComponent(TRIGGER_COMP);
+	TransformComp* ability_transform = (TransformComp*)ability->AddComponent(TRANSFORM_COMP);
+	AbilityComp* ability_comp = (AbilityComp*)ability->AddComponent(ABILITY_COMP);
+	RenderComp* ability_render = (RenderComp*)ability->AddComponent(RENDER_COMP);
+	((StatsComp*)ability->AddComponent(STATS_COMP))->m_team = team;
+	ability_intent->m_desired_move_direction = direction;
+	ability_intent->m_death_timer.SetAndReset(0.75f);
+
+
+	// Physics
+	ability_physics->m_radius = 0.15f;
+	ability_physics->m_static_object = false;
+	ability_physics->m_max_speed = 4.0f;
+	ability_physics->m_acceleration = 100.0f;
+
+	// setup main graphic
+	SpriteSheet sheet( (TextureView*)g_theRenderer->CreateOrGetTextureViewFromFile("Data/Images/Extras_4x4.png"), IntVec2(4, 4) );
+	const SpriteDefinition& def = sheet.GetSpriteDefinition(0, 3);
+	Vec2 bot_left_uvs;
+	Vec2 top_right_uvs;
+	def.GetUVs(bot_left_uvs, top_right_uvs);
+
+	AddVertsForAABB2D(ability_render->m_main_group.verts, AABB2(ability_physics->m_radius * 2.0f, ability_physics->m_radius * 2.0f), Rgba::WHITE, bot_left_uvs, top_right_uvs);
+	ability_render->m_main_texture = "Data/Images/Extras_4x4.png";
+
+	// Trigger setup
+	ability_trigger->m_isTrigger = true;
+	ability_trigger->m_die_on_contect = true;
+	ability_trigger->m_damage_on_triggered = 2.0f;
+
+	ability_transform->m_transform = starting_treansform;
+
 }
