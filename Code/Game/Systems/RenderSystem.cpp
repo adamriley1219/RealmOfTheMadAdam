@@ -6,7 +6,6 @@
 #include "Game/Components/RenderComp.hpp"
 #include "Game/Components/TransformComp.hpp"
 #include "Game/Components/CameraComp.hpp"
-#include "Game/Components/QuestGiverComp.hpp"
 
 #include "Engine/Renderer/RenderContext.hpp"
 #include "Engine/Renderer/BitmapFont.hpp"

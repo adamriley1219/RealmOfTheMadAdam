@@ -100,9 +100,9 @@ void Game::Startup()
 	EntityAdmin::GetMaster()->m_systems.push_back( new CombatSystem() );
 	EntityAdmin::GetMaster()->m_systems.push_back( new QuestSystem() );
 	EntityAdmin::GetMaster()->m_systems.push_back( new TriggerSystem() );
+	EntityAdmin::GetMaster()->m_systems.push_back( new MovementSystem() );
 	EntityAdmin::GetMaster()->m_systems.push_back( new UISystem() );
 	EntityAdmin::GetMaster()->m_systems.push_back( new RenderSystem() );
-	EntityAdmin::GetMaster()->m_systems.push_back( new MovementSystem() );
 
 	m_map_id = 0;
 	m_maps[m_map_id] = new Map( m_map_id, IntVec2( 10, 10 ), m_terrain_sheet, TileType::GRASS_TILE, TileType::STONE_TILE );
