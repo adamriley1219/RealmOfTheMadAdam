@@ -1,7 +1,7 @@
 #pragma once
 #include "Game/Components/Component.hpp"
 
-struct QuestGiverComp;
+struct QuestComp;
 
 struct QuestCarrierComp : public Component
 {
@@ -9,17 +9,19 @@ public:
 	QuestCarrierComp();
 	~QuestCarrierComp();
 
-	void AddQuest( QuestGiverComp* quest_giver );
-	void RemoveQuest( QuestGiverComp* quest_giver );
+	void AddQuest( QuestComp* quest_giver );
+	void RemoveQuest( QuestComp* quest_giver );
 
-	virtual void Copy(const Component* copyFrom);
+	virtual void Copy( const Component* copyFrom );
 	virtual eComponentType GetType();
 	virtual void Reset();
 
-	bool HasQuest( QuestGiverComp* quest_giver );
+	bool HasQuest( QuestComp* quest_giver );
 
 public:
-	std::vector< QuestGiverComp* > quest_givers;
+	std::vector< QuestComp* > quests;
+
 private:
 	static QuestCarrierComp s_prototype;
+
 };

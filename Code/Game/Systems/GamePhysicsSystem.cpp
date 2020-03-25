@@ -30,6 +30,7 @@ GamePhysicsSystem::~GamePhysicsSystem()
 */
 void GamePhysicsSystem::Update( float deltaTime ) const
 {
+	UNUSED(deltaTime);
 	Map& map = *g_theGame->GetCurrentMap();
 
 	// Push out of each other or enlist a trigger

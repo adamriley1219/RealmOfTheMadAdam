@@ -31,6 +31,7 @@ TriggerSystem::~TriggerSystem()
 */
 void TriggerSystem::Update( float deltaTime ) const
 {
+	UNUSED(deltaTime);
 	EntityAdmin& admin = GetCurrentAdmin();
 	for( Entity& entity : admin.m_entities )
 	{

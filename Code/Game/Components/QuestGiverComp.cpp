@@ -1,5 +1,5 @@
 #include "Game/Components/QuestGiverComp.hpp"
-
+#include "Game/Components/QuestComp.hpp"
 
 QuestGiverComp QuestGiverComp::s_prototype;
 
@@ -51,22 +51,41 @@ void QuestGiverComp::Reset()
 
 //--------------------------------------------------------------------------
 /**
-* GetKillEnemiesText
+* GetCurrentQuest
 */
-std::string QuestGiverComp::GetKillEnemiesText() const
+QuestComp* QuestGiverComp::GetCurrentQuest() const
 {
-	return Stringf( "Kill enemies %u/%u", num_enemies_killed, num_enemies_to_kill );
+	for( QuestComp* quest : quests )
+	{
+		if( quest->is_active )
+		{
+			return quest;
+		}
+	}
+	return nullptr;
 }
 
 //--------------------------------------------------------------------------
 /**
-* GetDialog
+* AddQuest
 */
-std::string QuestGiverComp::GetDialog() const
+void QuestGiverComp::AddQuest( QuestComp* quest_to_add )
 {
-	if( complete )
+	quests.push_back( quest_to_add );
+}
+
+//--------------------------------------------------------------------------
+/**
+* RemoveQuest
+*/
+void QuestGiverComp::RemoveQuest( QuestComp* quest_to_remove )
+{
+	for( int idx = 0; idx < quests.size(); ++idx )
 	{
-		return complete_text;
+		if( quests[idx] == quest_to_remove )
+		{
+			quests.erase( quests.begin() + idx );
+			return;
+		}
 	}
-	return init_text;
 }

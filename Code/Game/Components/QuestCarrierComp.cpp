@@ -26,9 +26,9 @@ QuestCarrierComp::~QuestCarrierComp()
 /**
 * AddQuest
 */
-void QuestCarrierComp::AddQuest( QuestGiverComp* quest_giver )
+void QuestCarrierComp::AddQuest( QuestComp* quest_giver )
 {
-	for( QuestGiverComp*& giver : quest_givers )
+	for( QuestComp*& giver : quests )
 	{
 		if( !giver )
 		{
@@ -36,16 +36,16 @@ void QuestCarrierComp::AddQuest( QuestGiverComp* quest_giver )
 			return;
 		}
 	}
-	quest_givers.push_back( quest_giver );
+	quests.push_back( quest_giver );
 }
 
 //--------------------------------------------------------------------------
 /**
 * RemoveQuest
 */
-void QuestCarrierComp::RemoveQuest(QuestGiverComp* quest_giver)
+void QuestCarrierComp::RemoveQuest( QuestComp* quest_giver )
 {
-	for( QuestGiverComp*& giver : quest_givers )
+	for( QuestComp*& giver : quests )
 	{
 		if( giver && giver == quest_giver )
 		{
@@ -86,11 +86,11 @@ void QuestCarrierComp::Reset()
 /**
 * HasQuest
 */
-bool QuestCarrierComp::HasQuest( QuestGiverComp* quest_giver )
+bool QuestCarrierComp::HasQuest( QuestComp* quest )
 {
-	for( auto quester : quest_givers )
+	for( QuestComp* to_check_quest : quests )
 	{
-		if( quester && quester == quest_giver )
+		if( to_check_quest && to_check_quest == quest )
 		{
 			return true;
 		}

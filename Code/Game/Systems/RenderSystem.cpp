@@ -48,7 +48,7 @@ void RenderSystem::Render() const
 	
 	// Go get everything the entities want to render
 	std::vector<Vertex_PCU> verts;
-	for( auto entity : admin.m_entities )
+	for( Entity& entity : admin.m_entities )
 	{
 		if (!entity.m_claimed)
 		{
@@ -129,7 +129,7 @@ void RenderSystem::Render() const
 void RenderSystem::Update( float deltaTime ) const
 {
 	UNUSED( deltaTime );
-	for( auto entity : GetCurrentAdmin().m_entities )
+	for( Entity& entity : GetCurrentAdmin().m_entities )
 	{
 		CameraComp* cam_comp = (CameraComp*)entity.GetComponent( CAMERA_COMP );
 		TransformComp* trans_comp = (TransformComp*)entity.GetComponent( TRANSFORM_COMP );

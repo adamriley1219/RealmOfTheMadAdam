@@ -129,6 +129,9 @@
     <ClCompile Include="Systems\AISystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Components\QuestComp.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.hpp">
@@ -238,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="Systems\AISystem.hpp">
       <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\QuestComp.hpp">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

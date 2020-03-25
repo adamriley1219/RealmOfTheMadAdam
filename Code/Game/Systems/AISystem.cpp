@@ -74,7 +74,8 @@ void AISystem::Update( float deltaTime ) const
 			else
 			{
 				// Can't see an enemy
-
+				intent_comp->m_wants_to_fire = false;
+				intent_comp->m_desired_move_direction = Vec2::ZERO;
 			}
 		}
 	}

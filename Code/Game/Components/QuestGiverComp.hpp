@@ -1,7 +1,7 @@
 #pragma once
 #include "Game/Components/Component.hpp"
 
-
+struct QuestComp;
 
 struct QuestGiverComp : public Component
 {
@@ -13,23 +13,22 @@ public:
 	virtual eComponentType GetType();
 	virtual void Reset();
 
-	std::string GetKillEnemiesText() const;
-	std::string GetDialog() const;
+
+public:
+	// Returns the first quest that tis marked active 
+	QuestComp* GetCurrentQuest() const;
+	
+	// Puts the quest at the end of the list of quests given
+	void AddQuest( QuestComp* quest_to_add );
+
+	void RemoveQuest( QuestComp* quest_to_remove );
 
 public:
 	uint map_loc_id;
-	std::string quest_name = "UNINITED QUEST NAME";
-	std::string init_text = "UNINITED QUEST INIT";
-	std::string accept_text = "UNINITED QUEST ACCEPT";
-	std::string complete_text = "UNINITED QUEST COMPLETE";
-	std::string fail_text = "UNINITED QUEST FAIL";
-
-	uint num_enemies_to_kill = 0;
-	uint num_enemies_killed = 0;
-
-	bool triggered = false;
+	bool being_interacted_with = false;
 	bool player_in_range = false;
-	bool complete = false;
+
+	std::vector<QuestComp*> quests;
 
 private:
 	static QuestGiverComp s_prototype;

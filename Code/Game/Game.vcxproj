@@ -199,6 +199,7 @@
     <ClCompile Include="Components\NameComp.cpp" />
     <ClCompile Include="Components\PhysicsComp.cpp" />
     <ClCompile Include="Components\QuestCarrierComp.cpp" />
+    <ClCompile Include="Components\QuestComp.cpp" />
     <ClCompile Include="Components\QuestGiverComp.cpp" />
     <ClCompile Include="Components\RenderComp.cpp" />
     <ClCompile Include="Components\StatsComp.cpp" />
@@ -236,6 +237,7 @@
     <ClInclude Include="Components\NameComp.hpp" />
     <ClInclude Include="Components\PhysicsComp.hpp" />
     <ClInclude Include="Components\QuestCarrierComp.hpp" />
+    <ClInclude Include="Components\QuestComp.hpp" />
     <ClInclude Include="Components\QuestGiverComp.hpp" />
     <ClInclude Include="Components\RenderComp.hpp" />
     <ClInclude Include="Components\StatsComp.hpp" />

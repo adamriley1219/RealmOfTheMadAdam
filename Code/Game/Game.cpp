@@ -46,6 +46,7 @@
 #include "Game/Components/UIComp.hpp"
 #include "Game/Components/QuestGiverComp.hpp"
 #include "Game/Components/QuestCarrierComp.hpp"
+#include "Game/Components/QuestComp.hpp"
 #include "Game/Components/IntentComp.hpp"
 #include "Game/Components/CameraComp.hpp"
 #include "Game/Components/InteractComp.hpp"
@@ -141,16 +142,24 @@ void Game::Startup()
 	render_comp_player->m_main_texture = "Data/Images/DawnLike/Mage.png";
 
 	//--------------------------------------------------------------------------
+	// Quest
+	Entity* kill_enemies_quest = m_maps[m_map_id]->m_admin.CreateEntity();
+	QuestComp* quest_comp = (QuestComp*)kill_enemies_quest->AddComponent( QUEST_COMP );
+	quest_comp->accept_text = "Thanks, for this. Please hurry...";
+	quest_comp->init_text = "....Please....Please help.... There's so many creatures...";
+	quest_comp->complete_text = "THANK YOU SO MUCH!";
+	quest_comp->fail_text = "...";
+	quest_comp->quest_name = "Kill the creatures.";
+	quest_comp->num_enemies_to_kill = 3;
+	quest_comp->is_active = true;
+
+	//--------------------------------------------------------------------------
 	// NPC
 	Entity* silent_joe = m_maps[m_map_id]->m_admin.CreateEntity();
 	silent_joe->AddComponent( INTERACT_COMP );
 	silent_joe->AddComponent( AI_COMP );
 	QuestGiverComp* npc_quest_giver_comp = (QuestGiverComp*)silent_joe->AddComponent( QUEST_GIVER_COMP );
-	npc_quest_giver_comp->accept_text = "Thanks, for this. Please hurry...";
-	npc_quest_giver_comp->init_text = "....Please....Please help.... There's so many creatures...";
-	npc_quest_giver_comp->complete_text = "THANK YOU SO MUCH!";
-	npc_quest_giver_comp->fail_text = "...";
-	npc_quest_giver_comp->quest_name = "Kill the creatures.";
+	npc_quest_giver_comp->AddQuest( quest_comp );
 
 	NameComp* npc_name_comp = (NameComp*)silent_joe->AddComponent( NAME_COMP );
 	TransformComp* npc_transform_comp = (TransformComp*)silent_joe->AddComponent( TRANSFORM_COMP );

@@ -41,7 +41,7 @@ MovementSystem::~MovementSystem()
 void MovementSystem::Update( float deltaTime ) const
 {
 	EntityAdmin& admin = GetCurrentAdmin();
-	for( auto entity : admin.m_entities )
+	for( Entity& entity : admin.m_entities )
 	{
 		if (!entity.m_claimed)
 		{

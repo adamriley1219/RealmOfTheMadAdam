@@ -2,6 +2,8 @@
 #include "Game/Systems/System.hpp"
 
 struct QuestGiverComp;
+struct QuestComp;
+class Entity;
 
 class QuestSystem : public System
 {
@@ -11,9 +13,14 @@ public:
 
 	void Update( float deltaTime ) const;
 
-	void TriggerQuestComplete( QuestGiverComp* giver ) const;
-	void TriggerQuestAccepted( QuestGiverComp* giver ) const;
+private:
+	void UpdateQuestGiverWithCarrier( Entity& giver, Entity& carrier ) const;
+	void UpdateQuestCarrier( Entity& carrier ) const;
+	void UpdateQuest( QuestComp& quest ) const;
+	void UpdateQuestStateWithTriggers( QuestComp& quest ) const;
 
 private:
+	void QuestComplete( QuestGiverComp* giver ) const;
+	void QuestAccepted( QuestGiverComp* giver ) const;
 
 };

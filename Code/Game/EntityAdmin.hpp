@@ -16,6 +16,7 @@ struct TransformComp;
 struct UIComp;
 struct QuestGiverComp;
 struct QuestCarrierComp;
+struct QuestComp;
 struct IntentComp;
 struct AIComp;
 struct CameraComp;
@@ -48,6 +49,12 @@ public:
 
 	uint GetNumEntites() const;
 
+	Entity* GetFirstWithComp( eComponentType type );
+	std::vector<Entity*>& GetAllWithComp( eComponentType type );
+
+private:
+	void UpdateStateOfCompLists();
+
 public:
 	static EntityAdmin* GetMaster();
 	static std::vector<System*> m_systems;
@@ -60,6 +67,7 @@ public:
 	UIComp* m_UI_comps = nullptr;
 	QuestGiverComp* m_quest_giver_comps = nullptr;
 	QuestCarrierComp* m_quest_carrier_comps = nullptr;
+	QuestComp* m_quest_comps = nullptr;
 	IntentComp* m_intent_comps = nullptr;
 	AIComp* m_ai_comps = nullptr;
 	CameraComp* m_camera_comps = nullptr;
@@ -69,5 +77,24 @@ public:
 	StatsComp* m_stats_comps = nullptr;
 
 	Entity m_entities[MAX_ENTITIES];
+
+private:
+	std::vector<Entity*> m_list_of_input_comps;
+	std::vector<Entity*> m_list_of_name_comps;
+	std::vector<Entity*> m_list_of_physics_comps;
+	std::vector<Entity*> m_list_of_render_comps;
+	std::vector<Entity*> m_list_of_transform_comps;
+	std::vector<Entity*> m_list_of_UI_comps;
+	std::vector<Entity*> m_list_of_quest_giver_comps;
+	std::vector<Entity*> m_list_of_quest_carrier_comps;
+	std::vector<Entity*> m_list_of_quest_comps;
+	std::vector<Entity*> m_list_of_intent_comps;
+	std::vector<Entity*> m_list_of_AI_comps;
+	std::vector<Entity*> m_list_of_camera_comps;
+	std::vector<Entity*> m_list_of_interact_comps;
+	std::vector<Entity*> m_list_of_ability_comps;
+	std::vector<Entity*> m_list_of_trigger_comps;
+	std::vector<Entity*> m_list_of_stat_comps;
+	
 };
 

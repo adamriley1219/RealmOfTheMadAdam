@@ -7,6 +7,7 @@
 #include "Game/Components/RenderComp.hpp"
 #include "Game/Components/QuestCarrierComp.hpp"
 #include "Game/Components/QuestGiverComp.hpp"
+#include "Game/Components/QuestComp.hpp"
 #include "Game/Components/InteractComp.hpp"
 
 #include "Game/App.hpp"
@@ -56,7 +57,6 @@ void UISystem::Render() const
 		
 		if( camera_comp && camera_comp->m_active )
 		{
-
 			if( render_comp && trans_comp )
 			{
 				// Hacking in FPS counter....
@@ -84,24 +84,26 @@ void UISystem::Render() const
 				QuestCarrierComp* quest_carrier_comp = (QuestCarrierComp*)entity.GetComponent(QUEST_CARRIER_COMP);
 				if( quest_carrier_comp )
 				{
-					AABB2 screen = g_gameConfigBlackboard.GetValue("screen", AABB2::ONE_BY_ONE);
-					screen.AddPosition(trans_comp->m_transform.m_position);
-					screen.CarveBoxOffTop(0.0f, 0.3f);
+					screen.CarveBoxOffTop(0.0f, 0.2f);
 					screen.CarveBoxOffRight(0.0f, 0.1f);
 
-					for (QuestGiverComp* quest_giver : quest_carrier_comp->quest_givers)
-					{
-						AABB2 text_line = screen.CarveBoxOffTop(0.0f, 0.1f);
+					AABB2 title_text_line = screen.CarveBoxOffTop(0.0f, 0.1f);
+					font->AddVertsFor2DTextAlignedInBox(render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, "Quests", title_text_line, Vec2::ALIGN_CENTER_RIGHT, BITMAP_MODE_SHRINK_TO_FIT, .7f);
 
-						BitmapFont* font = g_theRenderer->CreateOrGetBitmapFromFile("SquirrelFixedFont");
-						render_comp->m_verts_groups["SquirrelFixedFont"].is_text = true;
-						if (quest_giver->complete)
+					for (QuestComp* quest_comp : quest_carrier_comp->quests)
+					{
+						if( quest_comp )
 						{
-							font->AddVertsFor2DTextAlignedInBox(render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, Stringf("%s: Quest Complete", quest_giver->quest_name.c_str()).c_str(), text_line, Vec2::ALIGN_CENTER_RIGHT, BITMAP_MODE_SHRINK_TO_FIT, .7f);
-						}
-						else
-						{
-							font->AddVertsFor2DTextAlignedInBox(render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, Stringf("%s: %s", quest_giver->quest_name.c_str(), quest_giver->GetKillEnemiesText().c_str()).c_str(), text_line, Vec2::ALIGN_CENTER_RIGHT, BITMAP_MODE_SHRINK_TO_FIT, .7f);
+							AABB2 text_line = screen.CarveBoxOffTop(0.0f, 0.1f);
+							render_comp->m_verts_groups["SquirrelFixedFont"].is_text = true;
+							if (quest_comp->complete)
+							{
+								font->AddVertsFor2DTextAlignedInBox(render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, Stringf("%s: Quest Complete", quest_comp->quest_name.c_str()).c_str(), text_line, Vec2::ALIGN_CENTER_RIGHT, BITMAP_MODE_SHRINK_TO_FIT, .7f);
+							}
+							else
+							{
+								font->AddVertsFor2DTextAlignedInBox(render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, Stringf("%s: %s", quest_comp->quest_name.c_str(), quest_comp->GetKillEnemiesText().c_str()).c_str(), text_line, Vec2::ALIGN_CENTER_RIGHT, BITMAP_MODE_SHRINK_TO_FIT, .7f);
+							}
 						}
 					}
 				}
@@ -112,7 +114,7 @@ void UISystem::Render() const
 		QuestGiverComp* quest_giver_comp = (QuestGiverComp*)entity.GetComponent(QUEST_GIVER_COMP);
 		if (quest_giver_comp)
 		{
-			for (auto other_entity : GetCurrentAdmin().m_entities)
+			for (Entity& other_entity : GetCurrentAdmin().m_entities)
 			{
 				if (!other_entity.m_claimed || other_entity.m_id == entity.m_id)
 				{
@@ -128,7 +130,7 @@ void UISystem::Render() const
 					if (in_range)
 					{
 						// Render Dialog Box
-						if (quest_giver_comp->triggered)
+						if (quest_giver_comp->being_interacted_with)
 						{
 							// Draw text box
 							AABB2 screen = g_gameConfigBlackboard.GetValue("screen", AABB2::ONE_BY_ONE);
@@ -158,9 +160,17 @@ void UISystem::Render() const
 							screen.CarveBoxOffLeft(0.0f, 0.05f);
 							screen.CarveBoxOffRight(0.0f, 0.05f);
 
+							QuestComp* giver_quest = quest_giver_comp->GetCurrentQuest();
 							BitmapFont* font = g_theRenderer->CreateOrGetBitmapFromFile("SquirrelFixedFont");
 							render_comp->m_verts_groups["SquirrelFixedFont"].is_text = true;
-							font->AddVertsFor2DTextAlignedInBox(render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, quest_giver_comp->GetDialog().c_str(), screen, Vec2::ALIGN_TOP_LEFT, BITMAP_MODE_SHRINK_TO_FIT, 0.7f);
+							if( giver_quest )
+							{
+								font->AddVertsFor2DTextAlignedInBox( render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, giver_quest->GetDialog().c_str(), screen, Vec2::ALIGN_TOP_LEFT, BITMAP_MODE_SHRINK_TO_FIT, 0.7f );
+							}
+							else
+							{
+								font->AddVertsFor2DTextAlignedInBox( render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, "Nothing to say. (no quest to give)", screen, Vec2::ALIGN_TOP_LEFT, BITMAP_MODE_SHRINK_TO_FIT, 0.7f );
+							}
 						}
 					}
 				}

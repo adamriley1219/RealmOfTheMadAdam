@@ -45,9 +45,30 @@ void CombatSystem::Update( float delta_time ) const
 			continue;
 		}
 
+		// Check if its time for me to die
 		IntentComp* intent = (IntentComp*) entity.GetComponent( INTENT_COMP );
-		TransformComp* trans_comp = (TransformComp*) entity.GetComponent( TRANSFORM_COMP );
+		if (intent)
+		{
+			if (intent->m_death_timer.HasElapsed())
+			{
+				entity.m_destroy = true;
+				continue;
+			}
+		}
+
+		// Check if I die based on health
 		StatsComp* stats_comp = (StatsComp*) entity.GetComponent( STATS_COMP );
+		if (stats_comp)
+		{
+			if (stats_comp->m_health <= 0.0f)
+			{
+				entity.m_destroy = true;
+				continue;
+			}
+		}
+
+		// Check if we should fire
+		TransformComp* trans_comp = (TransformComp*) entity.GetComponent( TRANSFORM_COMP );
 		if( intent && trans_comp && stats_comp )
 		{
 			if( !intent->m_fire_timer.HasElapsed() )
@@ -62,25 +83,10 @@ void CombatSystem::Update( float delta_time ) const
 				
 				intent->m_fire_timer.Reset();
 			}
+			
 			if( intent->m_wants_to_fire_secondary )
 			{
 				intent->m_fire_timer.Reset();
-			}
-		}
-
-		if( intent )
-		{
-			if( intent->m_death_timer.HasElapsed() )
-			{
-				entity.m_destroy = true;
-			}
-		}
-
-		if( stats_comp )
-		{
-			if( stats_comp->m_health <= 0.0f )
-			{
-				entity.m_destroy = true;
 			}
 		}
 	}

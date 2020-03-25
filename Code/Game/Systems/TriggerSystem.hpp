@@ -11,4 +11,7 @@ public:
 public:
 	void Update( float deltaTime ) const;
 
+private:
+//	void UpdateTrigger( TriggerComp* trigger_comp );
+
 };

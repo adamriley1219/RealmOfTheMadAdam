@@ -18,6 +18,7 @@
 #include "Game/Components/UIComp.hpp"
 #include "Game/Components/QuestGiverComp.hpp"
 #include "Game/Components/QuestCarrierComp.hpp"
+#include "Game/Components/QuestComp.hpp"
 #include "Game/Components/IntentComp.hpp"
 #include "Game/Components/CameraComp.hpp"
 #include "Game/Components/InteractComp.hpp"
@@ -44,6 +45,7 @@ EntityAdmin::EntityAdmin()
 	m_UI_comps = new UIComp[MAX_ENTITIES];
 	m_quest_giver_comps = new QuestGiverComp[MAX_ENTITIES];
 	m_quest_carrier_comps = new QuestCarrierComp[MAX_ENTITIES];
+	m_quest_comps = new QuestComp[MAX_ENTITIES];
 	m_intent_comps = new IntentComp[MAX_ENTITIES];
 	m_ai_comps = new AIComp[MAX_ENTITIES];
 	m_camera_comps = new CameraComp[MAX_ENTITIES];
@@ -51,6 +53,23 @@ EntityAdmin::EntityAdmin()
 	m_ability_comps = new AbilityComp[MAX_ENTITIES];
 	m_trigger_comps = new TriggerComp[MAX_ENTITIES];
 	m_stats_comps = new StatsComp[MAX_ENTITIES];
+
+	m_list_of_input_comps.resize(MAX_ENTITIES);
+	m_list_of_name_comps.resize(MAX_ENTITIES);
+	m_list_of_physics_comps.resize(MAX_ENTITIES);
+	m_list_of_render_comps.resize(MAX_ENTITIES);
+	m_list_of_transform_comps.resize(MAX_ENTITIES);
+	m_list_of_UI_comps.resize(MAX_ENTITIES);
+	m_list_of_quest_giver_comps.resize(MAX_ENTITIES);
+	m_list_of_quest_carrier_comps.resize(MAX_ENTITIES);
+	m_list_of_quest_comps.resize(MAX_ENTITIES);
+	m_list_of_intent_comps.resize(MAX_ENTITIES);
+	m_list_of_AI_comps.resize(MAX_ENTITIES);
+	m_list_of_camera_comps.resize(MAX_ENTITIES);
+	m_list_of_interact_comps.resize(MAX_ENTITIES);
+	m_list_of_ability_comps.resize(MAX_ENTITIES);
+	m_list_of_trigger_comps.resize(MAX_ENTITIES);
+	m_list_of_stat_comps.resize(MAX_ENTITIES);
 }
 
 //--------------------------------------------------------------------------
@@ -68,6 +87,7 @@ EntityAdmin::~EntityAdmin()
 	delete[] m_UI_comps;
 	delete[] m_quest_giver_comps;
 	delete[] m_quest_carrier_comps;
+	delete[] m_quest_comps;
 	delete[] m_intent_comps;
 	delete[] m_ai_comps;
 	delete[] m_camera_comps;
@@ -94,7 +114,9 @@ void EntityAdmin::Render() const
 */
 void EntityAdmin::Update( float deltaTime )
 {
-	for (System* system : m_systems)
+	UpdateStateOfCompLists();
+
+	for( System* system : m_systems )
 	{
 		system->Update( deltaTime );
 	}
@@ -137,6 +159,9 @@ Component* EntityAdmin::GetComponent( EntityID id, eComponentType type )
 				break;
 			case QUEST_CARRIER_COMP:
 				return &m_quest_carrier_comps[id];
+				break;
+			case QUEST_COMP:
+				return &m_quest_comps[id];
 				break;
 			case INTENT_COMP:
 				return &m_intent_comps[id];
@@ -243,6 +268,273 @@ uint EntityAdmin::GetNumEntites() const
 		}
 	}
 	return count;
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetFirstWithComp
+*/
+Entity* EntityAdmin::GetFirstWithComp( eComponentType type )
+{
+	switch (type)
+	{
+	case INPUT_COMP:
+		if( m_list_of_input_comps.size() > 0 )
+		{
+			return m_list_of_input_comps[0];
+		}
+		break;
+	case NAME_COMP:
+		if( m_list_of_name_comps.size() > 0 )
+		{
+			return m_list_of_name_comps[0];
+		}
+		break;
+	case PHYSICS_COMP:
+		if( m_list_of_physics_comps.size() > 0 )
+		{
+			return m_list_of_physics_comps[0];
+		}
+		break;
+	case RENDER_COMP:
+		if( m_list_of_render_comps.size() > 0 )
+		{
+			return m_list_of_render_comps[0];
+		}
+		break;
+	case TRANSFORM_COMP:
+		if( m_list_of_transform_comps.size() > 0 )
+		{
+			return m_list_of_transform_comps[0];
+		}
+		break;
+	case UI_COMP:
+		if( m_list_of_UI_comps.size() > 0 )
+		{
+			return m_list_of_UI_comps[0];
+		}
+		break;
+	case QUEST_GIVER_COMP:
+		if( m_list_of_quest_giver_comps.size() > 0 )
+		{
+			return m_list_of_quest_giver_comps[0];
+		}
+		break;
+	case QUEST_CARRIER_COMP:
+		if( m_list_of_quest_carrier_comps.size() > 0 )
+		{
+			return m_list_of_quest_carrier_comps[0];
+		}
+		break;
+	case QUEST_COMP:
+		if( m_list_of_quest_comps.size() > 0 )
+		{
+			return m_list_of_quest_comps[0];
+		}
+		break;
+	case INTENT_COMP:
+		if( m_list_of_intent_comps.size() > 0 )
+		{
+			return m_list_of_intent_comps[0];
+		}
+		break;
+	case AI_COMP:
+		if( m_list_of_AI_comps.size() > 0 )
+		{
+			return m_list_of_AI_comps[0];
+		}
+		break;
+	case CAMERA_COMP:
+		if( m_list_of_camera_comps.size() > 0 )
+		{
+			return m_list_of_camera_comps[0];
+		}
+		break;
+	case INTERACT_COMP:
+		if( m_list_of_interact_comps.size() > 0 )
+		{
+			return m_list_of_interact_comps[0];
+		}
+		break;
+	case ABILITY_COMP:
+		if( m_list_of_ability_comps.size() > 0 )
+		{
+			return m_list_of_ability_comps[0];
+		}
+		break;
+	case TRIGGER_COMP:
+		if( m_list_of_trigger_comps.size() > 0 )
+		{
+			return m_list_of_trigger_comps[0];
+		}
+		break;
+	case STATS_COMP:
+		if( m_list_of_stat_comps.size() > 0 )
+		{
+			return m_list_of_stat_comps[0];
+		}
+		break;
+	default:
+		break;
+	}
+	return nullptr;
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetAllWithComp
+*/
+std::vector<Entity*>& EntityAdmin::GetAllWithComp( eComponentType type )
+{
+	switch (type)
+	{
+	case INPUT_COMP:
+		return m_list_of_input_comps;
+		break;
+	case NAME_COMP:
+		return m_list_of_name_comps;
+		break;
+	case PHYSICS_COMP:
+		return m_list_of_physics_comps;
+		break;
+	case RENDER_COMP:
+		return m_list_of_render_comps;
+		break;
+	case TRANSFORM_COMP:
+		return m_list_of_transform_comps;
+		break;
+	case UI_COMP:
+		return m_list_of_UI_comps;
+		break;
+	case QUEST_GIVER_COMP:
+		return m_list_of_quest_giver_comps;
+		break;
+	case QUEST_CARRIER_COMP:
+		return m_list_of_quest_carrier_comps;
+		break;
+	case QUEST_COMP:
+		return m_list_of_quest_comps;
+		break;
+	case INTENT_COMP:
+		return m_list_of_intent_comps;
+		break;
+	case AI_COMP:
+		return m_list_of_AI_comps;
+		break;
+	case CAMERA_COMP:
+		return m_list_of_camera_comps;
+		break;
+	case INTERACT_COMP:
+		return m_list_of_interact_comps;
+		break;
+	case ABILITY_COMP:
+		return m_list_of_ability_comps;
+		break;
+	case TRIGGER_COMP:
+		return m_list_of_trigger_comps;
+		break;
+	case STATS_COMP:
+		return m_list_of_stat_comps;
+		break;
+	default:
+		break;
+	}
+	static std::vector<Entity*> empty_list;
+	return empty_list;
+}
+
+//--------------------------------------------------------------------------
+/**
+* UpdateStateOfCompLists
+*/
+void EntityAdmin::UpdateStateOfCompLists()
+{
+	m_list_of_input_comps.clear();
+	m_list_of_name_comps.clear();
+	m_list_of_physics_comps.clear();
+	m_list_of_render_comps.clear();
+	m_list_of_transform_comps.clear();
+	m_list_of_UI_comps.clear();
+	m_list_of_quest_giver_comps.clear();
+	m_list_of_quest_carrier_comps.clear();
+	m_list_of_quest_comps.clear();
+	m_list_of_intent_comps.clear();
+	m_list_of_AI_comps.clear();
+	m_list_of_camera_comps.clear();
+	m_list_of_interact_comps.clear();
+	m_list_of_ability_comps.clear();
+	m_list_of_trigger_comps.clear();
+	m_list_of_stat_comps.clear();
+
+	for( uint idx = 0; idx < MAX_ENTITIES; ++idx )
+	{
+		Entity& entity = m_entities[idx];
+		
+		if( entity.HasComponent( INPUT_COMP ) )
+		{
+			m_list_of_input_comps.push_back( &entity );
+		}
+		if( entity.HasComponent( NAME_COMP ) )
+		{
+			m_list_of_name_comps.push_back( &entity );
+		}
+		if( entity.HasComponent( PHYSICS_COMP ) )
+		{
+			m_list_of_physics_comps.push_back( &entity );
+		}
+		if( entity.HasComponent( RENDER_COMP ) )
+		{
+			m_list_of_render_comps.push_back( &entity );
+		}
+		if( entity.HasComponent( TRANSFORM_COMP ) )
+		{
+			m_list_of_transform_comps.push_back(&entity);
+		}
+		if( entity.HasComponent( UI_COMP ) )
+		{
+			m_list_of_UI_comps.push_back(&entity);
+		}
+		if( entity.HasComponent( QUEST_GIVER_COMP ) )
+		{
+			m_list_of_quest_giver_comps.push_back(&entity);
+		}
+		if( entity.HasComponent( QUEST_CARRIER_COMP ) )
+		{
+			m_list_of_quest_carrier_comps.push_back(&entity);
+		}
+		if( entity.HasComponent( QUEST_COMP ) )
+		{
+			m_list_of_quest_comps.push_back(&entity);
+		}
+		if( entity.HasComponent( AI_COMP ) )
+		{
+			m_list_of_AI_comps.push_back(&entity);
+		}
+		if( entity.HasComponent( INTENT_COMP ) )
+		{
+			m_list_of_intent_comps.push_back(&entity);
+		}
+		if( entity.HasComponent( CAMERA_COMP ) )
+		{
+			m_list_of_camera_comps.push_back(&entity);
+		}
+		if( entity.HasComponent( INTERACT_COMP ) )
+		{
+			m_list_of_interact_comps.push_back(&entity);
+		}
+		if( entity.HasComponent( ABILITY_COMP ) )
+		{
+			m_list_of_ability_comps.push_back(&entity);
+		}
+		if( entity.HasComponent( TRIGGER_COMP ) )
+		{
+			m_list_of_trigger_comps.push_back(&entity);
+		}
+		if( entity.HasComponent( STATS_COMP ) )
+		{
+			m_list_of_stat_comps.push_back(&entity);
+		}
+	}
 }
 
 //--------------------------------------------------------------------------
