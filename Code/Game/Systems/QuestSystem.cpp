@@ -46,7 +46,7 @@ QuestSystem::~QuestSystem()
 /**
 * Update
 */
-void QuestSystem::Update(float deltaTime) const
+void QuestSystem::Update( float deltaTime ) const
 {
 	UNUSED(deltaTime);
 	EntityAdmin& admin = GetCurrentAdmin();
@@ -62,7 +62,6 @@ void QuestSystem::Update(float deltaTime) const
 			UpdateQuestGiverWithCarrier( *giver, *carrier );
 		}
 	}
-
 }
 
 //--------------------------------------------------------------------------
@@ -82,73 +81,47 @@ void QuestSystem::UpdateQuestGiverWithCarrier( Entity& giver, Entity& carrier ) 
 	IntentComp* carrier_intent_comp = (IntentComp*)carrier.GetComponent(INTENT_COMP);
 	TransformComp* carrier_trans_comp = (TransformComp*)carrier.GetComponent(TRANSFORM_COMP);
 
-
-
 	// Confirming required components
-	if( giver_interact_comp && giver_trans_comp && giver_physics_comp && quest_giver_comp && giver_render_comp
-		&& carrier_comp && carrier_trans_comp && carrier_intent_comp )
+	if( !(giver_interact_comp && giver_trans_comp && giver_physics_comp && quest_giver_comp && giver_render_comp
+		&& carrier_comp && carrier_trans_comp && carrier_intent_comp) )
 	{
+		return;
+	}
 
-		// Get displacement to player and check if the length squared is within range of the range squared
-		Vec2 displcement = carrier_trans_comp->m_transform.m_position - giver_trans_comp->m_transform.m_position;
-		bool in_range = displcement.GetLengthSquared() < giver_interact_comp->m_interact_range * giver_interact_comp->m_interact_range;
+	// Get displacement to player and check if the length squared is within range of the range squared
+	Vec2 displcement = carrier_trans_comp->m_transform.m_position - giver_trans_comp->m_transform.m_position;
+	bool in_range = displcement.GetLengthSquared() < giver_interact_comp->m_interact_range * giver_interact_comp->m_interact_range;
 
-		if( in_range )
+	if( in_range )
+	{
+		// Is in range of player
+		if (carrier_intent_comp->m_wants_to_interact)
 		{
-			// Is in range of player
-			if (carrier_intent_comp->m_wants_to_interact)
+			quest_giver_comp->being_interacted_with = true;
+			if( quest )
 			{
-				quest_giver_comp->being_interacted_with = true;
-				if( quest )
+				if( quest->state == STATE_COMPLETE )
 				{
-					if (quest->complete)
+					if( carrier_comp->HasQuest( quest ) )
 					{
-						if( carrier_comp->HasQuest( quest ) )
-						{
-							QuestComplete( quest_giver_comp );
-							carrier_comp->RemoveQuest( quest );
-						}
+						QuestFinished( *quest );
+						carrier_comp->RemoveQuest( quest );
 					}
-					else
+				}
+				else
+				{
+					if( !carrier_comp->HasQuest( quest ) )
 					{
-						if( !carrier_comp->HasQuest( quest ) )
-						{
-							carrier_comp->AddQuest( quest );
-							QuestAccepted( quest_giver_comp );
-						}
+						carrier_comp->AddQuest( quest );
+						QuestAccepted( *quest );
 					}
 				}
 			}
 		}
-		else
-		{
-			quest_giver_comp->being_interacted_with = false;
-		}
-
-
-		// Add rendering elements according to state of quest
-		if( quest )
-		{
-			float radius = giver_physics_comp->m_radius;
-
-			if (quest->complete)
-			{
-				AddVertsForAABB2D(giver_render_comp->m_verts_groups["Data/Images/Extras_4x4.png"].verts, AABB2(radius, radius, giver_trans_comp->m_transform.m_position + Vec2::UP * .35f), Rgba::RED, Vec2(0.75f, 0.25f), Vec2(1.0f, 0.5f));
-			}
-			else
-			{
-				AddVertsForAABB2D(giver_render_comp->m_verts_groups["Data/Images/Extras_4x4.png"].verts, AABB2(radius, radius, giver_trans_comp->m_transform.m_position + Vec2::UP * .35f), Rgba::CYAN, Vec2(0.75f, 0.0f), Vec2(1.0f, 0.25f));
-			}
-
-			if( in_range )
-			{
-				// If in range to interact, render an F below the carrier.
-				BitmapFont* font = g_theRenderer->CreateOrGetBitmapFromFile("SquirrelFixedFont");
-				giver_render_comp->m_verts_groups["SquirrelFixedFont"].is_text = true;
-				font->AddVertsFor2DText(giver_render_comp->m_verts_groups["SquirrelFixedFont"].verts, Vec2(giver_trans_comp->m_transform.m_position) - Vec2(radius * .5f, radius * 4.0f) * .5f, .25f, "F", 0.5f, Rgba(1.0f, .9f, .6f));
-
-			}
-		}
+	}
+	else
+	{
+		quest_giver_comp->being_interacted_with = false;
 	}
 }
 
@@ -202,9 +175,26 @@ void QuestSystem::UpdateQuest( QuestComp& quest_comp ) const
 */
 void QuestSystem::UpdateQuestStateWithTriggers( QuestComp& quest ) const
 {
-	if( quest.num_enemies_killed == quest.num_enemies_to_kill )
+	// For checking on state changes through data.
+	// Note: most states will change through interactions by the carrier.
+	switch( quest.state )
 	{
-		quest.complete = true;
+	case STATE_INIT:
+		break;
+	case STATE_ACCEPTED:
+		if( quest.num_enemies_killed == quest.num_enemies_to_kill )
+		{
+			QuestComplete( quest );
+		}
+		break;
+	case STATE_FAILED:
+		break;
+	case STATE_COMPLETE:
+		break;
+	case STATE_FINISHED:
+		break;
+	default:
+		break;
 	}
 }
 
@@ -212,10 +202,11 @@ void QuestSystem::UpdateQuestStateWithTriggers( QuestComp& quest ) const
 /**
 * TriggerQuestComplete
 */
-void QuestSystem::QuestComplete( QuestGiverComp* giver ) const
+void QuestSystem::QuestComplete( QuestComp& quest ) const
 {
-	// #TODO: Trigger Quest Complete logic 
-// 	giver->OnTriggeredComplete();
+	quest.state = STATE_COMPLETE;
+
+	// 	giver->OnTriggeredComplete();
 // 	quest;
 // 
 // 
@@ -229,7 +220,20 @@ void QuestSystem::QuestComplete( QuestGiverComp* giver ) const
 /**
 * TriggerQuestAccepted
 */
-void QuestSystem::QuestAccepted( QuestGiverComp* giver ) const
+void QuestSystem::QuestAccepted( QuestComp& quest ) const
 {
-	// #TODO: Trigger Quest Accepted logic 
+	quest.state = STATE_ACCEPTED;
+
+
+}
+
+//--------------------------------------------------------------------------
+/**
+* QuestFinished
+*/
+void QuestSystem::QuestFinished( QuestComp& quest ) const
+{
+	quest.state = STATE_FINISHED;
+
+
 }

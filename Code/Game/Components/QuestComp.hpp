@@ -6,7 +6,8 @@ enum eQuestState
 	STATE_INIT,
 	STATE_ACCEPTED,
 	STATE_FAILED,
-	STATE_COMPLETE
+	STATE_COMPLETE,
+	STATE_FINISHED
 };
 
 
@@ -34,11 +35,10 @@ public:
 	std::string complete_text = "UNINITED QUEST COMPLETE";
 	std::string fail_text = "UNINITED QUEST FAIL";
 
+	// Completion requirements
 	uint num_enemies_to_kill = 0;
 	uint num_enemies_killed = 0;
 
-
-	bool complete = false;
 
 	eQuestState state = STATE_INIT;
 

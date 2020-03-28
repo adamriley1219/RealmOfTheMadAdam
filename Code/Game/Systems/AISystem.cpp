@@ -5,6 +5,7 @@
 #include "Game/Components/TransformComp.hpp"
 #include "Game/Components/AIComp.hpp"
 #include "Game/Components/IntentComp.hpp"
+#include "Game/Components/TriggerComp.hpp"
 
 #include "Engine/Math/MathUtils.hpp"
 
@@ -95,6 +96,13 @@ Entity* AISystem::GetClosetsEnemyInRange( const Vec2& position, float range, con
 	for (Entity& entity : admin.m_entities)
 	{
 		if (!entity.m_claimed)
+		{
+			continue;
+		}
+
+		TriggerComp* trigger_comp = (TriggerComp*) entity.GetComponent( TRIGGER_COMP );
+
+		if( trigger_comp )
 		{
 			continue;
 		}

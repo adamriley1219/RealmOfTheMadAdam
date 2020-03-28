@@ -128,7 +128,6 @@ void CombatSystem::Fire( const std::string& ability_name, const Vec2& direction,
 	ability_render->m_main_texture = "Data/Images/Extras_4x4.png";
 
 	// Trigger setup
-	ability_trigger->m_isTrigger = true;
 	ability_trigger->m_die_on_contect = true;
 	ability_trigger->m_damage_on_triggered = 2.0f;
 

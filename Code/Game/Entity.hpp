@@ -30,6 +30,8 @@ public:
 	bool m_claimed = false;
 	bool m_destroy = false;
 
+	int m_map_to_transfer_to = -1;
+
 	static Entity s_protoEntity;
 
 	EntityAdmin* m_owner = nullptr;

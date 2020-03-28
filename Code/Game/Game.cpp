@@ -52,6 +52,7 @@
 #include "Game/Components/InteractComp.hpp"
 #include "Game/Components/AIComp.hpp"
 #include "Game/Components/StatsComp.hpp"
+#include "Game/Components/TriggerComp.hpp"
 
 
 #include <vector>
@@ -106,7 +107,8 @@ void Game::Startup()
 	EntityAdmin::GetMaster()->m_systems.push_back( new RenderSystem() );
 
 	m_map_id = 0;
-	m_maps[m_map_id] = new Map( m_map_id, IntVec2( 10, 10 ), m_terrain_sheet, TileType::GRASS_TILE, TileType::STONE_TILE );
+	m_maps[0] = new Map( 0, IntVec2( 10, 10 ), m_terrain_sheet, TileType::GRASS_TILE, TileType::STONE_TILE );
+	m_maps[1] = new Map( 1, IntVec2( 5, 7 ), m_terrain_sheet, TileType::MUD_TILE, TileType::STONE_TILE );
 
 	//--------------------------------------------------------------------------
 	// Player
@@ -129,7 +131,6 @@ void Game::Startup()
 	player->AddComponent( INPUT_COMP );
 	player->AddComponent( INTERACT_COMP );
 	player->AddComponent( QUEST_CARRIER_COMP );
-	player->AddComponent( TRIGGER_COMP );
 
 	StatsComp* player_stats = (StatsComp*) player->AddComponent( STATS_COMP );
 	player_stats->m_health = 40.0f;
@@ -194,8 +195,7 @@ void Game::Startup()
 	enemy_3_physics_comp->m_static_object = false;
 
 	enemy_3->AddComponent( INTENT_COMP );
-	enemy_3->AddComponent( TRIGGER_COMP );
-	((StatsComp*) enemy_3->AddComponent( STATS_COMP ))->m_team = ENEMY_TEAM;
+	((StatsComp*)enemy_3->AddComponent( STATS_COMP ))->m_team = ENEMY_TEAM;
 
 	AddVertsForAABB2D(enemy_3_render_comp->m_main_group.verts, AABB2(enemy_3_physics_comp->m_radius * 2.0f, enemy_3_physics_comp->m_radius * 2.0f), Rgba::WHITE, bot_left_uvs, top_right_uvs);
 	enemy_3_render_comp->m_main_texture = "Data/Images/DawnLike/Avian0.png";
@@ -218,7 +218,6 @@ void Game::Startup()
 	enemy_2_physics_comp->m_static_object = false;
 
 	enemy_2->AddComponent( INTENT_COMP );
-	enemy_2->AddComponent( TRIGGER_COMP );
 	((StatsComp*)enemy_2->AddComponent(STATS_COMP))->m_team = ENEMY_TEAM;
 
 	AddVertsForAABB2D(enemy_2_render_comp->m_main_group.verts, AABB2(enemy_2_physics_comp->m_radius * 2.0f, enemy_2_physics_comp->m_radius * 2.0f), Rgba::WHITE, bot_left_uvs, top_right_uvs);
@@ -242,7 +241,6 @@ void Game::Startup()
 	enemy_1_physics_comp->m_static_object = false;
 
 	enemy_1->AddComponent( INTENT_COMP );
-	enemy_1->AddComponent( TRIGGER_COMP );
 	((StatsComp*)enemy_1->AddComponent(STATS_COMP))->m_team = ENEMY_TEAM;
 
 	AddVertsForAABB2D(enemy_1_render_comp->m_main_group.verts, AABB2(enemy_1_physics_comp->m_radius * 2.0f, enemy_1_physics_comp->m_radius * 2.0f), Rgba::WHITE, bot_left_uvs, top_right_uvs );
@@ -251,6 +249,31 @@ void Game::Startup()
 	enemy_1_name_comp->m_name = "Enemy_1";
 	enemy_1_transform_comp->m_transform.m_position = Vec2( 2.0f, 8.0f );
 	enemy_1_ai_comp->m_vision_radius = 2.0f;
+
+	//--------------------------------------------------------------------------
+	// Exit map 0
+
+	SpriteSheet exit_sheet( (TextureView*)g_theRenderer->CreateOrGetTextureViewFromFile("Data/Images/DawnLike/16x16-fantasy-pixel-art-vehicles.png"), IntVec2( 18, 4 ) );
+	const SpriteDefinition& exit_sdef = exit_sheet.GetSpriteDefinition( 4, 1 );
+	exit_sdef.GetUVs( bot_left_uvs, top_right_uvs );
+
+	Entity* exit = m_maps[m_map_id]->m_admin.CreateEntity();
+	( (NameComp*)exit->AddComponent( NAME_COMP ) )->m_name = "Exit";
+	PhysicsComp* exit_phyx_comp = (PhysicsComp*) exit->AddComponent( PHYSICS_COMP );
+	TransformComp* exit_trans_comp = (TransformComp*) exit->AddComponent( TRANSFORM_COMP );
+	TriggerComp* exit_trigger_comp = (TriggerComp*) exit->AddComponent( TRIGGER_COMP );
+	RenderComp* exit_render_comp = (RenderComp*) exit->AddComponent( RENDER_COMP );
+
+	AddVertsForAABB2D(exit_render_comp->m_main_group.verts, AABB2( exit_phyx_comp->m_radius * 2.0f, exit_phyx_comp->m_radius * 2.0f ), Rgba::WHITE, bot_left_uvs, top_right_uvs );
+	exit_render_comp->m_main_texture = "Data/Images/DawnLike/16x16-fantasy-pixel-art-vehicles.png";
+
+	exit_trigger_comp->m_portal_active = true;
+	exit_trigger_comp->m_portal_to_position = Vec2( 2.0f, 2.0f );
+
+	exit_trigger_comp->m_transfer_map = true;
+	exit_trigger_comp->m_map_to_transfer = 1;
+
+	exit_trans_comp->m_transform.m_position = Vec2( 8.0f, 8.0f );
 }
 
 //--------------------------------------------------------------------------
@@ -317,8 +340,10 @@ void Game::GameRender() const
 void Game::UpdateGame( float deltaSeconds )
 {
 	UpdateCamera( deltaSeconds );
-	m_maps.at(m_map_id)->Update(deltaSeconds);
 
+	HandleMapTransfers();
+
+	m_maps.at( m_map_id )->Update( deltaSeconds );
 }
 
 
@@ -328,7 +353,16 @@ void Game::UpdateGame( float deltaSeconds )
 */
 Map* Game::GetCurrentMap() const
 {
-	return m_maps.at(m_map_id);
+	return m_maps.at( m_map_id );
+}
+
+//--------------------------------------------------------------------------
+/**
+* GetMap
+*/
+Map* Game::GetMap( int id ) const
+{
+	return m_maps.at( id );
 }
 
 //--------------------------------------------------------------------------
@@ -342,4 +376,38 @@ void Game::UpdateCamera( float deltaSeconds )
 	m_CurentCamera.SetColorTargetView( g_theRenderer->GetColorTargetView() );
 	m_CurentCamera.SetDepthTargetView( g_theRenderer->GetDepthTargetView() );
 	g_theRenderer->BeginCamera( &m_CurentCamera );
+}
+
+//--------------------------------------------------------------------------
+/**
+* HandleMapTransfers
+*/
+void Game::HandleMapTransfers()
+{
+	int switch_cur_map = -1;
+
+	for( Entity& entity : GetCurrentMap()->m_admin.m_entities )
+	{
+		if( entity.m_map_to_transfer_to != -1 )
+		{
+			InputComp* player_input = (InputComp*) entity.GetComponent( INPUT_COMP );
+			if( player_input )
+			{
+				switch_cur_map = entity.m_map_to_transfer_to;
+			}
+
+			Map* cur_map = GetCurrentMap();
+			Map* switch_to_map = GetMap( entity.m_map_to_transfer_to );
+
+			switch_to_map->m_admin.AddEntity( entity );
+			cur_map->m_admin.RemoveEntity( entity.m_id );
+
+			entity.m_map_to_transfer_to = -1;
+		}
+	}
+
+	if( switch_cur_map != -1 )
+	{
+		m_map_id = switch_cur_map;
+	}
 }

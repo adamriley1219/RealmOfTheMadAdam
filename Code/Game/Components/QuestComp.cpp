@@ -64,7 +64,7 @@ std::string QuestComp::GetKillEnemiesText() const
 */
 std::string QuestComp::GetDialog() const
 {
-	if( complete )
+	if( state >= STATE_COMPLETE )
 	{
 		return complete_text;
 	}

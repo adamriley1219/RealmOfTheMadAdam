@@ -20,7 +20,8 @@ private:
 	void UpdateQuestStateWithTriggers( QuestComp& quest ) const;
 
 private:
-	void QuestComplete( QuestGiverComp* giver ) const;
-	void QuestAccepted( QuestGiverComp* giver ) const;
+	void QuestComplete( QuestComp& giver ) const;
+	void QuestAccepted( QuestComp& giver ) const;
+	void QuestFinished( QuestComp& giver ) const;
 
 };

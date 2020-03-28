@@ -57,7 +57,7 @@ QuestComp* QuestGiverComp::GetCurrentQuest() const
 {
 	for( QuestComp* quest : quests )
 	{
-		if( quest->is_active )
+		if( quest->is_active && quest->state != STATE_FINISHED )
 		{
 			return quest;
 		}

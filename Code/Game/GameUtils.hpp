@@ -14,6 +14,7 @@ typedef int EntityID;
 void DrawDisc( const Vertex_PCU translation, float radius );
 float GetRandomlyChosenFloat( float a, float b );
 Map* GetCurrentMap();
+Map* GetMap( int id );
 EntityAdmin& GetCurrentAdmin();
 
 

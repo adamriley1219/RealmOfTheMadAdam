@@ -222,8 +222,11 @@ Entity* EntityAdmin::AddEntity( const Entity& entity )
 {
 	Entity& new_entity = *CreateEntity();
 	
-	ASSERT_OR_DIE( entity.m_owner, "entity to add never blelonged to an admin." );
-	for( uint idx = 0; idx < NUM_COMP_TYPES; --idx )
+	ASSERT_OR_DIE( entity.m_owner, "entity to add never belonged to an admin." );
+
+	new_entity.m_bit_map_components = entity.m_bit_map_components;
+
+	for( uint idx = 0; idx < NUM_COMP_TYPES; ++idx )
 	{
 		if( entity.HasComponent( (eComponentType)idx ) )
 		{

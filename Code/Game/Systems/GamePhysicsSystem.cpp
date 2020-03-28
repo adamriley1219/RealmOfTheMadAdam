@@ -44,7 +44,7 @@ void GamePhysicsSystem::Update( float deltaTime ) const
 
 		PhysicsComp* physics_comp = (PhysicsComp*) entity.GetComponent( PHYSICS_COMP );
 		TriggerComp* trigger_comp = (TriggerComp*) entity.GetComponent( TRIGGER_COMP );
-		bool is_trigger = trigger_comp && trigger_comp->m_isTrigger;
+		bool is_trigger = trigger_comp;
 
 		if( physics_comp && ( physics_comp->m_static_object || is_trigger ) )
 		{
@@ -74,7 +74,7 @@ void GamePhysicsSystem::Update( float deltaTime ) const
 				// Check if I can push out from other entity
 				if( other_physics_comp && other_trans_comp )
 				{
-					bool other_is_trigger = other_trigger_comp && other_trigger_comp->m_isTrigger;
+					bool other_is_trigger = other_trigger_comp;
 
 					Vec2 push_amount = Vec2::ZERO;
 					if( other_physics_comp->m_static_object )

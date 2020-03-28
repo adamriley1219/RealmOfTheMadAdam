@@ -1,10 +1,12 @@
 #include "Game/Systems/TriggerSystem.hpp"
 #include "Game/EntityAdmin.hpp"
+#include "Game/Map.hpp"
 
 #include "Game/Components/TriggerComp.hpp"
 #include "Game/Components/StatsComp.hpp"
 #include "Game/Components/TransformComp.hpp"
 #include "Game/Components/PhysicsComp.hpp"
+
 
 //--------------------------------------------------------------------------
 /**
@@ -33,6 +35,15 @@ void TriggerSystem::Update( float deltaTime ) const
 {
 	UNUSED(deltaTime);
 	EntityAdmin& admin = GetCurrentAdmin();
+	for( Entity* trigger : admin.GetAllWithComp( TRIGGER_COMP ) )
+	{
+		for( Entity* entity : admin.GetAllWithComp( TRANSFORM_COMP ) )
+		{
+			UpdateTriggerOnEntity( *trigger, *entity );
+		}
+	}
+
+
 	for( Entity& entity : admin.m_entities )
 	{
 		if (!entity.m_claimed)
@@ -40,50 +51,67 @@ void TriggerSystem::Update( float deltaTime ) const
 			continue;
 		}
 		
-		TriggerComp* trigger_comp	= (TriggerComp*) entity.GetComponent( TRIGGER_COMP );
-		PhysicsComp* phyx_comp		= (PhysicsComp*) entity.GetComponent( PHYSICS_COMP );
-		TransformComp* trans_comp	= (TransformComp*) entity.GetComponent( TRANSFORM_COMP );
-		StatsComp* stats_comp		= (StatsComp*) entity.GetComponent( STATS_COMP );
-		if( trigger_comp && phyx_comp && trans_comp && stats_comp )
+	
+	}
+}
+
+//--------------------------------------------------------------------------
+/**
+* UpdateTriggerOnEntity
+* If the other entity is a trigger (owns one) then skip.
+*/
+void TriggerSystem::UpdateTriggerOnEntity( Entity& trigger, Entity& entity ) const
+{
+	TriggerComp* entity_trigger_comp = (TriggerComp*)entity.GetComponent(TRIGGER_COMP);
+	if( entity_trigger_comp )
+	{
+		// Don't trigger off other triggers
+		return;
+	}
+
+	TriggerComp* trigger_comp = (TriggerComp*)trigger.GetComponent(TRIGGER_COMP);
+	PhysicsComp* trigger_phyx_comp = (PhysicsComp*)trigger.GetComponent(PHYSICS_COMP);
+	TransformComp* trigger_trans_comp = (TransformComp*)trigger.GetComponent(TRANSFORM_COMP);
+	StatsComp* trigger_stats_comp = (StatsComp*)trigger.GetComponent(STATS_COMP);
+
+	PhysicsComp* entity_phyx_comp = (PhysicsComp*)entity.GetComponent(PHYSICS_COMP);
+	TransformComp* entity_trans_comp = (TransformComp*)entity.GetComponent(TRANSFORM_COMP);
+	StatsComp* entity_stats_comp = (StatsComp*)entity.GetComponent(STATS_COMP);
+	
+	if( trigger_phyx_comp && trigger_trans_comp && trigger_comp
+		&& entity_phyx_comp && entity_trans_comp )
+	{
+		Vec2& entity_position = entity_trans_comp->m_transform.m_position;
+
+		bool is_in_range = DoDiscsOverlap( trigger_trans_comp->m_transform.m_position, trigger_phyx_comp->m_radius,
+			entity_position, entity_phyx_comp->m_radius );
+		if( is_in_range )
 		{
-			if( trigger_comp->m_isTrigger )
+			// Check to interact with stats
+			if( entity_stats_comp && trigger_stats_comp )
 			{
-				// trigger's don't trigger other triggers.
-				continue;
-			}
-
-			for( Entity& other_entity : admin.m_entities )
-			{
-				if (!other_entity.m_claimed)
+				if ( trigger_stats_comp->m_team != entity_stats_comp->m_team )
 				{
-					continue;
-				}
-				TriggerComp* other_trigger_comp = (TriggerComp*) other_entity.GetComponent( TRIGGER_COMP );
-
-				if( other_trigger_comp && other_trigger_comp->m_isTrigger )
-				{
-					PhysicsComp* other_phyx_comp = (PhysicsComp*) other_entity.GetComponent( PHYSICS_COMP );
-					TransformComp* other_trans_comp = (TransformComp*) other_entity.GetComponent( TRANSFORM_COMP );
-					if( other_phyx_comp && other_trans_comp )
+					entity_stats_comp->m_health -= trigger_comp->m_damage_on_triggered;
+					if (trigger_comp->m_die_on_contect)
 					{
-						bool is_in_range = DoDiscsOverlap( trans_comp->m_transform.m_position, phyx_comp->m_radius,
-							other_trans_comp->m_transform.m_position, other_phyx_comp->m_radius );
-						if( is_in_range )
-						{
-							// The other trigger is in range of the current entity none trigger entity
-							StatsComp* other_stats_comp = (StatsComp*) other_entity.GetComponent( STATS_COMP );
-							if( other_stats_comp && stats_comp->m_team != other_stats_comp->m_team )
-							{
-								stats_comp->m_health -= other_trigger_comp->m_damage_on_triggered;
-								if (other_trigger_comp->m_die_on_contect)
-								{
-									other_entity.m_destroy = true;
-								}
-							}
-						}
+						trigger.m_destroy = true;
 					}
 				}
 			}
+
+			// Check to interact with portal
+			if( trigger_comp->m_portal_active )
+			{
+				entity_position = trigger_comp->m_portal_to_position;
+			}
+
+			// Check to change map
+			if( trigger_comp->m_transfer_map  )
+			{
+				entity.m_map_to_transfer_to = trigger_comp->m_map_to_transfer;
+			}
 		}
+		
 	}
 }

@@ -27,21 +27,25 @@ public:
 
 public:
 	Map* GetCurrentMap() const;
+	Map* GetMap( int id ) const;
 
 	void UpdateCamera( float deltaSeconds );
+
+private:
+	void HandleMapTransfers();
 
 private:
 	bool m_isQuitting = false;
 
 	Shader* m_shader;
 
-	uint m_map_id = 0;
+	int m_map_id = -1;
 
 	mutable Camera m_CurentCamera;
 	mutable Camera m_DevColsoleCamera;
 
 	SpriteSheet* m_terrain_sheet;
 
-	std::unordered_map<uint, Map*> m_maps;
+	std::unordered_map<int, Map*> m_maps;
 
 };

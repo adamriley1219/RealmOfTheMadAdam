@@ -62,6 +62,15 @@ Map* GetCurrentMap()
 
 //--------------------------------------------------------------------------
 /**
+* GetMap
+*/
+Map* GetMap( int id )
+{
+	return g_theGame->GetMap( id );
+}
+
+//--------------------------------------------------------------------------
+/**
 * GetCurrentAdmin
 */
 EntityAdmin& GetCurrentAdmin()
