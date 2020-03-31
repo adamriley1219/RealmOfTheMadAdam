@@ -6,6 +6,7 @@
 #include "Game/Components/StatsComp.hpp"
 #include "Game/Components/TransformComp.hpp"
 #include "Game/Components/PhysicsComp.hpp"
+#include "Game/Components/IntentComp.hpp"
 
 
 //--------------------------------------------------------------------------
@@ -77,6 +78,7 @@ void TriggerSystem::UpdateTriggerOnEntity( Entity& trigger, Entity& entity ) con
 	PhysicsComp* entity_phyx_comp = (PhysicsComp*)entity.GetComponent(PHYSICS_COMP);
 	TransformComp* entity_trans_comp = (TransformComp*)entity.GetComponent(TRANSFORM_COMP);
 	StatsComp* entity_stats_comp = (StatsComp*)entity.GetComponent(STATS_COMP);
+	IntentComp* entity_intent_comp = (IntentComp*)entity.GetComponent(INTENT_COMP);
 	
 	if( trigger_phyx_comp && trigger_trans_comp && trigger_comp
 		&& entity_phyx_comp && entity_trans_comp )
@@ -100,16 +102,19 @@ void TriggerSystem::UpdateTriggerOnEntity( Entity& trigger, Entity& entity ) con
 				}
 			}
 
-			// Check to interact with portal
-			if( trigger_comp->m_portal_active )
+			if( entity_intent_comp && entity_intent_comp->m_wants_to_interact )
 			{
-				entity_position = trigger_comp->m_portal_to_position;
-			}
+				// Check to interact with portal
+				if( trigger_comp->m_portal_active )
+				{
+					entity_position = trigger_comp->m_portal_to_position;
+				}
 
-			// Check to change map
-			if( trigger_comp->m_transfer_map  )
-			{
-				entity.m_map_to_transfer_to = trigger_comp->m_map_to_transfer;
+				// Check to change map
+				if( trigger_comp->m_transfer_map  )
+				{
+					entity.m_map_to_transfer_to = trigger_comp->m_map_to_transfer;
+				}
 			}
 		}
 		

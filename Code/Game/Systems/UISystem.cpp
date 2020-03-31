@@ -11,6 +11,7 @@
 #include "Game/Components/QuestComp.hpp"
 #include "Game/Components/InteractComp.hpp"
 #include "Game/Components/PhysicsComp.hpp"
+#include "Game/Components/TriggerComp.hpp"
 
 #include "Game/App.hpp"
 
@@ -57,6 +58,11 @@ void UISystem::Render() const
 		{
 			RenderGiverUI( *giver );
 			RenderGiverWithCarrierUI( *giver, *carrier );
+		}
+
+		for( Entity* trigger : admin.GetAllWithComp( TRIGGER_COMP ) )
+		{
+			RenderPortalWithCarrierUI( *trigger, *carrier );
 		}
 	}
 }
@@ -249,5 +255,44 @@ void UISystem::RenderGiverWithCarrierUI( Entity& giver, Entity& carrier ) const
 		BitmapFont* font = g_theRenderer->CreateOrGetBitmapFromFile("SquirrelFixedFont");
 		giver_render_comp->m_verts_groups["SquirrelFixedFont"].is_text = true;
 		font->AddVertsFor2DText( giver_render_comp->m_verts_groups["SquirrelFixedFont"].verts, Vec2( giver_trans_comp->m_transform.m_position ) - Vec2( radius * .5f, radius * 4.0f ) * .5f, .25f, "F", 0.5f, Rgba( 1.0f, .9f, .6f ) );
+	}
+}
+
+//--------------------------------------------------------------------------
+/**
+* RenderExitWithCarrierUI
+*/
+void UISystem::RenderPortalWithCarrierUI( Entity& portal, Entity& carrier ) const
+{
+	TriggerComp* portal_trigger_comp	= (TriggerComp*) portal.GetComponent( TRIGGER_COMP );
+	RenderComp* portal_render_comp		= (RenderComp*) portal.GetComponent( RENDER_COMP );
+	TransformComp* portal_trans_comp	= (TransformComp*) portal.GetComponent( TRANSFORM_COMP );
+	PhysicsComp* portal_phyx_comp		= (PhysicsComp*) portal.GetComponent( PHYSICS_COMP );
+
+	TransformComp* carrier_trans_comp	= (TransformComp*) carrier.GetComponent( TRANSFORM_COMP );
+	InteractComp* carrier_interact_comp = (InteractComp*) carrier.GetComponent( INTERACT_COMP );
+
+	if( !( portal_trigger_comp && portal_render_comp && portal_trans_comp
+		&& carrier_interact_comp && carrier_trans_comp ) )
+	{
+		return;
+	}
+
+	// Check if acting portal/exit 
+	if( !portal_trigger_comp->m_portal_active && !portal_trigger_comp->m_transfer_map )
+	{
+		return;
+	}
+
+	Vec2 displcement = carrier_trans_comp->m_transform.m_position - portal_trans_comp->m_transform.m_position;
+	bool in_range = displcement.GetLengthSquared() < portal_phyx_comp->m_radius;
+	float radius = portal_phyx_comp->m_radius;
+
+	if( in_range )
+	{
+		BitmapFont* font = g_theRenderer->CreateOrGetBitmapFromFile("SquirrelFixedFont");
+		portal_render_comp->m_verts_groups["SquirrelFixedFont"].is_text = true;
+		Vec2 text_position = Vec2(portal_trans_comp->m_transform.m_position) - Vec2(radius * .5f, radius * 4.0f) * .5f;
+		font->AddVertsFor2DText(portal_render_comp->m_verts_groups["SquirrelFixedFont"].verts, text_position, .25f, "Press F to Exit", 0.5f, Rgba(1.0f, .9f, .6f));
 	}
 }

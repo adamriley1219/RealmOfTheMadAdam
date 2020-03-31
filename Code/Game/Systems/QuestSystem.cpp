@@ -12,6 +12,7 @@
 #include "Game/Components/PhysicsComp.hpp"
 #include "Game/Components/AIComp.hpp"
 #include "Game/Components/StatsComp.hpp"
+#include "Game/Components/TriggerComp.hpp"
 
 #include "Game/EntityAdmin.hpp"
 #include "Game/Entity.hpp"
@@ -205,15 +206,6 @@ void QuestSystem::UpdateQuestStateWithTriggers( QuestComp& quest ) const
 void QuestSystem::QuestComplete( QuestComp& quest ) const
 {
 	quest.state = STATE_COMPLETE;
-
-	// 	giver->OnTriggeredComplete();
-// 	quest;
-// 
-// 
-// 	if( quest.ShouldOpenExit )
-// 	{
-// 		// Open exit comp for current map
-// 	}
 }
 
 //--------------------------------------------------------------------------
@@ -223,8 +215,6 @@ void QuestSystem::QuestComplete( QuestComp& quest ) const
 void QuestSystem::QuestAccepted( QuestComp& quest ) const
 {
 	quest.state = STATE_ACCEPTED;
-
-
 }
 
 //--------------------------------------------------------------------------
@@ -236,4 +226,13 @@ void QuestSystem::QuestFinished( QuestComp& quest ) const
 	quest.state = STATE_FINISHED;
 
 
+	if (quest.open_exit_on_finished != -1)
+	{
+		TriggerComp* exit_trigger = (TriggerComp*)GetCurrentAdmin().GetComponent(quest.open_exit_on_finished, TRIGGER_COMP);
+		if (exit_trigger)
+		{
+			exit_trigger->m_portal_active = true;
+			exit_trigger->m_transfer_map = true;
+		}
+	}
 }

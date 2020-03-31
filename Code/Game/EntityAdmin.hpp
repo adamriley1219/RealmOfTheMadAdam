@@ -47,6 +47,8 @@ public:
 	void RemoveEntity( EntityID entity );
 	void RemoveComponent( EntityID id, eComponentType type );
 
+	Entity* GetEntity( EntityID id );
+
 	uint GetNumEntites() const;
 
 	Entity* GetFirstWithComp( eComponentType type );

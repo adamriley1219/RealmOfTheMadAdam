@@ -15,6 +15,7 @@ private:
 	void RenderCarrierUI( Entity& carrier ) const;
 	void RenderGiverUI( Entity& giver ) const;
 	void RenderGiverWithCarrierUI( Entity& giver, Entity& carrier ) const;
+	void RenderPortalWithCarrierUI( Entity& portal, Entity& carrier ) const;
 
 };
 

@@ -258,6 +258,15 @@ void EntityAdmin::RemoveComponent( EntityID id, eComponentType type )
 
 //--------------------------------------------------------------------------
 /**
+* GetEntity
+*/
+Entity* EntityAdmin::GetEntity(EntityID id)
+{
+	return &m_entities[id];
+}
+
+//--------------------------------------------------------------------------
+/**
 * GetNumEntites
 */
 uint EntityAdmin::GetNumEntites() const

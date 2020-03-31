@@ -39,9 +39,9 @@ public:
 	uint num_enemies_to_kill = 0;
 	uint num_enemies_killed = 0;
 
-
 	eQuestState state = STATE_INIT;
 
+	EntityID open_exit_on_finished = -1;
 
 private:
 	static QuestComp s_prototype;

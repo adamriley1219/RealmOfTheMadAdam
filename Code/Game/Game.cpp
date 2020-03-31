@@ -110,6 +110,57 @@ void Game::Startup()
 	m_maps[0] = new Map( 0, IntVec2( 10, 10 ), m_terrain_sheet, TileType::GRASS_TILE, TileType::STONE_TILE );
 	m_maps[1] = new Map( 1, IntVec2( 5, 7 ), m_terrain_sheet, TileType::MUD_TILE, TileType::STONE_TILE );
 
+	Vec2 bot_left_uvs;
+	Vec2 top_right_uvs;
+
+
+	//--------------------------------------------------------------------------
+	// Exit map 1-0
+
+	SpriteSheet exit_sheet((TextureView*)g_theRenderer->CreateOrGetTextureViewFromFile("Data/Images/DawnLike/16x16-fantasy-pixel-art-vehicles.png"), IntVec2(18, 4));
+	const SpriteDefinition& exit_sdef = exit_sheet.GetSpriteDefinition(4, 1);
+	exit_sdef.GetUVs(bot_left_uvs, top_right_uvs);
+
+// 	Entity* exit_1_0 = m_maps[1]->m_admin.CreateEntity();
+// 	((NameComp*)exit_1_0->AddComponent(NAME_COMP))->m_name = "Exit";
+// 	PhysicsComp* exit_phyx_comp_1_0 = (PhysicsComp*)exit_1_0->AddComponent(PHYSICS_COMP);
+// 	TransformComp* exit_trans_comp_1_0 = (TransformComp*)exit_1_0->AddComponent(TRANSFORM_COMP);
+// 	TriggerComp* exit_trigger_comp_1_0 = (TriggerComp*)exit_1_0->AddComponent(TRIGGER_COMP);
+// 	RenderComp* exit_render_comp_1_0 = (RenderComp*)exit_1_0->AddComponent(RENDER_COMP);
+// 
+// 	AddVertsForAABB2D(exit_render_comp_1_0->m_main_group.verts, AABB2(exit_phyx_comp_1_0->m_radius * 2.0f, exit_phyx_comp_1_0->m_radius * 2.0f), Rgba::WHITE, bot_left_uvs, top_right_uvs);
+// 	exit_render_comp_1_0->m_main_texture = "Data/Images/DawnLike/16x16-fantasy-pixel-art-vehicles.png";
+// 
+// 	exit_trigger_comp_1_0->m_portal_active = true;
+// 	exit_trigger_comp_1_0->m_portal_to_position = Vec2(8.0f, 8.0f);
+// 
+// 	exit_trigger_comp_1_0->m_transfer_map = true;
+// 	exit_trigger_comp_1_0->m_map_to_transfer = 1;
+// 
+// 	exit_trans_comp_1_0->m_transform.m_position = Vec2(2.0f, 2.0f);
+
+
+	//--------------------------------------------------------------------------
+	// Exit map 0-1
+
+	Entity* exit_0_1 = m_maps[m_map_id]->m_admin.CreateEntity();
+	((NameComp*)exit_0_1->AddComponent(NAME_COMP))->m_name = "Exit";
+	PhysicsComp* exit_phyx_comp_0_1 = (PhysicsComp*)exit_0_1->AddComponent(PHYSICS_COMP);
+	TransformComp* exit_trans_comp_0_1 = (TransformComp*)exit_0_1->AddComponent(TRANSFORM_COMP);
+	TriggerComp* exit_trigger_comp_0_1 = (TriggerComp*)exit_0_1->AddComponent(TRIGGER_COMP);
+	RenderComp* exit_render_comp_0_1 = (RenderComp*)exit_0_1->AddComponent(RENDER_COMP);
+
+	AddVertsForAABB2D(exit_render_comp_0_1->m_main_group.verts, AABB2(exit_phyx_comp_0_1->m_radius * 2.0f, exit_phyx_comp_0_1->m_radius * 2.0f), Rgba::WHITE, bot_left_uvs, top_right_uvs);
+	exit_render_comp_0_1->m_main_texture = "Data/Images/DawnLike/16x16-fantasy-pixel-art-vehicles.png";
+
+	exit_trigger_comp_0_1->m_portal_active = false;
+	exit_trigger_comp_0_1->m_portal_to_position = Vec2(2.0f, 2.0f);
+
+	exit_trigger_comp_0_1->m_transfer_map = false;
+	exit_trigger_comp_0_1->m_map_to_transfer = 1;
+
+	exit_trans_comp_0_1->m_transform.m_position = Vec2(8.0f, 8.0f);
+
 	//--------------------------------------------------------------------------
 	// Player
 	Entity* player = m_maps[m_map_id]->m_admin.CreateEntity();
@@ -153,6 +204,7 @@ void Game::Startup()
 	quest_comp->quest_name = "Kill the creatures.";
 	quest_comp->num_enemies_to_kill = 3;
 	quest_comp->is_active = true;
+	quest_comp->open_exit_on_finished = exit_0_1->m_id;
 
 	//--------------------------------------------------------------------------
 	// NPC
@@ -177,8 +229,6 @@ void Game::Startup()
 	// Enemy graphic
 	SpriteSheet sheet((TextureView*)g_theRenderer->CreateOrGetTextureViewFromFile("Data/Images/DawnLike/Avian0.png"), IntVec2(8, 13));
 	const SpriteDefinition& def = sheet.GetSpriteDefinition(3, 9);
-	Vec2 bot_left_uvs;
-	Vec2 top_right_uvs;
 	def.GetUVs(bot_left_uvs, top_right_uvs);
 
 	//--------------------------------------------------------------------------
@@ -250,30 +300,7 @@ void Game::Startup()
 	enemy_1_transform_comp->m_transform.m_position = Vec2( 2.0f, 8.0f );
 	enemy_1_ai_comp->m_vision_radius = 2.0f;
 
-	//--------------------------------------------------------------------------
-	// Exit map 0
-
-	SpriteSheet exit_sheet( (TextureView*)g_theRenderer->CreateOrGetTextureViewFromFile("Data/Images/DawnLike/16x16-fantasy-pixel-art-vehicles.png"), IntVec2( 18, 4 ) );
-	const SpriteDefinition& exit_sdef = exit_sheet.GetSpriteDefinition( 4, 1 );
-	exit_sdef.GetUVs( bot_left_uvs, top_right_uvs );
-
-	Entity* exit = m_maps[m_map_id]->m_admin.CreateEntity();
-	( (NameComp*)exit->AddComponent( NAME_COMP ) )->m_name = "Exit";
-	PhysicsComp* exit_phyx_comp = (PhysicsComp*) exit->AddComponent( PHYSICS_COMP );
-	TransformComp* exit_trans_comp = (TransformComp*) exit->AddComponent( TRANSFORM_COMP );
-	TriggerComp* exit_trigger_comp = (TriggerComp*) exit->AddComponent( TRIGGER_COMP );
-	RenderComp* exit_render_comp = (RenderComp*) exit->AddComponent( RENDER_COMP );
-
-	AddVertsForAABB2D(exit_render_comp->m_main_group.verts, AABB2( exit_phyx_comp->m_radius * 2.0f, exit_phyx_comp->m_radius * 2.0f ), Rgba::WHITE, bot_left_uvs, top_right_uvs );
-	exit_render_comp->m_main_texture = "Data/Images/DawnLike/16x16-fantasy-pixel-art-vehicles.png";
-
-	exit_trigger_comp->m_portal_active = true;
-	exit_trigger_comp->m_portal_to_position = Vec2( 2.0f, 2.0f );
-
-	exit_trigger_comp->m_transfer_map = true;
-	exit_trigger_comp->m_map_to_transfer = 1;
-
-	exit_trans_comp->m_transform.m_position = Vec2( 8.0f, 8.0f );
+	
 }
 
 //--------------------------------------------------------------------------
