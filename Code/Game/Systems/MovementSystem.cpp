@@ -70,13 +70,15 @@ void MovementSystem::Update( float deltaTime ) const
 			transform.m_position += phyx.m_push_out_dir_amount;
 		}
 
-
-		RenderComp* render_comp = (RenderComp*)entity.GetComponent(RENDER_COMP);
-		if (render_comp && trans_comp && physics_comp)
+		if( g_theGame->IsInDebug() )
 		{
-			Transform2D& transform = trans_comp->m_transform;
-			std::vector<Vertex_PCU>& verts = render_comp->m_verts_groups[""].verts;
-			AddVertsForRing2D(verts, trans_comp->m_transform.m_position, physics_comp->m_radius, .01f, Rgba::WHITE, 8);
+			RenderComp* render_comp = (RenderComp*)entity.GetComponent(RENDER_COMP);
+			if (render_comp && trans_comp && physics_comp)
+			{
+				Transform2D& transform = trans_comp->m_transform;
+				std::vector<Vertex_PCU>& verts = render_comp->m_verts_groups[""].verts;
+				AddVertsForRing2D(verts, trans_comp->m_transform.m_position, physics_comp->m_radius, .01f, Rgba::WHITE, 8);
+			}
 		}
 	}
 }

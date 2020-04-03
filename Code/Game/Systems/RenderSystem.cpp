@@ -117,6 +117,7 @@ void RenderSystem::Render() const
 				}
 			}
 			g_theRenderer->SetBlendMode( eBlendMode::BLEND_MODE_ALPHA );
+			g_theRenderer->BindSampler(eSampleMode::SAMPLE_MODE_POINT);
 			g_theRenderer->DrawVertexArray( group.verts );
 		}
 	}

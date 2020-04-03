@@ -25,6 +25,8 @@ public:
 	void GameRender() const;
 	void UpdateGame( float deltaSeconds );
 
+	bool IsInDebug() { return m_inDebug; };
+
 public:
 	Map* GetCurrentMap() const;
 	Map* GetMap( int id ) const;
@@ -36,6 +38,7 @@ private:
 
 private:
 	bool m_isQuitting = false;
+	bool m_inDebug = false;
 
 	Shader* m_shader;
 

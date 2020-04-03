@@ -333,6 +333,10 @@ static int g_index = 0;
 bool Game::HandleKeyPressed( unsigned char keyCode )
 {
 	UNUSED(keyCode);
+	if( keyCode == 'O' )
+	{
+		m_inDebug = !m_inDebug;
+	}
 	return false;
 }
 
