@@ -102,18 +102,20 @@ void TriggerSystem::UpdateTriggerOnEntity( Entity& trigger, Entity& entity ) con
 				}
 			}
 
-			if( entity_intent_comp && entity_intent_comp->m_wants_to_interact )
+			if( entity_intent_comp && entity_intent_comp->m_wants_to_interact && !entity_intent_comp->m_has_ported )
 			{
 				// Check to interact with portal
 				if( trigger_comp->m_portal_active )
 				{
 					entity_position = trigger_comp->m_portal_to_position;
+					entity_intent_comp->m_has_ported = true;
 				}
 
 				// Check to change map
 				if( trigger_comp->m_transfer_map  )
 				{
 					entity.m_map_to_transfer_to = trigger_comp->m_map_to_transfer;
+					entity_intent_comp->m_has_ported = true;
 				}
 			}
 		}

@@ -16,7 +16,8 @@ public:
 public:
 	Vec2 m_desired_move_direction = Vec2::ZERO;
 	bool m_wants_to_interact = false;
-	
+	bool m_has_ported = false;
+
 	Vec2 m_desired_fire_direction = Vec2::ZERO;
 	bool m_wants_to_fire = false;
 	bool m_wants_to_fire_secondary = false;

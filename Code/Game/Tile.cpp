@@ -57,7 +57,7 @@ void Tile::AddVertsForRender( std::vector<Vertex_PCU>& addTo )
 	Vec2 topRightUV		= Vec2::ONE;
 
 	int tileSpriteSheetLocation = TileDefinition::s_tileDefinitions[m_tileType]->GetTileIndex();
-	SpriteDefinition spriteDef = m_textureSpriteSheet->GetSpriteDefinition(tileSpriteSheetLocation);
+	const SpriteDefinition& spriteDef = m_textureSpriteSheet->GetSpriteDefinition(tileSpriteSheetLocation);
 
 	spriteDef.GetUVs( bottomLeftUV, topRightUV );
 

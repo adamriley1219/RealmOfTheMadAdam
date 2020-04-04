@@ -16,6 +16,7 @@
 
 #include "Game/EntityAdmin.hpp"
 #include "Game/Entity.hpp"
+#include "Game/Map.hpp"
 
 #include "Engine/Renderer/RenderContext.hpp"
 #include "Engine/Renderer/BitmapFont.hpp"
@@ -228,7 +229,7 @@ void QuestSystem::QuestFinished( QuestComp& quest ) const
 
 	if (quest.open_exit_on_finished != -1)
 	{
-		TriggerComp* exit_trigger = (TriggerComp*)GetCurrentAdmin().GetComponent(quest.open_exit_on_finished, TRIGGER_COMP);
+		TriggerComp* exit_trigger = (TriggerComp*)GetMap(quest.map_exit_is_resides)->m_admin.GetComponent(quest.open_exit_on_finished, TRIGGER_COMP);
 		if (exit_trigger)
 		{
 			exit_trigger->m_portal_active = true;

@@ -50,6 +50,7 @@ void IntentComp::Reset()
 {
 	m_desired_move_direction = Vec2::ZERO;
 	m_wants_to_interact = false;
+	m_has_ported = false;
 
 	m_desired_fire_direction = Vec2::ZERO;
 	m_wants_to_fire = false;

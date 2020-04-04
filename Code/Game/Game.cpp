@@ -108,18 +108,62 @@ void Game::Startup()
 
 	m_map_id = 0;
 	m_maps[0] = new Map( 0, IntVec2( 10, 10 ), m_terrain_sheet, TileType::GRASS_TILE, TileType::STONE_TILE );
-	m_maps[1] = new Map( 1, IntVec2( 5, 7 ), m_terrain_sheet, TileType::MUD_TILE, TileType::STONE_TILE );
+	m_maps[1] = new Map( 1, IntVec2( 50, 50 ), m_terrain_sheet, TileType::SAND_TILE, TileType::STONE_TILE );
+	m_maps[2] = new Map( 2, IntVec2( 5, 7 ), m_terrain_sheet, TileType::MUD_TILE, TileType::STONE_TILE );
 
 	Vec2 bot_left_uvs;
 	Vec2 top_right_uvs;
 
-
-	//--------------------------------------------------------------------------
-	// Exit map 1-0
-
 	SpriteSheet exit_sheet((TextureView*)g_theRenderer->CreateOrGetTextureViewFromFile("Data/Images/DawnLike/16x16-fantasy-pixel-art-vehicles.png"), IntVec2(18, 4));
 	const SpriteDefinition& exit_sdef = exit_sheet.GetSpriteDefinition(4, 1);
 	exit_sdef.GetUVs(bot_left_uvs, top_right_uvs);
+
+
+	//--------------------------------------------------------------------------
+	// Exit map 2-1
+
+	Entity* exit_2_1 = m_maps[2]->m_admin.CreateEntity();
+	((NameComp*)exit_2_1->AddComponent(NAME_COMP))->m_name = "Exit";
+	PhysicsComp* exit_phyx_comp_2_1 = (PhysicsComp*)exit_2_1->AddComponent(PHYSICS_COMP);
+	TransformComp* exit_trans_comp_2_1 = (TransformComp*)exit_2_1->AddComponent(TRANSFORM_COMP);
+	TriggerComp* exit_trigger_comp_2_1 = (TriggerComp*)exit_2_1->AddComponent(TRIGGER_COMP);
+	RenderComp* exit_render_comp_2_1 = (RenderComp*)exit_2_1->AddComponent(RENDER_COMP);
+
+	AddVertsForAABB2D(exit_render_comp_2_1->m_main_group.verts, AABB2(exit_phyx_comp_2_1->m_radius * 2.0f, exit_phyx_comp_2_1->m_radius * 2.0f), Rgba::WHITE, bot_left_uvs, top_right_uvs);
+	exit_render_comp_2_1->m_main_texture = "Data/Images/DawnLike/16x16-fantasy-pixel-art-vehicles.png";
+
+	exit_trigger_comp_2_1->m_portal_active = true;
+	exit_trigger_comp_2_1->m_portal_to_position = Vec2(4.0f, 2.0f);
+
+	exit_trigger_comp_2_1->m_transfer_map = true;
+	exit_trigger_comp_2_1->m_map_to_transfer = 1;
+
+	exit_trans_comp_2_1->m_transform.m_position = Vec2(2.0f, 2.0f);
+
+
+	//--------------------------------------------------------------------------
+	// Exit map 1-2
+
+	Entity* exit_1_2 = m_maps[1]->m_admin.CreateEntity();
+	((NameComp*)exit_1_2->AddComponent(NAME_COMP))->m_name = "Exit";
+	PhysicsComp* exit_phyx_comp_1_2 = (PhysicsComp*)exit_1_2->AddComponent(PHYSICS_COMP);
+	TransformComp* exit_trans_comp_1_2 = (TransformComp*)exit_1_2->AddComponent(TRANSFORM_COMP);
+	TriggerComp* exit_trigger_comp_1_2 = (TriggerComp*)exit_1_2->AddComponent(TRIGGER_COMP);
+	RenderComp* exit_render_comp_1_2 = (RenderComp*)exit_1_2->AddComponent(RENDER_COMP);
+
+	AddVertsForAABB2D(exit_render_comp_1_2->m_main_group.verts, AABB2(exit_phyx_comp_1_2->m_radius * 2.0f, exit_phyx_comp_1_2->m_radius * 2.0f), Rgba::WHITE, bot_left_uvs, top_right_uvs);
+	exit_render_comp_1_2->m_main_texture = "Data/Images/DawnLike/16x16-fantasy-pixel-art-vehicles.png";
+
+	exit_trigger_comp_1_2->m_portal_active = false;
+	exit_trigger_comp_1_2->m_portal_to_position = Vec2(2.0f, 2.0f);
+
+	exit_trigger_comp_1_2->m_transfer_map = false;
+	exit_trigger_comp_1_2->m_map_to_transfer = 2;
+
+	exit_trans_comp_1_2->m_transform.m_position = Vec2(4.0f, 2.0f);
+
+	//--------------------------------------------------------------------------
+	// Exit map 1-0
 
 	Entity* exit_1_0 = m_maps[1]->m_admin.CreateEntity();
 	((NameComp*)exit_1_0->AddComponent(NAME_COMP))->m_name = "Exit";
@@ -204,7 +248,8 @@ void Game::Startup()
 	quest_comp->quest_name = "Help Skittish Joe";
 	quest_comp->num_enemies_to_kill = 3;
 	quest_comp->is_active = true;
-	quest_comp->open_exit_on_finished = exit_0_1->m_id;
+	quest_comp->open_exit_on_finished = exit_1_2->m_id;
+	quest_comp->map_exit_is_resides = 1;
 
 	//--------------------------------------------------------------------------
 	// NPC
@@ -233,7 +278,7 @@ void Game::Startup()
 
 	//--------------------------------------------------------------------------
 	// Enemy 3
-	Entity* enemy_3 = m_maps[m_map_id]->m_admin.CreateEntity();
+	Entity* enemy_3 = m_maps[1]->m_admin.CreateEntity();
 	NameComp* enemy_3_name_comp = (NameComp*)enemy_3->AddComponent(NAME_COMP);
 	AIComp* enemy_3_ai_comp = (AIComp*)enemy_3->AddComponent(AI_COMP);
 	TransformComp* enemy_3_transform_comp = (TransformComp*)enemy_3->AddComponent(TRANSFORM_COMP);
@@ -256,7 +301,7 @@ void Game::Startup()
 
 	//--------------------------------------------------------------------------
 	// Enemy 2
-	Entity* enemy_2 = m_maps[m_map_id]->m_admin.CreateEntity();
+	Entity* enemy_2 = m_maps[1]->m_admin.CreateEntity();
 	NameComp* enemy_2_name_comp = (NameComp*)enemy_2->AddComponent(NAME_COMP);
 	AIComp* enemy_2_ai_comp = (AIComp*)enemy_2->AddComponent(AI_COMP);
 	TransformComp* enemy_2_transform_comp = (TransformComp*)enemy_2->AddComponent(TRANSFORM_COMP);
@@ -279,7 +324,7 @@ void Game::Startup()
 
 	//--------------------------------------------------------------------------
 	// Enemy 1
-	Entity* enemy_1 = m_maps[m_map_id]->m_admin.CreateEntity();
+	Entity* enemy_1 = m_maps[1]->m_admin.CreateEntity();
 	NameComp* enemy_1_name_comp = (NameComp*)enemy_1->AddComponent( NAME_COMP );
 	AIComp* enemy_1_ai_comp = (AIComp*) enemy_1->AddComponent( AI_COMP );
 	TransformComp* enemy_1_transform_comp = (TransformComp*) enemy_1->AddComponent( TRANSFORM_COMP );

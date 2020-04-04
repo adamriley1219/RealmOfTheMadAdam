@@ -60,13 +60,13 @@ void Map::Update( float deltaSeconds )
 */
 void Map::Render() const
 {
-	g_theRenderer->BindTextureView( 0, m_tileSpriteSheet->GetTextureView() );
 
 	std::vector<Vertex_PCU> verts;
 	for( int i = 0; i < m_tiles.size() ; i++ )
 	{
 		m_tiles[i]->AddVertsForRender( verts );
 	}
+	g_theRenderer->BindTextureView( 0, m_tileSpriteSheet->GetTextureView() );
 	g_theRenderer->DrawVertexArray( (int) verts.size(), &verts[0] );	
 	m_admin.Render();
 }

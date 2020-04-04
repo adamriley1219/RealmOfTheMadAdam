@@ -78,6 +78,7 @@ void GameInputSystem::Update( float deltaTime ) const
 
 
 			intent_comp_ptr->m_wants_to_interact = input_comp.GetKeyState(INTERACT_HOTKEY)->WasJustPressed();
+			intent_comp_ptr->m_has_ported = false;
 
 			intent_comp_ptr->m_wants_to_fire = input_comp.GetKeyState(FIRE_HOTKEY)->IsPressed();
 			intent_comp_ptr->m_wants_to_fire_secondary = input_comp.GetKeyState(FIRE_SECONDARY_HOTKEY)->IsPressed();
