@@ -17,6 +17,8 @@ private:
 	void RenderGiverWithCarrierUI( Entity& giver, Entity& carrier ) const;
 	void RenderPortalWithCarrierUI( Entity& portal, Entity& carrier ) const;
 
+	const float m_alignment_modifier = 0.7f;
+
 };
 
 

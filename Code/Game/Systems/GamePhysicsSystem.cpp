@@ -191,6 +191,10 @@ Vec2 GamePhysicsSystem::GetPushAmountWithDirDynamicVsDynamic( const PhysicsComp&
 
 		float combined_radii = radius_a + radius_b;
 		float penetration_distance = combined_radii - disp_pos_b_to_pos_a.GetLength();
+		if( disp_pos_b_to_pos_a == Vec2::ZERO )
+		{
+			return Vec2::ZERO;
+		}
 		disp_pos_b_to_pos_a.SetLength(penetration_distance);
 
 		return disp_pos_b_to_pos_a;
@@ -217,6 +221,10 @@ Vec2 GamePhysicsSystem::GetPushAmountWithDirDynamicVsStatic( const PhysicsComp& 
 
 		float combined_radii = static_radius + dynamic_radius;
 		float penetration_distance = combined_radii - disp_static_to_dyn.GetLength();
+		if( disp_static_to_dyn == Vec2::ZERO )
+		{
+			return disp_static_to_dyn;
+		}
 		disp_static_to_dyn.SetLength( penetration_distance );
 
 		return disp_static_to_dyn;

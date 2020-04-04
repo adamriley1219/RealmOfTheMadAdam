@@ -89,34 +89,35 @@ void UISystem::RenderCarrierUI( Entity& carrier ) const
 	//--------------------------------------------------------------------------
 	AABB2 screen = g_gameConfigBlackboard.GetValue("screen", AABB2::ONE_BY_ONE);
 	screen.AddPosition(trans_comp->m_transform.m_position);
+
 	AABB2 carved_bot = screen.CarveBoxOffBottom(0.0f, 0.15f);
 	uint fps = Clock::Master.GetFPS();
+	float text_height = 0.1f;
 
 	BitmapFont* font = g_theRenderer->CreateOrGetBitmapFromFile("SquirrelFixedFont");
+	std::vector<Vertex_PCU>& verts = render_comp->m_verts_groups["SquirrelFixedFont"].verts;
 	render_comp->m_verts_groups["SquirrelFixedFont"].is_text = true;
-	font->AddVertsFor2DTextAlignedInBox(render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, ToString(fps).c_str(), carved_bot, Vec2::ALIGN_BOTTOM_LEFT, BITMAP_MODE_UNCHANGED, 0.7f);
+	font->AddVertsFor2DTextAlignedInBox(verts, text_height, ToString(fps).c_str(), carved_bot, Vec2::ALIGN_BOTTOM_LEFT, BITMAP_MODE_UNCHANGED, m_alignment_modifier);
 
 	// Hack num entites
 	// Num entities
-	font->AddVertsFor2DTextAlignedInBox(render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, Stringf("Entities: %u", admin.GetNumEntites()).c_str(), screen.CarveBoxOffBottom(0.0f, 0.15f), Vec2::ALIGN_BOTTOM_LEFT, BITMAP_MODE_UNCHANGED, 0.7f);
-
-	font->AddVertsFor2DTextAlignedInBox(render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, Stringf("Time: %.03f", g_theApp->GetGameClock()->GetTotalTime()).c_str(), screen.CarveBoxOffBottom(0.0f, 0.15f), Vec2::ALIGN_BOTTOM_LEFT, BITMAP_MODE_UNCHANGED, 0.7f);
+	font->AddVertsFor2DTextAlignedInBox(verts, text_height, Stringf("Entities: %u", admin.GetNumEntites()).c_str(), screen.CarveBoxOffBottom(0.0f, 0.15f), Vec2::ALIGN_BOTTOM_LEFT, BITMAP_MODE_UNCHANGED, m_alignment_modifier);
+	font->AddVertsFor2DTextAlignedInBox(verts, text_height, Stringf("Time: %.03f", g_theApp->GetGameClock()->GetTotalTime()).c_str(), screen.CarveBoxOffBottom(0.0f, 0.15f), Vec2::ALIGN_BOTTOM_LEFT, BITMAP_MODE_UNCHANGED, m_alignment_modifier);
 
 	//--------------------------------------------------------------------------
-
 	if( !camera_comp->m_active )
 	{
 		return;
 	}
 
-
 	// Check if we need to render for quest carriers
 	screen.CarveBoxOffTop(0.0f, 0.2f);
 	screen.CarveBoxOffRight(0.0f, 0.1f);
 
-	AABB2 title_text_line = screen.CarveBoxOffTop(0.0f, 0.1f);
-	font->AddVertsFor2DTextAlignedInBox(render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, "Quests", title_text_line, Vec2::ALIGN_CENTER_RIGHT, BITMAP_MODE_SHRINK_TO_FIT, .7f);
-
+	AABB2 title_text_line = screen.CarveBoxOffTop(0.0f, 0.5f);
+	const Vec2& QuestLogAlinement = Vec2::ALIGN_CENTER_RIGHT;
+	eBitmapMode mode = BITMAP_MODE_UNCHANGED;
+	font->AddVertsFor2DTextAlignedInBox( verts, text_height, "Quests", title_text_line, QuestLogAlinement, mode, m_alignment_modifier );
 	for (QuestComp* quest_comp : quest_carrier_comp->quests)
 	{
 		if( quest_comp )
@@ -125,11 +126,11 @@ void UISystem::RenderCarrierUI( Entity& carrier ) const
 			render_comp->m_verts_groups["SquirrelFixedFont"].is_text = true;
 			if( quest_comp->state >= STATE_COMPLETE )
 			{
-				font->AddVertsFor2DTextAlignedInBox(render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, Stringf("%s: Quest Complete", quest_comp->quest_name.c_str()).c_str(), text_line, Vec2::ALIGN_CENTER_RIGHT, BITMAP_MODE_SHRINK_TO_FIT, .7f);
+				font->AddVertsFor2DTextAlignedInBox( verts, text_height, Stringf("%s: Quest Complete", quest_comp->quest_name.c_str()).c_str(), text_line, QuestLogAlinement, mode, m_alignment_modifier );
 			}
 			else
 			{
-				font->AddVertsFor2DTextAlignedInBox(render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, Stringf("%s: %s", quest_comp->quest_name.c_str(), quest_comp->GetKillEnemiesText().c_str()).c_str(), text_line, Vec2::ALIGN_CENTER_RIGHT, BITMAP_MODE_SHRINK_TO_FIT, .7f);
+				font->AddVertsFor2DTextAlignedInBox( verts, text_height, Stringf("%s: %s", quest_comp->quest_name.c_str(), quest_comp->GetKillEnemiesText().c_str()).c_str(), text_line, QuestLogAlinement, mode, m_alignment_modifier );
 			}
 		}
 	}
@@ -206,6 +207,9 @@ void UISystem::RenderGiverWithCarrierUI( Entity& giver, Entity& carrier ) const
 	bool in_range = displcement.GetLengthSquared() < carrier_interact_comp->m_interact_range * carrier_interact_comp->m_interact_range;
 	if (in_range)
 	{
+		BitmapFont* font = g_theRenderer->CreateOrGetBitmapFromFile("SquirrelFixedFont");
+		std::vector<Vertex_PCU>& verts = giver_render_comp->m_verts_groups["SquirrelFixedFont"].verts;
+
 		// Render Dialog Box
 		if (quest_giver_comp->being_interacted_with)
 		{
@@ -236,23 +240,20 @@ void UISystem::RenderGiverWithCarrierUI( Entity& giver, Entity& carrier ) const
 			screen.CarveBoxOffBottom(0.0f, 0.05f);
 			screen.CarveBoxOffLeft(0.0f, 0.05f);
 			screen.CarveBoxOffRight(0.0f, 0.05f);
+			
+			float text_height = .1f;
 
-				
-			BitmapFont* font = g_theRenderer->CreateOrGetBitmapFromFile("SquirrelFixedFont");
-			giver_render_comp->m_verts_groups["SquirrelFixedFont"].is_text = true;
-				
 			if (giver_quest)
 			{
-				font->AddVertsFor2DTextAlignedInBox( giver_render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, giver_quest->GetDialog().c_str(), screen, Vec2::ALIGN_TOP_LEFT, BITMAP_MODE_SHRINK_TO_FIT, 0.7f );
+				font->AddVertsFor2DTextAlignedInBox( giver_render_comp->m_verts_groups["SquirrelFixedFont"].verts, text_height, giver_quest->GetDialog().c_str(), screen, Vec2::ALIGN_TOP_LEFT, BITMAP_MODE_SHRINK_TO_FIT, m_alignment_modifier );
 					
 			}
 			else
 			{
-				font->AddVertsFor2DTextAlignedInBox( giver_render_comp->m_verts_groups["SquirrelFixedFont"].verts, 0.1f, "Nothing to say. (no quest to give)", screen, Vec2::ALIGN_TOP_LEFT, BITMAP_MODE_SHRINK_TO_FIT, 0.7f );
+				font->AddVertsFor2DTextAlignedInBox( giver_render_comp->m_verts_groups["SquirrelFixedFont"].verts, text_height, "Nothing to say. (no quest to give)", screen, Vec2::ALIGN_TOP_LEFT, BITMAP_MODE_SHRINK_TO_FIT, m_alignment_modifier );
 			}
 		}
 
-		BitmapFont* font = g_theRenderer->CreateOrGetBitmapFromFile("SquirrelFixedFont");
 		giver_render_comp->m_verts_groups["SquirrelFixedFont"].is_text = true;
 		font->AddVertsFor2DText( giver_render_comp->m_verts_groups["SquirrelFixedFont"].verts, Vec2( giver_trans_comp->m_transform.m_position ) - Vec2( radius * .5f, radius * 4.0f ) * .5f, .25f, "F", 0.5f, Rgba( 1.0f, .9f, .6f ) );
 	}

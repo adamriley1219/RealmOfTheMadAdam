@@ -244,6 +244,7 @@ Entity* EntityAdmin::AddEntity( const Entity& entity )
 */
 void EntityAdmin::RemoveEntity( EntityID id )
 {
+	RemoveComponent( id, CAMERA_COMP );
 	m_entities[id].m_claimed = false;
 }
 
@@ -253,6 +254,14 @@ void EntityAdmin::RemoveEntity( EntityID id )
 */
 void EntityAdmin::RemoveComponent( EntityID id, eComponentType type )
 {
+	if( type == CAMERA_COMP )
+	{
+		CameraComp* cam_comp = (CameraComp*) m_entities->GetComponent( CAMERA_COMP );
+		if( cam_comp )
+		{
+			cam_comp->Reset();
+		}
+	}
 	m_entities[id].RemoveComponent( type );
 }
 
@@ -481,7 +490,12 @@ void EntityAdmin::UpdateStateOfCompLists()
 	for( uint idx = 0; idx < MAX_ENTITIES; ++idx )
 	{
 		Entity& entity = m_entities[idx];
-		
+	
+		if( !entity.m_claimed )
+		{
+			continue;
+		}
+
 		if( entity.HasComponent( INPUT_COMP ) )
 		{
 			m_list_of_input_comps.push_back( &entity );

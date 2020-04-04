@@ -121,23 +121,23 @@ void Game::Startup()
 	const SpriteDefinition& exit_sdef = exit_sheet.GetSpriteDefinition(4, 1);
 	exit_sdef.GetUVs(bot_left_uvs, top_right_uvs);
 
-// 	Entity* exit_1_0 = m_maps[1]->m_admin.CreateEntity();
-// 	((NameComp*)exit_1_0->AddComponent(NAME_COMP))->m_name = "Exit";
-// 	PhysicsComp* exit_phyx_comp_1_0 = (PhysicsComp*)exit_1_0->AddComponent(PHYSICS_COMP);
-// 	TransformComp* exit_trans_comp_1_0 = (TransformComp*)exit_1_0->AddComponent(TRANSFORM_COMP);
-// 	TriggerComp* exit_trigger_comp_1_0 = (TriggerComp*)exit_1_0->AddComponent(TRIGGER_COMP);
-// 	RenderComp* exit_render_comp_1_0 = (RenderComp*)exit_1_0->AddComponent(RENDER_COMP);
-// 
-// 	AddVertsForAABB2D(exit_render_comp_1_0->m_main_group.verts, AABB2(exit_phyx_comp_1_0->m_radius * 2.0f, exit_phyx_comp_1_0->m_radius * 2.0f), Rgba::WHITE, bot_left_uvs, top_right_uvs);
-// 	exit_render_comp_1_0->m_main_texture = "Data/Images/DawnLike/16x16-fantasy-pixel-art-vehicles.png";
-// 
-// 	exit_trigger_comp_1_0->m_portal_active = true;
-// 	exit_trigger_comp_1_0->m_portal_to_position = Vec2(8.0f, 8.0f);
-// 
-// 	exit_trigger_comp_1_0->m_transfer_map = true;
-// 	exit_trigger_comp_1_0->m_map_to_transfer = 1;
-// 
-// 	exit_trans_comp_1_0->m_transform.m_position = Vec2(2.0f, 2.0f);
+	Entity* exit_1_0 = m_maps[1]->m_admin.CreateEntity();
+	((NameComp*)exit_1_0->AddComponent(NAME_COMP))->m_name = "Exit";
+	PhysicsComp* exit_phyx_comp_1_0 = (PhysicsComp*)exit_1_0->AddComponent(PHYSICS_COMP);
+	TransformComp* exit_trans_comp_1_0 = (TransformComp*)exit_1_0->AddComponent(TRANSFORM_COMP);
+	TriggerComp* exit_trigger_comp_1_0 = (TriggerComp*)exit_1_0->AddComponent(TRIGGER_COMP);
+	RenderComp* exit_render_comp_1_0 = (RenderComp*)exit_1_0->AddComponent(RENDER_COMP);
+
+	AddVertsForAABB2D(exit_render_comp_1_0->m_main_group.verts, AABB2(exit_phyx_comp_1_0->m_radius * 2.0f, exit_phyx_comp_1_0->m_radius * 2.0f), Rgba::WHITE, bot_left_uvs, top_right_uvs);
+	exit_render_comp_1_0->m_main_texture = "Data/Images/DawnLike/16x16-fantasy-pixel-art-vehicles.png";
+
+	exit_trigger_comp_1_0->m_portal_active = true;
+	exit_trigger_comp_1_0->m_portal_to_position = Vec2(8.0f, 8.0f);
+
+	exit_trigger_comp_1_0->m_transfer_map = true;
+	exit_trigger_comp_1_0->m_map_to_transfer = 0;
+
+	exit_trans_comp_1_0->m_transform.m_position = Vec2(2.0f, 2.0f);
 
 
 	//--------------------------------------------------------------------------
@@ -153,10 +153,10 @@ void Game::Startup()
 	AddVertsForAABB2D(exit_render_comp_0_1->m_main_group.verts, AABB2(exit_phyx_comp_0_1->m_radius * 2.0f, exit_phyx_comp_0_1->m_radius * 2.0f), Rgba::WHITE, bot_left_uvs, top_right_uvs);
 	exit_render_comp_0_1->m_main_texture = "Data/Images/DawnLike/16x16-fantasy-pixel-art-vehicles.png";
 
-	exit_trigger_comp_0_1->m_portal_active = false;
+	exit_trigger_comp_0_1->m_portal_active = true;
 	exit_trigger_comp_0_1->m_portal_to_position = Vec2(2.0f, 2.0f);
 
-	exit_trigger_comp_0_1->m_transfer_map = false;
+	exit_trigger_comp_0_1->m_transfer_map = true;
 	exit_trigger_comp_0_1->m_map_to_transfer = 1;
 
 	exit_trans_comp_0_1->m_transform.m_position = Vec2(8.0f, 8.0f);
@@ -176,7 +176,7 @@ void Game::Startup()
 	Vec2 camera_dims = g_gameConfigBlackboard.GetValue( "camera_dims", Vec2::ONE );
 	AABB2 screen( camera_dims.x, camera_dims.y );
 	g_gameConfigBlackboard.SetValue( "screen", ToString( screen ) );
-	player_camera_comp->m_camera.SetOrthographicProjection( screen.GetBottomLeft(), screen.GetTopRight() );
+	player_camera_comp->SetOrthProjMat( screen.GetBottomLeft(), screen.GetTopRight() );
 
 	player->AddComponent( INTENT_COMP );
 	player->AddComponent( INPUT_COMP );
@@ -201,7 +201,7 @@ void Game::Startup()
 	quest_comp->init_text = "....Please....Please help.... There's so many creatures...";
 	quest_comp->complete_text = "THANK YOU SO MUCH!";
 	quest_comp->fail_text = "...";
-	quest_comp->quest_name = "Kill the creatures.";
+	quest_comp->quest_name = "Help Skittish Joe";
 	quest_comp->num_enemies_to_kill = 3;
 	quest_comp->is_active = true;
 	quest_comp->open_exit_on_finished = exit_0_1->m_id;
@@ -223,7 +223,7 @@ void Game::Startup()
 	AddVertsForAABB2D(npc_render_comp->m_main_group.verts, AABB2(npc_physics_comp->m_radius * 2.0f, npc_physics_comp->m_radius * 2.0f), Rgba::WHITE, Vec2( .75f, 0.9333f ), Vec2(0.875f, 1.0f) );
 	npc_render_comp->m_main_texture = "Data/Images/DawnLike/Player0.png";
 
-	npc_name_comp->m_name = "Silent Joe";
+	npc_name_comp->m_name = "Help Skittish Joe";
 	npc_transform_comp->m_transform.m_position = Vec2( 6.0f, 3.0f );
 
 	// Enemy graphic
@@ -430,10 +430,11 @@ void Game::HandleMapTransfers()
 			Map* cur_map = GetCurrentMap();
 			Map* switch_to_map = GetMap( entity.m_map_to_transfer_to );
 
+			// Do this BEFORE adding and removing entities
+			entity.m_map_to_transfer_to = -1;
+
 			switch_to_map->m_admin.AddEntity( entity );
 			cur_map->m_admin.RemoveEntity( entity.m_id );
-
-			entity.m_map_to_transfer_to = -1;
 		}
 	}
 

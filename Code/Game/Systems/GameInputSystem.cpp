@@ -76,7 +76,9 @@ void GameInputSystem::Update( float deltaTime ) const
 				dir.x += 1.0f;
 			}
 
-			intent_comp_ptr->m_wants_to_interact = input_comp.GetKeyState(INTERACT_HOTKEY)->IsPressed();
+
+			intent_comp_ptr->m_wants_to_interact = input_comp.GetKeyState(INTERACT_HOTKEY)->WasJustPressed();
+
 			intent_comp_ptr->m_wants_to_fire = input_comp.GetKeyState(FIRE_HOTKEY)->IsPressed();
 			intent_comp_ptr->m_wants_to_fire_secondary = input_comp.GetKeyState(FIRE_SECONDARY_HOTKEY)->IsPressed();
 
@@ -87,7 +89,7 @@ void GameInputSystem::Update( float deltaTime ) const
 			if( trans_comp && ( intent_comp_ptr->m_wants_to_fire || intent_comp_ptr->m_wants_to_fire_secondary ) )
 			{
 				IntVec2 raw_mouse_pos = g_theWindowContext->GetClientMousePosition();
-				Vec3 world_pos = camera_comp->m_camera.GetClientToWorld( raw_mouse_pos );
+				Vec3 world_pos = camera_comp->m_camera->GetClientToWorld( raw_mouse_pos );
 
 				intent_comp_ptr->m_desired_fire_direction = ( Vec2( world_pos  ) - trans_comp->m_transform.m_position ).GetNormalized();
 			}

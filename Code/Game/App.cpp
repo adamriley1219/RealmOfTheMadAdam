@@ -94,7 +94,7 @@ void App::Shutdown()
 
 	SAFE_DELETE( g_theGame );
 
-	SAFE_DELETE(m_gameClock);
+	SAFE_DELETE( m_gameClock );
 	SAFE_DELETE( g_theImGUISystem );
 	SAFE_DELETE( g_theAudioSystem );
 	SAFE_DELETE( g_theInputSystem );

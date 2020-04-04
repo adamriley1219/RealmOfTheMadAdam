@@ -136,10 +136,10 @@ void RenderSystem::Update( float deltaTime ) const
 		TransformComp* trans_comp = (TransformComp*)entity.GetComponent( TRANSFORM_COMP );
 		if( cam_comp && trans_comp && cam_comp->m_active )
 		{
-			cam_comp->m_camera.SetModelMatrix( Matrix44::MakeTranslation2D( trans_comp->m_transform.m_position ) );
-			cam_comp->m_camera.SetColorTargetView(g_theRenderer->GetColorTargetView());
-			cam_comp->m_camera.SetDepthTargetView(g_theRenderer->GetDepthTargetView());
-			g_theRenderer->BeginCamera( &cam_comp->m_camera );
+			cam_comp->m_camera->SetModelMatrix( Matrix44::MakeTranslation2D( trans_comp->m_transform.m_position ) );
+			cam_comp->m_camera->SetColorTargetView(g_theRenderer->GetColorTargetView());
+			cam_comp->m_camera->SetDepthTargetView(g_theRenderer->GetDepthTargetView());
+			g_theRenderer->BeginCamera( cam_comp->m_camera );
 		}
 	}
 }
