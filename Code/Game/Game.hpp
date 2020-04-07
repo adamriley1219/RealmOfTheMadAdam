@@ -28,6 +28,11 @@ public:
 	bool IsInDebug() { return m_inDebug; };
 
 public:
+	// Helper functions to create reconstructed entities
+	Entity* CreateExit( const Vec2& portal_from_loc, const Vec2& portal_to_loc, int from_map, int to_map, bool active, const std::string& texture, const Vec2& bot_left_uvs, const Vec2& top_right_uvs );
+	Entity* CreateEnemy( const std::string& name, const Vec2& position, int map_idx, float damage_multiplier, float max_speed, float vision_radius, const std::string& texture, const Vec2& bot_left_uvs, const Vec2& top_right_uvs  );
+
+public:
 	Map* GetCurrentMap() const;
 	Map* GetMap( int id ) const;
 

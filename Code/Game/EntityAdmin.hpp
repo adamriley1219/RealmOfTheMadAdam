@@ -5,6 +5,8 @@
 #include "Game/GameCommon.hpp"
 #include "Game/Entity.hpp"
 
+#include "Engine/Math/Vec2.hpp"
+
 class System;
 
 struct Component;

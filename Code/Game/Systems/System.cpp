@@ -1,4 +1,5 @@
 #include "Game/Systems/System.hpp"
+#include "Engine/Core/EngineCommon.hpp"
 
 //--------------------------------------------------------------------------
 /**
@@ -24,7 +25,7 @@ System::~System()
 */
 void System::Update(float deltaTime) const
 {
-
+	UNUSED(deltaTime);
 }
 
 //--------------------------------------------------------------------------

@@ -23,6 +23,7 @@ public:
 
 public:
 	float	m_health = 10.0f;
+	float	m_damage_multiplier = 1.0f;
 	eTeam	m_team = ALLIED_TEAM;
 
 private:

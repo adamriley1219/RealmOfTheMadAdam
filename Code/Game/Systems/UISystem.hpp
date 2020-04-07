@@ -3,6 +3,8 @@
 
 class Entity;
 
+constexpr int FPS_ARRAY_AVG_SIZE = 30;
+
 class UISystem : public System
 {
 public:
@@ -18,6 +20,9 @@ private:
 	void RenderPortalWithCarrierUI( Entity& portal, Entity& carrier ) const;
 
 	const float m_alignment_modifier = 0.7f;
+
+	mutable int cur_fps_idx = 0;
+	mutable int fps_array[FPS_ARRAY_AVG_SIZE] = { 60 };
 
 };
 

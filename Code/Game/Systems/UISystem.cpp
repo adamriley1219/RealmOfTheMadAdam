@@ -94,10 +94,26 @@ void UISystem::RenderCarrierUI( Entity& carrier ) const
 	uint fps = Clock::Master.GetFPS();
 	float text_height = 0.1f;
 
+	fps_array[cur_fps_idx] = fps;
+	++cur_fps_idx;
+	if( cur_fps_idx >= FPS_ARRAY_AVG_SIZE )
+	{
+		cur_fps_idx = 0;
+	}
+
+	uint avg_fps = 0;
+	for( uint idx = 0; idx < FPS_ARRAY_AVG_SIZE; ++idx )
+	{
+		avg_fps += fps_array[idx];
+	}
+	avg_fps /= 30;
+
 	BitmapFont* font = g_theRenderer->CreateOrGetBitmapFromFile("SquirrelFixedFont");
 	std::vector<Vertex_PCU>& verts = render_comp->m_verts_groups["SquirrelFixedFont"].verts;
 	render_comp->m_verts_groups["SquirrelFixedFont"].is_text = true;
-	font->AddVertsFor2DTextAlignedInBox(verts, text_height, ToString(fps).c_str(), carved_bot, Vec2::ALIGN_BOTTOM_LEFT, BITMAP_MODE_UNCHANGED, m_alignment_modifier);
+	font->AddVertsFor2DTextAlignedInBox(verts, text_height, Stringf("Average FPS: %u", avg_fps).c_str(), carved_bot, Vec2::ALIGN_BOTTOM_LEFT, BITMAP_MODE_UNCHANGED, m_alignment_modifier);
+	carved_bot = screen.CarveBoxOffBottom(0.0f, 0.15f);
+	font->AddVertsFor2DTextAlignedInBox(verts, text_height, Stringf("FPS: %u", fps).c_str(), carved_bot, Vec2::ALIGN_BOTTOM_LEFT, BITMAP_MODE_UNCHANGED, m_alignment_modifier);
 
 	// Hack num entites
 	// Num entities
@@ -245,17 +261,17 @@ void UISystem::RenderGiverWithCarrierUI( Entity& giver, Entity& carrier ) const
 
 			if (giver_quest)
 			{
-				font->AddVertsFor2DTextAlignedInBox( giver_render_comp->m_verts_groups["SquirrelFixedFont"].verts, text_height, giver_quest->GetDialog().c_str(), screen, Vec2::ALIGN_TOP_LEFT, BITMAP_MODE_SHRINK_TO_FIT, m_alignment_modifier );
+				font->AddVertsFor2DTextAlignedInBox( verts, text_height, giver_quest->GetDialog().c_str(), screen, Vec2::ALIGN_TOP_LEFT, BITMAP_MODE_SHRINK_TO_FIT, m_alignment_modifier );
 					
 			}
 			else
 			{
-				font->AddVertsFor2DTextAlignedInBox( giver_render_comp->m_verts_groups["SquirrelFixedFont"].verts, text_height, "Nothing to say. (no quest to give)", screen, Vec2::ALIGN_TOP_LEFT, BITMAP_MODE_SHRINK_TO_FIT, m_alignment_modifier );
+				font->AddVertsFor2DTextAlignedInBox( verts, text_height, "Nothing to say. (no quest to give)", screen, Vec2::ALIGN_TOP_LEFT, BITMAP_MODE_SHRINK_TO_FIT, m_alignment_modifier );
 			}
 		}
 
 		giver_render_comp->m_verts_groups["SquirrelFixedFont"].is_text = true;
-		font->AddVertsFor2DText( giver_render_comp->m_verts_groups["SquirrelFixedFont"].verts, Vec2( giver_trans_comp->m_transform.m_position ) - Vec2( radius * .5f, radius * 4.0f ) * .5f, .25f, "F", 0.5f, Rgba( 1.0f, .9f, .6f ) );
+		font->AddVertsFor2DText( verts, Vec2( giver_trans_comp->m_transform.m_position ) - Vec2( radius * .5f, radius * 4.0f ) * .5f, .25f, "F", 0.5f, Rgba( 1.0f, .9f, .6f ) );
 	}
 }
 

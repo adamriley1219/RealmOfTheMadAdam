@@ -37,6 +37,7 @@ CombatSystem::~CombatSystem()
 */
 void CombatSystem::Update( float delta_time ) const
 {
+	UNUSED(delta_time);
 	EntityAdmin& admin = GetCurrentAdmin();
 	for( Entity& entity : admin.m_entities )
 	{
@@ -79,7 +80,7 @@ void CombatSystem::Update( float delta_time ) const
 			if( intent->m_wants_to_fire )
 			{
 				// Spawn bullet
-				Fire( "not_used_yet", intent->m_desired_fire_direction, trans_comp->m_transform, stats_comp->m_team );
+				Fire( "not_used_yet", intent->m_desired_fire_direction, stats_comp->m_damage_multiplier, trans_comp->m_transform, stats_comp->m_team );
 				
 				intent->m_fire_timer.Reset();
 			}
@@ -96,7 +97,7 @@ void CombatSystem::Update( float delta_time ) const
 /**
 * Fire
 */
-void CombatSystem::Fire( const std::string& ability_name, const Vec2& direction, const Transform2D& starting_treansform, eTeam team ) const
+void CombatSystem::Fire( const std::string& ability_name, const Vec2& direction, float damage_multiplier, const Transform2D& starting_treansform, eTeam team ) const
 {
 	UNUSED( ability_name );
 	Entity* ability = GetCurrentAdmin().CreateEntity();
@@ -109,7 +110,7 @@ void CombatSystem::Fire( const std::string& ability_name, const Vec2& direction,
 	((StatsComp*)ability->AddComponent(STATS_COMP))->m_team = team;
 	ability_intent->m_desired_move_direction = direction;
 	ability_intent->m_death_timer.SetAndReset(0.75f);
-
+	UNUSED(ability_comp);
 
 	// Physics
 	ability_physics->m_radius = 0.15f;
@@ -129,7 +130,7 @@ void CombatSystem::Fire( const std::string& ability_name, const Vec2& direction,
 
 	// Trigger setup
 	ability_trigger->m_die_on_contect = true;
-	ability_trigger->m_damage_on_triggered = 2.0f;
+	ability_trigger->m_damage_on_triggered = 1.0f * damage_multiplier;
 
 	ability_transform->m_transform = starting_treansform;
 

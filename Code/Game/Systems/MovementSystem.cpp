@@ -77,7 +77,7 @@ void MovementSystem::Update( float deltaTime ) const
 			{
 				Transform2D& transform = trans_comp->m_transform;
 				std::vector<Vertex_PCU>& verts = render_comp->m_verts_groups[""].verts;
-				AddVertsForRing2D(verts, trans_comp->m_transform.m_position, physics_comp->m_radius, .01f, Rgba::WHITE, 8);
+				AddVertsForRing2D(verts, transform.m_position, physics_comp->m_radius, .01f, Rgba::WHITE, 8);
 			}
 		}
 	}
