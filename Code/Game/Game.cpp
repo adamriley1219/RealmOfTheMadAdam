@@ -115,32 +115,32 @@ void Game::Startup()
 
 	Vec2 bot_left_uvs;
 	Vec2 top_right_uvs;
-	std::string pixel_art_vehicles = "Data/Images/DawnLike/16x16-fantasy-pixel-art-vehicles.png";
-	std::string pixel_NPC= "Data/Images/DawnLike/Avian0.png";
+	std::string texture_ArtVehicles_path = "Data/Images/DawnLike/16x16-fantasy-pixel-art-vehicles.png";
+	std::string texture_PixelNPC_path= "Data/Images/DawnLike/Avian0.png";
 
-	SpriteSheet exit_sheet((TextureView*)g_theRenderer->CreateOrGetTextureViewFromFile( pixel_art_vehicles.c_str() ), IntVec2(18, 4));
+	SpriteSheet exit_sheet((TextureView*)g_theRenderer->CreateOrGetTextureViewFromFile( texture_ArtVehicles_path.c_str() ), IntVec2(18, 4));
 	const SpriteDefinition& exit_sdef = exit_sheet.GetSpriteDefinition(4, 1);
 
-	SpriteSheet NPC_sheet((TextureView*)g_theRenderer->CreateOrGetTextureViewFromFile( pixel_NPC.c_str()), IntVec2(8, 13) );
-	const SpriteDefinition& enemy_def = NPC_sheet.GetSpriteDefinition(3, 9);
+	SpriteSheet NPC_sheet((TextureView*)g_theRenderer->CreateOrGetTextureViewFromFile( texture_PixelNPC_path.c_str()), IntVec2(8, 13) );
+	const SpriteDefinition& enemy_sdef = NPC_sheet.GetSpriteDefinition(3, 9);
 	
 	//--------------------------------------------------------------------------
 	exit_sdef.GetUVs(bot_left_uvs, top_right_uvs);
 	//--------------------------------------------------------------------------
 	// Exit map 2-1
-	CreateExit( Vec2(2.0f, 2.0f), Vec2(4.0f, 2.0f), 2, 1, true, pixel_art_vehicles, bot_left_uvs, top_right_uvs );
+	CreateExit( Vec2(2.0f, 2.0f), Vec2(4.0f, 2.0f), 2, 1, true, texture_ArtVehicles_path, bot_left_uvs, top_right_uvs );
 
 	//--------------------------------------------------------------------------
 	// Exit map 1-2
-	Entity* exit_1_2 = CreateExit( Vec2(4.0f, 2.0f), Vec2(2.0f, 2.0f), 1, 2, false, pixel_art_vehicles, bot_left_uvs, top_right_uvs );
+	Entity* exit_1_2 = CreateExit( Vec2(4.0f, 2.0f), Vec2(2.0f, 2.0f), 1, 2, false, texture_ArtVehicles_path, bot_left_uvs, top_right_uvs );
 
 	//--------------------------------------------------------------------------
 	// Exit map 1-0
-	CreateExit( Vec2(2.0f, 2.0f), Vec2(8.0f, 8.0f), 1, 0, true, pixel_art_vehicles, bot_left_uvs, top_right_uvs );
+	CreateExit( Vec2(2.0f, 2.0f), Vec2(8.0f, 8.0f), 1, 0, true, texture_ArtVehicles_path, bot_left_uvs, top_right_uvs );
 
 	//--------------------------------------------------------------------------
 	// Exit map 0-1
-	CreateExit( Vec2(8.0f, 8.0f), Vec2(2.0f, 2.0f), m_map_id, 1, true, pixel_art_vehicles, bot_left_uvs, top_right_uvs );
+	CreateExit( Vec2(8.0f, 8.0f), Vec2(2.0f, 2.0f), m_map_id, 1, true, texture_ArtVehicles_path, bot_left_uvs, top_right_uvs );
 
 	//--------------------------------------------------------------------------
 	// Player
@@ -210,31 +210,45 @@ void Game::Startup()
 	npc_transform_comp->m_transform.m_position = Vec2( 6.0f, 3.0f );
 
 	//--------------------------------------------------------------------------
-	enemy_def.GetUVs(bot_left_uvs, top_right_uvs);
+	enemy_sdef.GetUVs(bot_left_uvs, top_right_uvs);
 	float move_speed = 0.4f;
-	float vision_distance = 1.0f;
-	float damage_multiplier = 0.0f;
+	float vision_distance = 2.0f;
+	float damage_multiplier = 1.0f;
 	//--------------------------------------------------------------------------
 	// Enemy 3
-	CreateEnemy( "Enemy_3", Vec2(2.0f, 7.41f), 1, damage_multiplier, move_speed, vision_distance, pixel_NPC, bot_left_uvs, top_right_uvs );
+	CreateEnemy( "Enemy_3", Vec2(2.0f, 7.41f), 1, damage_multiplier, move_speed, vision_distance, texture_PixelNPC_path, bot_left_uvs, top_right_uvs );
 
 	//--------------------------------------------------------------------------
 	// Enemy 2
-	CreateEnemy( "Enemy_2", Vec2(2.59f, 8.0f), 1, damage_multiplier, move_speed, vision_distance, pixel_NPC, bot_left_uvs, top_right_uvs );
+	CreateEnemy( "Enemy_2", Vec2(2.59f, 8.0f), 1, damage_multiplier, move_speed, vision_distance, texture_PixelNPC_path, bot_left_uvs, top_right_uvs );
 
 	//--------------------------------------------------------------------------
 	// Enemy 1
-	CreateEnemy( "Enemy_1", Vec2( 2.0f, 8.0f ), 1, damage_multiplier, move_speed, vision_distance, pixel_NPC, bot_left_uvs, top_right_uvs );
+	CreateEnemy( "Enemy_1", Vec2( 2.0f, 8.0f ), 1, damage_multiplier, move_speed, vision_distance, texture_PixelNPC_path, bot_left_uvs, top_right_uvs );
+	
+	//--------------------------------------------------------------------------
+	// Many enemies
+	int num_enemies = 600;
+	float x_start	= 3.0f;
+	float y_loc		= 3.0f;
+	float x_loc		= x_start;
+	float x_end		= map_1_dims.x - 2.0f;
+	float stride	= 0.75f;
 
-	Vec2 spawn_area( map_1_dims.x - 2.0f, map_1_dims.y - 2.0f );
-	for( float draw_at_x = 3.0f; draw_at_x < spawn_area.x; draw_at_x += 2.0f )
+	while( num_enemies > 0 )
 	{
-		for( float draw_at_y = 3.0f; draw_at_y < spawn_area.y; draw_at_y += 2.0f )
-		{
-			CreateEnemy( "Enemy", Vec2( draw_at_x, draw_at_y ), 1, damage_multiplier, move_speed, vision_distance, pixel_NPC, bot_left_uvs, top_right_uvs );
-		}
-	}
+		CreateEnemy( "Enemy", Vec2( x_loc, y_loc ), 1, damage_multiplier, move_speed, vision_distance, texture_PixelNPC_path, bot_left_uvs, top_right_uvs );
 
+		x_loc += stride;
+		
+		if( x_loc > x_end )
+		{
+			x_loc = x_start;
+			y_loc += stride;
+		}
+
+		--num_enemies;
+	}
 }
 
 //--------------------------------------------------------------------------
@@ -270,6 +284,12 @@ bool Game::HandleKeyPressed( unsigned char keyCode )
 	if( keyCode == 'O' )
 	{
 		m_inDebug = !m_inDebug;
+		return true;
+	}
+	if( keyCode == 'I' )
+	{
+		m_godMode = !m_godMode;
+		return true;
 	}
 	return false;
 }
@@ -290,6 +310,7 @@ bool Game::HandleKeyReleased( unsigned char keyCode )
 */
 void Game::GameRender() const
 {
+	PROFILE_FUNCTION();
 	g_theRenderer->BindShader( m_shader );
 	g_theRenderer->BindSampler( SAMPLE_MODE_POINT );
 
@@ -304,6 +325,7 @@ void Game::GameRender() const
 */
 void Game::UpdateGame( float deltaSeconds )
 {
+	PROFILE_FUNCTION();
 	UpdateCamera( deltaSeconds );
 
 	HandleMapTransfers();

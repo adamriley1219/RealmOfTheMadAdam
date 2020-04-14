@@ -22,6 +22,8 @@
 #include "Engine/Core/Strings/NamedStrings.hpp"
 #include "Engine/Core/Strings/StringUtils.hpp"
 
+#include "Engine/Memory/Debug/LogProfile.hpp"
+
 #include "Game/GameCommon.hpp"
 
 //--------------------------------------------------------------------------

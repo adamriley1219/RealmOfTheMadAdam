@@ -12,6 +12,8 @@
 #include "Engine/Renderer/RenderContext.hpp"
 #include "Engine/Renderer/SpriteSheet.hpp"
 
+#include "Engine/Memory/Debug/LogProfile.hpp"
+
 //--------------------------------------------------------------------------
 /**
 * CombatSystem

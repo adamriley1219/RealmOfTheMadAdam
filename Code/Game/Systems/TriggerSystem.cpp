@@ -8,6 +8,7 @@
 #include "Game/Components/PhysicsComp.hpp"
 #include "Game/Components/IntentComp.hpp"
 
+#include "Game/Game.hpp"
 
 //--------------------------------------------------------------------------
 /**
@@ -94,7 +95,20 @@ void TriggerSystem::UpdateTriggerOnEntity( Entity& trigger, Entity& entity ) con
 			{
 				if ( trigger_stats_comp->m_team != entity_stats_comp->m_team )
 				{
-					entity_stats_comp->m_health -= trigger_comp->m_damage_on_triggered;
+					bool inGodMode = g_theGame->IsInGodMode();
+					if( inGodMode )
+					{
+						// Instantly kill enemies only.
+						if( entity_stats_comp->m_team == ENEMY_TEAM )
+						{
+							entity_stats_comp->m_health = 0;
+						}
+					}
+					else
+					{
+						entity_stats_comp->m_health -= trigger_comp->m_damage_on_triggered;
+					}
+
 					if (trigger_comp->m_die_on_contect)
 					{
 						trigger.m_destroy = true;

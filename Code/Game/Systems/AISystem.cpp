@@ -8,6 +8,7 @@
 #include "Game/Components/TriggerComp.hpp"
 
 #include "Engine/Math/MathUtils.hpp"
+#include "Engine/Memory/Debug/LogProfile.hpp"
 
 //--------------------------------------------------------------------------
 /**
@@ -36,6 +37,7 @@ AISystem::~AISystem()
 void AISystem::Update( float deltaTime ) const
 {
 	UNUSED(deltaTime);
+
 	EntityAdmin& admin = GetCurrentAdmin();
 	for (Entity& entity : admin.m_entities)
 	{

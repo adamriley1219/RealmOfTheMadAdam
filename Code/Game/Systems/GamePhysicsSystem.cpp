@@ -5,6 +5,7 @@
 #include "Game/Game.hpp"
 
 
+
 //--------------------------------------------------------------------------
 /**
 * GamePhysicsSystem
@@ -125,7 +126,6 @@ void GamePhysicsSystem::Update( float deltaTime ) const
 				// We are within the map.
 				HandleCollisionWithTile( *physics_comp, *trans_comp, *tile, ability_comp, &entity );
 				
-
 				IntVec2 cur_tile_coords = tile->GetTileMapCoordinates();
 
 				// Check left

@@ -26,6 +26,7 @@ public:
 	void UpdateGame( float deltaSeconds );
 
 	bool IsInDebug() { return m_inDebug; };
+	bool IsInGodMode() { return m_godMode; };
 
 public:
 	// Helper functions to create reconstructed entities
@@ -44,6 +45,7 @@ private:
 private:
 	bool m_isQuitting = false;
 	bool m_inDebug = false;
+	bool m_godMode = false;
 
 	Shader* m_shader;
 

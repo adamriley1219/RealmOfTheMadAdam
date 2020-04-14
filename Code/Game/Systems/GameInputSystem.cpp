@@ -6,6 +6,7 @@
 #include "Game/Components/IntentComp.hpp"
 #include "Game/Components/TransformComp.hpp"
 #include "Game/Components/CameraComp.hpp"
+#include "Game/Components/RenderComp.hpp"
 
 #include "Engine/Core/WindowContext.hpp"
 #include "Engine/Renderer/Camera.hpp"
@@ -94,6 +95,27 @@ void GameInputSystem::Update( float deltaTime ) const
 				Vec3 world_pos = camera_comp->m_camera->GetClientToWorld( raw_mouse_pos );
 
 				intent_comp_ptr->m_desired_fire_direction = ( Vec2( world_pos  ) - trans_comp->m_transform.m_position ).GetNormalized();
+			}
+		}
+	}
+
+	RenderComp* render_comp_ptr = (RenderComp*)player->GetComponent( RENDER_COMP );
+	if( render_comp_ptr )
+	{
+		bool inGodMode = g_theGame->IsInGodMode();
+		std::vector<Vertex_PCU>& verts = render_comp_ptr->m_main_group.verts;
+		if( inGodMode )
+		{
+			for( Vertex_PCU& vert : verts )
+			{
+				vert.color = Rgba::YELLOW;
+			}
+		}
+		else
+		{
+			for (Vertex_PCU& vert : verts)
+			{
+				vert.color = Rgba::WHITE;
 			}
 		}
 	}
