@@ -44,10 +44,8 @@ UISystem::~UISystem()
 /**
 * Render
 */
-#include "Engine/Memory/Debug/LogProfile.hpp"
 void UISystem::Render() const
 {
-	LogProfileScope lp("UISystem::Render");
 	EntityAdmin& admin = GetCurrentAdmin();
 
 	Entity* carrier = admin.GetFirstWithComp( QUEST_CARRIER_COMP );

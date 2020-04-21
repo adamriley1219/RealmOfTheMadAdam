@@ -212,7 +212,7 @@ void Game::Startup()
 	//--------------------------------------------------------------------------
 	enemy_sdef.GetUVs(bot_left_uvs, top_right_uvs);
 	float move_speed = 0.4f;
-	float vision_distance = 2.0f;
+	float vision_distance = 50.0f;
 	float damage_multiplier = 1.0f;
 	//--------------------------------------------------------------------------
 	// Enemy 3
@@ -228,7 +228,7 @@ void Game::Startup()
 	
 	//--------------------------------------------------------------------------
 	// Many enemies
-	int num_enemies = 600;
+	int num_enemies = 100;
 	float x_start	= 3.0f;
 	float y_loc		= 3.0f;
 	float x_loc		= x_start;
