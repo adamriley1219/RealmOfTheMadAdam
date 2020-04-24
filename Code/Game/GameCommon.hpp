@@ -3,6 +3,8 @@
 #include "Engine/Core/Vertex/Vertex_PCU.hpp"
 #include "Game/GameUtils.hpp"
 
+#include "Engine/Memory/Debug/Profiler.hpp"
+
 class RenderContext; // All may know about the renderer and the globe. You must include to use it.
 extern RenderContext* g_theRenderer;
 

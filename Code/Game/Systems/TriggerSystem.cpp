@@ -35,6 +35,7 @@ TriggerSystem::~TriggerSystem()
 */
 void TriggerSystem::Update( float deltaTime ) const
 {
+	PROFILE_FUNCTION();
 	UNUSED(deltaTime);
 	EntityAdmin& admin = GetCurrentAdmin();
 	for( Entity* trigger : admin.GetAllWithComp( TRIGGER_COMP ) )

@@ -40,6 +40,7 @@ MovementSystem::~MovementSystem()
 */
 void MovementSystem::Update( float deltaTime ) const
 {
+	PROFILE_FUNCTION();
 	EntityAdmin& admin = GetCurrentAdmin();
 	for( Entity& entity : admin.m_entities )
 	{

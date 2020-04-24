@@ -37,7 +37,7 @@ AISystem::~AISystem()
 void AISystem::Update( float deltaTime ) const
 {
 	UNUSED(deltaTime);
-
+	PROFILE_FUNCTION();
 	EntityAdmin& admin = GetCurrentAdmin();
 	for (Entity& entity : admin.m_entities)
 	{

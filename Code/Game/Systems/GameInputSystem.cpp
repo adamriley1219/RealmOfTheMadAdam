@@ -36,6 +36,7 @@ GameInputSystem::~GameInputSystem()
 */
 void GameInputSystem::Update( float deltaTime ) const
 {
+	PROFILE_FUNCTION();
 	UNUSED(deltaTime);
 	EntityAdmin& admin = GetCurrentAdmin();
 	Entity* player =  admin.GetFirstWithComp( INPUT_COMP );

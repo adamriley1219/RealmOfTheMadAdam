@@ -40,6 +40,8 @@ CombatSystem::~CombatSystem()
 void CombatSystem::Update( float delta_time ) const
 {
 	UNUSED(delta_time);
+	PROFILE_FUNCTION();
+
 	EntityAdmin& admin = GetCurrentAdmin();
 	for( Entity& entity : admin.m_entities )
 	{

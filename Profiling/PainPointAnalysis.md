@@ -4,14 +4,20 @@
 50/50 - Debug 30 fps, Release 300-500 fps 
 
 
-8106 enemies - 0 FPS
-1040 enemies - ~20 FPS
+8106 entities - 0 FPS
+1040 entities - ~20 FPS
 535 entities - ~60-70 FPS
 600 entities - 50-60 FPS sitting ~54
 600 entities all firing at the player with a 8 unit (one tile) radius creating ~850-900 entities
 	- ~30 FPS
 -
 
+##Update of Rendering pipeline from engine intergeneration
+
+about 300 entities gives around 200 FPS before the update.
+
+After update - No noticeable difference. 
+- No action taken.
 
 ##Profiling
 

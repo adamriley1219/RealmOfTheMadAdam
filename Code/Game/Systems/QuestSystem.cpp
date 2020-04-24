@@ -50,6 +50,7 @@ QuestSystem::~QuestSystem()
 */
 void QuestSystem::Update( float deltaTime ) const
 {
+	PROFILE_FUNCTION();
 	UNUSED(deltaTime);
 	EntityAdmin& admin = GetCurrentAdmin();
 	

@@ -40,6 +40,7 @@ RenderSystem::~RenderSystem()
 */
 void RenderSystem::Render() const
 {
+	PROFILE_FUNCTION();
 	Map* map = GetCurrentMap();
 	EntityAdmin& admin = map->m_admin;
 	
@@ -129,6 +130,7 @@ void RenderSystem::Render() const
 */
 void RenderSystem::Update( float deltaTime ) const
 {
+	PROFILE_FUNCTION();
 	UNUSED( deltaTime );
 	for( Entity& entity : GetCurrentAdmin().m_entities )
 	{

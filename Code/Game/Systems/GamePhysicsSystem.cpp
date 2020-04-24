@@ -31,6 +31,7 @@ GamePhysicsSystem::~GamePhysicsSystem()
 */
 void GamePhysicsSystem::Update( float deltaTime ) const
 {
+	PROFILE_FUNCTION();
 	UNUSED(deltaTime);
 	Map& map = *g_theGame->GetCurrentMap();
 
@@ -54,7 +55,6 @@ void GamePhysicsSystem::Update( float deltaTime ) const
 		}
 
 		TransformComp* trans_comp = (TransformComp*) entity.GetComponent( TRANSFORM_COMP );
-
 		if( physics_comp && trans_comp )
 		{
 

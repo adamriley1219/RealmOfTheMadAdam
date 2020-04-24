@@ -371,6 +371,7 @@ void App::Render() const
 	g_theGame->GameRender();
 	
 	ProfilerPush("imGUI");
+	ProfilerDisplayRender();
 	g_theImGUISystem->Render();
 	ProfilerPop();
 

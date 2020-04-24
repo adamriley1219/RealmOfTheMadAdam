@@ -46,6 +46,7 @@ UISystem::~UISystem()
 */
 void UISystem::Render() const
 {
+	PROFILE_FUNCTION();
 	EntityAdmin& admin = GetCurrentAdmin();
 
 	Entity* carrier = admin.GetFirstWithComp( QUEST_CARRIER_COMP );
@@ -66,6 +67,7 @@ void UISystem::Render() const
 		}
 	}
 }
+
 
 //--------------------------------------------------------------------------
 /**
@@ -111,6 +113,7 @@ void UISystem::RenderCarrierUI( Entity& carrier ) const
 	BitmapFont* font = g_theRenderer->CreateOrGetBitmapFromFile("SquirrelFixedFont");
 	std::vector<Vertex_PCU>& verts = render_comp->m_verts_groups["SquirrelFixedFont"].verts;
 	render_comp->m_verts_groups["SquirrelFixedFont"].is_text = true;
+
 	font->AddVertsFor2DTextAlignedInBox(verts, text_height, Stringf("Average FPS: %u", avg_fps).c_str(), carved_bot, Vec2::ALIGN_BOTTOM_LEFT, BITMAP_MODE_UNCHANGED, m_alignment_modifier);
 	carved_bot = screen.CarveBoxOffBottom(0.0f, 0.15f);
 	font->AddVertsFor2DTextAlignedInBox(verts, text_height, Stringf("FPS: %u", fps).c_str(), carved_bot, Vec2::ALIGN_BOTTOM_LEFT, BITMAP_MODE_UNCHANGED, m_alignment_modifier);
