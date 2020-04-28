@@ -92,6 +92,7 @@ void App::Shutdown()
 	g_theEventSystem->Shutdown();
 
 	ProfilerSystemDeinit();
+	LogProfilePrintToLog();
 	LogSystemShutdown();
 
 	SAFE_DELETE( g_theGame );
@@ -112,7 +113,6 @@ void App::Shutdown()
 */
 void App::RunFrame()
 {
-	ProfilerBeginFrame();
 	if (m_isSlowMo)
 	{
 		m_gameClock->Dilate(0.1f);
@@ -131,7 +131,6 @@ void App::RunFrame()
 	Update((float)m_gameClock->GetFrameTime());
 	Render();
 	EndFrame();
-	ProfilerEndFrame();
 }
 
 //--------------------------------------------------------------------------
@@ -277,7 +276,6 @@ void App::Pause()
 */
 void App::BeginFrame()
 {
-	PROFILE_FUNCTION();
 	ClockSystemBeginFrame();
 	g_theImGUISystem->		BeginFrame();
 	g_theEventSystem->		BeginFrame();
@@ -295,8 +293,6 @@ void App::BeginFrame()
 */
 void App::Update( float deltaSeconds )
 {
-	PROFILE_FUNCTION();
-
 	g_theConsole->			Update();
 	g_theGame->				UpdateGame( deltaSeconds );
 	g_theDebugRenderSystem->Update();
@@ -364,8 +360,6 @@ void App::RenderDebugLeftJoystick() const
 */
 void App::Render() const
 {
-	PROFILE_FUNCTION();
-
 	g_theRenderer->ClearScreen( Rgba::BLACK );
 
 	g_theGame->GameRender();
@@ -391,8 +385,6 @@ void App::Render() const
 */
 void App::EndFrame()
 {
-	PROFILE_FUNCTION();
-
 	g_theConsole->		EndFrame();
 	g_theAudioSystem->	EndFrame();
 	g_theInputSystem->	EndFrame();

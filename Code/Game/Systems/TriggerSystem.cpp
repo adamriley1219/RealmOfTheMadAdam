@@ -8,6 +8,9 @@
 #include "Game/Components/PhysicsComp.hpp"
 #include "Game/Components/IntentComp.hpp"
 
+#include "Engine/Memory/Debug/LogProfile.hpp"
+
+
 #include "Game/Game.hpp"
 
 //--------------------------------------------------------------------------
@@ -35,7 +38,6 @@ TriggerSystem::~TriggerSystem()
 */
 void TriggerSystem::Update( float deltaTime ) const
 {
-	PROFILE_FUNCTION();
 	UNUSED(deltaTime);
 	EntityAdmin& admin = GetCurrentAdmin();
 	for( Entity* trigger : admin.GetAllWithComp( TRIGGER_COMP ) )

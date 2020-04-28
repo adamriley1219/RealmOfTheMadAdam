@@ -14,6 +14,9 @@
 #include "Engine/Core/Debug/DevConsole.hpp"
 #include "Engine/Core/EngineCommon.hpp"
 
+#include "Engine/Memory/Debug/LogProfile.hpp"
+
+
 
 //--------------------------------------------------------------------------
 /**
@@ -40,7 +43,6 @@ MovementSystem::~MovementSystem()
 */
 void MovementSystem::Update( float deltaTime ) const
 {
-	PROFILE_FUNCTION();
 	EntityAdmin& admin = GetCurrentAdmin();
 	for( Entity& entity : admin.m_entities )
 	{

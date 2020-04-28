@@ -1,0 +1,42 @@
+LogProfile:-----------------------------------------------------------------------------------------------
+LogProfilePrintToLog:
+Frame count: 1000
+
+Scope Name [AISystem::Update]
+Time Average over frames: 0.053 MS
+Time Average over individual call: 0.053 MS
+Average Calls per frame: 1
+
+Scope Name [GamePhysicsSystem::Update]
+Time Average over frames: 8.863 MS
+Time Average over individual call: 8.863 MS
+Average Calls per frame: 1
+
+Scope Name [App::Update]
+Time Average over frames: 9.125 MS
+Time Average over individual call: 9.125 MS
+Average Calls per frame: 1
+
+Scope Name [App::Render]
+Time Average over frames: 1.031 MS
+Time Average over individual call: 1.031 MS
+Average Calls per frame: 1
+
+Scope Name [App::RunFrame]
+Time Average over frames: 11.065 MS
+Time Average over individual call: 11.065 MS
+Average Calls per frame: 1
+-----------------------------------------------------------------------------------------------
+
+Notes: Comparison:
+
+[GamePhysicsSystem::Update]
+before: 17.817 MS
+after: 8.863 MS
+
+
+Not as great of a gain than when updating the AI system but that's to be expected.
+The gain was 17.817 - 8.863 = 8.954 
+This results in a %50 gain.
+
+Determined that 1150 entities is the max for the system at this point.

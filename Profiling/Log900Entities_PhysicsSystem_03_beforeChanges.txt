@@ -1,0 +1,34 @@
+LogProfile:-----------------------------------------------------------------------------------------------
+LogProfilePrintToLog:
+Frame count: 1000
+
+Scope Name [AISystem::Update]
+Time Average over frames: 0.047 MS
+Time Average over individual call: 0.047 MS
+Average Calls per frame: 1
+
+Scope Name [GamePhysicsSystem::Update]
+Time Average over frames: 17.817 MS
+Time Average over individual call: 17.817 MS
+Average Calls per frame: 1
+
+Scope Name [App::Update]
+Time Average over frames: 18.083 MS
+Time Average over individual call: 18.083 MS
+Average Calls per frame: 1
+
+Scope Name [App::Render]
+Time Average over frames: 1.070 MS
+Time Average over individual call: 1.070 MS
+Average Calls per frame: 1
+
+Scope Name [App::RunFrame]
+Time Average over frames: 20.111 MS
+Time Average over individual call: 20.111 MS
+Average Calls per frame: 1
+-----------------------------------------------------------------------------------------------
+
+Notes: Before changes take place.
+Changes are to reduce the amount of entities that are being iterated over.
+This change was determined by stats taken from Log900Entities_PhysicsSystem_02 where the number of calls
+influenced the total amount of time the function took.

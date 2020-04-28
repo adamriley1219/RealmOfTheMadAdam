@@ -1,0 +1,36 @@
+LogProfile:-----------------------------------------------------------------------------------------------
+LogProfilePrintToLog:
+Frame count: 912
+
+Scope Name [AISystem::Update]
+Time Average over frames: 0.048 MS
+Time Average over individual call: 0.048 MS
+Average Calls per frame: 1
+
+Scope Name [Inside Entity Check]
+Time Average over frames: 16.756 MS
+Time Average over individual call: 0.019 MS
+Average Calls per frame: 904
+
+Scope Name [GamePhysicsSystem::Update]
+Time Average over frames: 16.955 MS
+Time Average over individual call: 16.955 MS
+Average Calls per frame: 1
+
+Scope Name [App::Update]
+Time Average over frames: 17.226 MS
+Time Average over individual call: 17.226 MS
+Average Calls per frame: 1
+
+Scope Name [App::Render]
+Time Average over frames: 1.072 MS
+Time Average over individual call: 1.072 MS
+Average Calls per frame: 1
+
+Scope Name [App::RunFrame]
+Time Average over frames: 19.217 MS
+Time Average over individual call: 19.217 MS
+Average Calls per frame: 1
+-----------------------------------------------------------------------------------------------
+
+Notes: Determined that the problem is on a lower level than [Inside Entity Check]

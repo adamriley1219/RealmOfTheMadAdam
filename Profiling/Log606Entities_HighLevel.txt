@@ -1,0 +1,75 @@
+LogProfile:-----------------------------------------------------------------------------------------------
+LogProfilePrintToLog:
+Frame count: 1000
+
+Scope Name [App::BeginFrame]
+Time Average over frames: 0.245 MS
+Time Average over individual call: 0.245 MS
+Average Calls per frame: 1
+
+Scope Name [GameInputSystem::Update]
+Time Average over frames: 0.000 MS
+Time Average over individual call: 0.000 MS
+Average Calls per frame: 1
+
+Scope Name [AISystem::Update]
+Time Average over frames: 9.008 MS
+Time Average over individual call: 9.008 MS
+Average Calls per frame: 1
+
+Scope Name [GamePhysicsSystem::Update]
+Time Average over frames: 9.374 MS
+Time Average over individual call: 9.374 MS
+Average Calls per frame: 1
+
+Scope Name [CombatSystem::Update]
+Time Average over frames: 0.022 MS
+Time Average over individual call: 0.022 MS
+Average Calls per frame: 1
+
+Scope Name [QuestSystem::Update]
+Time Average over frames: 0.001 MS
+Time Average over individual call: 0.001 MS
+Average Calls per frame: 1
+
+Scope Name [TriggerSystem::Update]
+Time Average over frames: 0.045 MS
+Time Average over individual call: 0.045 MS
+Average Calls per frame: 1
+
+Scope Name [MovementSystem::Update]
+Time Average over frames: 0.017 MS
+Time Average over individual call: 0.017 MS
+Average Calls per frame: 1
+
+Scope Name [RenderSystem::Update]
+Time Average over frames: 0.031 MS
+Time Average over individual call: 0.031 MS
+Average Calls per frame: 1
+
+Scope Name [App::Update]
+Time Average over frames: 18.559 MS
+Time Average over individual call: 18.559 MS
+Average Calls per frame: 1
+
+Scope Name [UISystem::Render]
+Time Average over frames: 0.034 MS
+Time Average over individual call: 0.034 MS
+Average Calls per frame: 1
+
+Scope Name [App::Render]
+Time Average over frames: 0.881 MS
+Time Average over individual call: 0.881 MS
+Average Calls per frame: 1
+
+Scope Name [App::EndFrame]
+Time Average over frames: 0.666 MS
+Time Average over individual call: 0.666 MS
+Average Calls per frame: 1
+
+Scope Name [App::RunFrame]
+Time Average over frames: 20.353 MS
+Time Average over individual call: 20.353 MS
+Average Calls per frame: 1
+-----------------------------------------------------------------------------------------------
+

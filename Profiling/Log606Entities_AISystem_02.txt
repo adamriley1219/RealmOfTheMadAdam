@@ -1,0 +1,52 @@
+LogProfile:-----------------------------------------------------------------------------------------------
+LogProfilePrintToLog:
+Frame count: 1000
+
+Scope Name [Update AI Entity that has been claimed]
+Time Average over frames: 8.046 MS
+Time Average over individual call: 0.013 MS
+Average Calls per frame: 606
+
+Scope Name [All AI update entity calls]
+Time Average over frames: 8.518 MS
+Time Average over individual call: 0.001 MS
+Average Calls per frame: 8200
+
+Scope Name [AISystem::GetClosetsEnemyInRange]
+Time Average over frames: 7.802 MS
+Time Average over individual call: 0.013 MS
+Average Calls per frame: 603
+
+Scope Name [Valid AI to Update]
+Time Average over frames: 7.953 MS
+Time Average over individual call: 0.013 MS
+Average Calls per frame: 603
+
+Scope Name [AISystem::Update]
+Time Average over frames: 9.160 MS
+Time Average over individual call: 9.160 MS
+Average Calls per frame: 1
+
+Scope Name [GamePhysicsSystem::Update]
+Time Average over frames: 9.204 MS
+Time Average over individual call: 9.204 MS
+Average Calls per frame: 1
+
+Scope Name [App::Update]
+Time Average over frames: 18.535 MS
+Time Average over individual call: 18.535 MS
+Average Calls per frame: 1
+
+Scope Name [App::Render]
+Time Average over frames: 0.871 MS
+Time Average over individual call: 0.871 MS
+Average Calls per frame: 1
+
+Scope Name [App::RunFrame]
+Time Average over frames: 20.348 MS
+Time Average over individual call: 20.348 MS
+Average Calls per frame: 1
+-----------------------------------------------------------------------------------------------
+
+Notes:
+Looks like the real bottleneck resides in GetClosestEnemyInRange

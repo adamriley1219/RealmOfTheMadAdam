@@ -140,7 +140,7 @@ void Game::Startup()
 
 	//--------------------------------------------------------------------------
 	// Exit map 0-1
-	CreateExit( Vec2(8.0f, 8.0f), Vec2(2.0f, 2.0f), m_map_id, 1, true, texture_ArtVehicles_path, bot_left_uvs, top_right_uvs );
+	CreateExit( Vec2(8.0f, 8.0f), Vec2(2.0f, 2.0f), 0, 1, true, texture_ArtVehicles_path, bot_left_uvs, top_right_uvs );
 
 	//--------------------------------------------------------------------------
 	// Player
@@ -169,7 +169,7 @@ void Game::Startup()
 	player_stats->m_damage_multiplier = 4.0f;
 
 	TransformComp* player_transform_comp = (TransformComp*)player->AddComponent( TRANSFORM_COMP );
-	player_transform_comp->m_transform.m_position = Vec2( 4.5, 2.5 );
+	player_transform_comp->m_transform.m_position = Vec2( 4.5f, 3.5f );
 
 	RenderComp* render_comp_player = (RenderComp*)player->AddComponent( RENDER_COMP );
 	AddVertsForAABB2D( render_comp_player->m_main_group.verts, AABB2( player_physics_comp->m_radius * 2.0f, player_physics_comp->m_radius * 2.0f ), Rgba::WHITE, Vec2( 0.0f, 0.75f ), Vec2( 0.25f, 1.0f ) );
@@ -177,7 +177,7 @@ void Game::Startup()
 
 	//--------------------------------------------------------------------------
 	// Quest
-	Entity* kill_enemies_quest = m_maps[m_map_id]->m_admin.CreateEntity();
+	Entity* kill_enemies_quest = m_maps[0]->m_admin.CreateEntity();
 	QuestComp* quest_comp = (QuestComp*)kill_enemies_quest->AddComponent( QUEST_COMP );
 	quest_comp->accept_text = "Thanks, for this. Please hurry...";
 	quest_comp->init_text = "....Please....Please help.... There's so many creatures...";
@@ -191,7 +191,7 @@ void Game::Startup()
 
 	//--------------------------------------------------------------------------
 	// NPC
-	Entity* silent_joe = m_maps[m_map_id]->m_admin.CreateEntity();
+	Entity* silent_joe = m_maps[0]->m_admin.CreateEntity();
 	silent_joe->AddComponent( INTERACT_COMP );
 	silent_joe->AddComponent( AI_COMP );
 	QuestGiverComp* npc_quest_giver_comp = (QuestGiverComp*)silent_joe->AddComponent( QUEST_GIVER_COMP );
@@ -212,7 +212,7 @@ void Game::Startup()
 	//--------------------------------------------------------------------------
 	enemy_sdef.GetUVs(bot_left_uvs, top_right_uvs);
 	float move_speed = 0.4f;
-	float vision_distance = 50.0f;
+	float vision_distance = 3.0f;
 	float damage_multiplier = 1.0f;
 	//--------------------------------------------------------------------------
 	// Enemy 3
@@ -228,7 +228,7 @@ void Game::Startup()
 	
 	//--------------------------------------------------------------------------
 	// Many enemies
-	int num_enemies = 100;
+	int num_enemies = 900;
 	float x_start	= 3.0f;
 	float y_loc		= 3.0f;
 	float x_loc		= x_start;
@@ -249,6 +249,7 @@ void Game::Startup()
 
 		--num_enemies;
 	}
+
 }
 
 //--------------------------------------------------------------------------
@@ -310,7 +311,6 @@ bool Game::HandleKeyReleased( unsigned char keyCode )
 */
 void Game::GameRender() const
 {
-	PROFILE_FUNCTION();
 	g_theRenderer->BindShader( m_shader );
 	g_theRenderer->BindSampler( SAMPLE_MODE_POINT );
 
@@ -325,7 +325,6 @@ void Game::GameRender() const
 */
 void Game::UpdateGame( float deltaSeconds )
 {
-	PROFILE_FUNCTION();
 	UpdateCamera( deltaSeconds );
 
 	HandleMapTransfers();

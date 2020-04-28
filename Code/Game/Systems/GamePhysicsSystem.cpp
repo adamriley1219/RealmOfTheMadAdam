@@ -4,6 +4,7 @@
 #include "Game/Map.hpp"
 #include "Game/Game.hpp"
 
+#include "Engine/Memory/Debug/LogProfile.hpp"
 
 
 //--------------------------------------------------------------------------
@@ -31,21 +32,16 @@ GamePhysicsSystem::~GamePhysicsSystem()
 */
 void GamePhysicsSystem::Update( float deltaTime ) const
 {
-	PROFILE_FUNCTION();
 	UNUSED(deltaTime);
 	Map& map = *g_theGame->GetCurrentMap();
 
 	// Push out of each other or enlist a trigger
 	EntityAdmin& admin = GetCurrentAdmin();
-	for( Entity& entity : admin.m_entities )
+	std::vector<Entity*>& physics_enitites = admin.GetAllWithComp( PHYSICS_COMP );
+	for( Entity* entity : physics_enitites )
 	{
-		if ( !entity.m_claimed )
-		{
-			continue;
-		}
-
-		PhysicsComp* physics_comp = (PhysicsComp*) entity.GetComponent( PHYSICS_COMP );
-		TriggerComp* trigger_comp = (TriggerComp*) entity.GetComponent( TRIGGER_COMP );
+		PhysicsComp* physics_comp = (PhysicsComp*) entity->GetComponent( PHYSICS_COMP );
+		TriggerComp* trigger_comp = (TriggerComp*) entity->GetComponent( TRIGGER_COMP );
 		bool is_trigger = trigger_comp;
 
 		if( physics_comp && ( physics_comp->m_static_object || is_trigger ) )
@@ -54,24 +50,23 @@ void GamePhysicsSystem::Update( float deltaTime ) const
 			continue;
 		}
 
-		TransformComp* trans_comp = (TransformComp*) entity.GetComponent( TRANSFORM_COMP );
+		TransformComp* trans_comp = (TransformComp*) entity->GetComponent( TRANSFORM_COMP );
 		if( physics_comp && trans_comp )
 		{
-
 			physics_comp->m_push_out_dir_amount = Vec2::ZERO;
 
 			// Check on other entities
-			for (Entity& other_entity : admin.m_entities)
+			for( Entity* other_entity : physics_enitites )
 			{
 				// don't check on self
-				if( !other_entity.m_claimed || other_entity.m_id == entity.m_id )
+				if( other_entity->m_id == entity->m_id )
 				{
 					continue;
 				}
 
-				PhysicsComp* other_physics_comp = (PhysicsComp*)other_entity.GetComponent( PHYSICS_COMP );
-				TransformComp* other_trans_comp = (TransformComp*)other_entity.GetComponent( TRANSFORM_COMP );
-				TriggerComp* other_trigger_comp = (TriggerComp*)other_entity.GetComponent( TRIGGER_COMP );
+				PhysicsComp* other_physics_comp = (PhysicsComp*)other_entity->GetComponent( PHYSICS_COMP );
+				TransformComp* other_trans_comp = (TransformComp*)other_entity->GetComponent( TRANSFORM_COMP );
+				TriggerComp* other_trigger_comp = (TriggerComp*)other_entity->GetComponent( TRIGGER_COMP );
 				// Check if I can push out from other entity
 				if( other_physics_comp && other_trans_comp )
 				{

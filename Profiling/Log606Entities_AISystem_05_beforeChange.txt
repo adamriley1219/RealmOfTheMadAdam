@@ -1,0 +1,36 @@
+LogProfile:-----------------------------------------------------------------------------------------------
+LogProfilePrintToLog:
+Frame count: 613
+
+Scope Name [AISystem::GetClosetsEnemyInRange]
+Time Average over frames: 7.763 MS
+Time Average over individual call: 0.013 MS
+Average Calls per frame: 603
+
+Scope Name [AISystem::Update]
+Time Average over frames: 7.903 MS
+Time Average over individual call: 7.903 MS
+Average Calls per frame: 1
+
+Scope Name [GamePhysicsSystem::Update]
+Time Average over frames: 8.298 MS
+Time Average over individual call: 8.298 MS
+Average Calls per frame: 1
+
+Scope Name [App::Update]
+Time Average over frames: 16.370 MS
+Time Average over individual call: 16.370 MS
+Average Calls per frame: 1
+
+Scope Name [App::Render]
+Time Average over frames: 0.871 MS
+Time Average over individual call: 0.871 MS
+Average Calls per frame: 1
+
+Scope Name [App::RunFrame]
+Time Average over frames: 18.159 MS
+Time Average over individual call: 18.159 MS
+Average Calls per frame: 1
+-----------------------------------------------------------------------------------------------
+
+Note: Change purposed. Move entities into buckets of teams. These team will be iterated over instead of all entities. 

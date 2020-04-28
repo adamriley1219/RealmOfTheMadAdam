@@ -11,6 +11,8 @@
 #include "Engine/Core/WindowContext.hpp"
 #include "Engine/Renderer/Camera.hpp"
 
+#include "Engine/Memory/Debug/LogProfile.hpp"
+
 //--------------------------------------------------------------------------
 /**
 * GameInpuSystem
@@ -36,7 +38,6 @@ GameInputSystem::~GameInputSystem()
 */
 void GameInputSystem::Update( float deltaTime ) const
 {
-	PROFILE_FUNCTION();
 	UNUSED(deltaTime);
 	EntityAdmin& admin = GetCurrentAdmin();
 	Entity* player =  admin.GetFirstWithComp( INPUT_COMP );

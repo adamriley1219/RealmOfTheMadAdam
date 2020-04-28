@@ -1,0 +1,46 @@
+LogProfile:-----------------------------------------------------------------------------------------------
+LogProfilePrintToLog:
+Frame count: 1000
+
+Scope Name [AISystem::GetClosetsEnemyInRange]
+Time Average over frames: 0.047 MS
+Time Average over individual call: 0.000 MS
+Average Calls per frame: 603
+
+Scope Name [AISystem::Update]
+Time Average over frames: 0.148 MS
+Time Average over individual call: 0.148 MS
+Average Calls per frame: 1
+
+Scope Name [GamePhysicsSystem::Update]
+Time Average over frames: 8.426 MS
+Time Average over individual call: 8.426 MS
+Average Calls per frame: 1
+
+Scope Name [App::Update]
+Time Average over frames: 8.755 MS
+Time Average over individual call: 8.755 MS
+Average Calls per frame: 1
+
+Scope Name [App::Render]
+Time Average over frames: 0.887 MS
+Time Average over individual call: 0.887 MS
+Average Calls per frame: 1
+
+Scope Name [App::RunFrame]
+Time Average over frames: 10.583 MS
+Time Average over individual call: 10.583 MS
+Average Calls per frame: 1
+-----------------------------------------------------------------------------------------------
+
+Notes:
+After change, there is an comparison of MS over a frame of 
+
+Scope Name [AISystem::Update]
+Before: 7.903 MS
+After: 0.148 MS
+
+Making the changes to reduce the calls to be a MS gain of 7.755 MS
+making the system 98% faster
+
+determined that 900 entities are the max for the system at this point.

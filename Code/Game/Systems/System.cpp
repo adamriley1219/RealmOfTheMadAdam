@@ -1,5 +1,6 @@
 #include "Game/Systems/System.hpp"
 #include "Engine/Core/EngineCommon.hpp"
+#include "Engine/Memory/Debug/LogProfile.hpp"
 
 //--------------------------------------------------------------------------
 /**

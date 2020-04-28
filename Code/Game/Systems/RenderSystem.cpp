@@ -13,6 +13,8 @@
 #include "Engine/Math/Matrix44.hpp"
 
 #include "Engine/Physics/Transform2D.hpp"
+#include "Engine/Memory/Debug/LogProfile.hpp"
+
 
 
 //--------------------------------------------------------------------------
@@ -40,7 +42,6 @@ RenderSystem::~RenderSystem()
 */
 void RenderSystem::Render() const
 {
-	PROFILE_FUNCTION();
 	Map* map = GetCurrentMap();
 	EntityAdmin& admin = map->m_admin;
 	
@@ -130,7 +131,6 @@ void RenderSystem::Render() const
 */
 void RenderSystem::Update( float deltaTime ) const
 {
-	PROFILE_FUNCTION();
 	UNUSED( deltaTime );
 	for( Entity& entity : GetCurrentAdmin().m_entities )
 	{

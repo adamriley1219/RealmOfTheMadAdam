@@ -70,6 +70,10 @@ EntityAdmin::EntityAdmin()
 	m_list_of_ability_comps.resize(MAX_ENTITIES);
 	m_list_of_trigger_comps.resize(MAX_ENTITIES);
 	m_list_of_stat_comps.resize(MAX_ENTITIES);
+
+	m_list_of_Enemys.resize(MAX_ENTITIES);
+	m_list_of_Allies.resize(MAX_ENTITIES);
+	m_list_of_Nutrual.resize(MAX_ENTITIES);
 }
 
 //--------------------------------------------------------------------------
@@ -466,6 +470,24 @@ std::vector<Entity*>& EntityAdmin::GetAllWithComp( eComponentType type )
 
 //--------------------------------------------------------------------------
 /**
+* GetAllEnemiesTo
+*/
+std::vector<Entity*>& EntityAdmin::GetAllEnemiesTo( const StatsComp* team )
+{
+	if( team->IsEnemy( ALLIED_TEAM ) )
+	{
+		return m_list_of_Allies;
+	}
+	if( team->IsEnemy( ENEMY_TEAM ) )
+	{
+		return m_list_of_Enemys;
+	}
+
+	return m_list_of_Nutrual;
+}
+
+//--------------------------------------------------------------------------
+/**
 * UpdateStateOfCompLists
 */
 void EntityAdmin::UpdateStateOfCompLists()
@@ -486,6 +508,11 @@ void EntityAdmin::UpdateStateOfCompLists()
 	m_list_of_ability_comps.clear();
 	m_list_of_trigger_comps.clear();
 	m_list_of_stat_comps.clear();
+
+
+	m_list_of_Enemys.clear();
+	m_list_of_Allies.clear();
+	m_list_of_Nutrual.clear();
 
 	for( uint idx = 0; idx < MAX_ENTITIES; ++idx )
 	{
@@ -559,6 +586,21 @@ void EntityAdmin::UpdateStateOfCompLists()
 		if( entity.HasComponent( STATS_COMP ) )
 		{
 			m_list_of_stat_comps.push_back(&entity);
+			StatsComp* stats = (StatsComp*) entity.GetComponent( STATS_COMP );
+			switch (stats->m_team)
+			{
+			case ALLIED_TEAM:
+				m_list_of_Allies.push_back(&entity);
+				break;
+			case ENEMY_TEAM:
+				m_list_of_Enemys.push_back(&entity);
+				break;
+			case NUTRAL_TEAM:
+				m_list_of_Nutrual.push_back(&entity);
+				break;
+			default:
+				break;
+			}
 		}
 	}
 }

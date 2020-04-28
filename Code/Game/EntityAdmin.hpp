@@ -55,6 +55,7 @@ public:
 
 	Entity* GetFirstWithComp( eComponentType type );
 	std::vector<Entity*>& GetAllWithComp( eComponentType type );
+	std::vector<Entity*>& GetAllEnemiesTo( const StatsComp* team );
 
 private:
 	void UpdateStateOfCompLists();
@@ -99,6 +100,10 @@ private:
 	std::vector<Entity*> m_list_of_ability_comps;
 	std::vector<Entity*> m_list_of_trigger_comps;
 	std::vector<Entity*> m_list_of_stat_comps;
+
+	std::vector<Entity*> m_list_of_Enemys;
+	std::vector<Entity*> m_list_of_Allies;
+	std::vector<Entity*> m_list_of_Nutrual;
 	
 };
 

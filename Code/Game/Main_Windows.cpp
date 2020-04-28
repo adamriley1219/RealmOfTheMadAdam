@@ -14,6 +14,8 @@
 #include "Engine/Renderer/RenderContext.hpp"
 #include "Engine/ImGUI/ImGUISystem.hpp"
 
+#include "Engine/Memory/Debug/LogProfile.hpp"
+
 #include "Game/GameCommon.hpp"
 #include "Game/App.hpp"
 
@@ -125,8 +127,9 @@ void RunFrame()
 {
 	RunMessagePump();
 
+	LogProfileBeginFrame();
 	g_theApp->RunFrame();	
-
+	LogProfileEndFrame();
 }
 //-----------------------------------------------------------------------------------------------
 void Startup()

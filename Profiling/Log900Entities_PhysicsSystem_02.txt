@@ -1,0 +1,36 @@
+LogProfile:-----------------------------------------------------------------------------------------------
+LogProfilePrintToLog:
+Frame count: 363
+
+Scope Name [AISystem::Update]
+Time Average over frames: 0.048 MS
+Time Average over individual call: 0.048 MS
+Average Calls per frame: 1
+
+Scope Name [Entity vs Entity]
+Time Average over frames: 43.411 MS
+Time Average over individual call: 0.000 MS
+Average Calls per frame: 818120
+
+Scope Name [GamePhysicsSystem::Update]
+Time Average over frames: 113.368 MS
+Time Average over individual call: 113.368 MS
+Average Calls per frame: 1
+
+Scope Name [App::Update]
+Time Average over frames: 113.643 MS
+Time Average over individual call: 113.643 MS
+Average Calls per frame: 1
+
+Scope Name [App::Render]
+Time Average over frames: 1.099 MS
+Time Average over individual call: 1.099 MS
+Average Calls per frame: 1
+
+Scope Name [App::RunFrame]
+Time Average over frames: 115.847 MS
+Time Average over individual call: 115.847 MS
+Average Calls per frame: 1
+-----------------------------------------------------------------------------------------------
+
+Note: Determined that it's not inside [Entity vs Entity] but could be related to the number of calls into this section.

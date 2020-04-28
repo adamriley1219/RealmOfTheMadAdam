@@ -1,0 +1,42 @@
+LogProfile:-----------------------------------------------------------------------------------------------
+LogProfilePrintToLog:
+Frame count: 638
+
+Scope Name [Found Entity to check]
+Time Average over frames: 18.861 MS
+Time Average over individual call: 0.000 MS
+Average Calls per frame: 364212
+
+Scope Name [AISystem::GetClosetsEnemyInRange]
+Time Average over frames: 55.268 MS
+Time Average over individual call: 0.092 MS
+Average Calls per frame: 603
+
+Scope Name [AISystem::Update]
+Time Average over frames: 55.442 MS
+Time Average over individual call: 55.442 MS
+Average Calls per frame: 1
+
+Scope Name [GamePhysicsSystem::Update]
+Time Average over frames: 8.295 MS
+Time Average over individual call: 8.295 MS
+Average Calls per frame: 1
+
+Scope Name [App::Update]
+Time Average over frames: 63.907 MS
+Time Average over individual call: 63.907 MS
+Average Calls per frame: 1
+
+Scope Name [App::Render]
+Time Average over frames: 0.887 MS
+Time Average over individual call: 0.887 MS
+Average Calls per frame: 1
+
+Scope Name [App::RunFrame]
+Time Average over frames: 65.736 MS
+Time Average over individual call: 65.736 MS
+Average Calls per frame: 1
+-----------------------------------------------------------------------------------------------
+
+Note: I feel the pain point is that we are looping over 606 * 606 entities and the math logic is fine.
+The biggest win here could be that making another entity dump in the beginning as there are usually multiple enemies or multiple allies, but not usually both.

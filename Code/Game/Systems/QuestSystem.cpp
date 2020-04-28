@@ -25,6 +25,9 @@
 #include "Engine/Core/Strings/NamedStrings.hpp"
 #include "Engine/Core/Time/Clock.hpp"
 
+#include "Engine/Memory/Debug/LogProfile.hpp"
+
+
 //--------------------------------------------------------------------------
 /**
 * QuestSystem
@@ -50,7 +53,6 @@ QuestSystem::~QuestSystem()
 */
 void QuestSystem::Update( float deltaTime ) const
 {
-	PROFILE_FUNCTION();
 	UNUSED(deltaTime);
 	EntityAdmin& admin = GetCurrentAdmin();
 	

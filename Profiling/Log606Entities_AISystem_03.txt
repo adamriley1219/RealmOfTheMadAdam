@@ -1,0 +1,59 @@
+LogProfile:-----------------------------------------------------------------------------------------------
+LogProfilePrintToLog:
+Frame count: 24
+
+Scope Name [All AI update entity calls]
+Time Average over frames: 680.293 MS
+Time Average over individual call: 0.083 MS
+Average Calls per frame: 8192
+
+Scope Name [Entity check]
+Time Average over frames: 416.878 MS
+Time Average over individual call: 0.000 MS
+Average Calls per frame: 5303988
+
+Scope Name [Found Entity to check]
+Time Average over frames: 18.874 MS
+Time Average over individual call: 0.000 MS
+Average Calls per frame: 364212
+
+Scope Name [AISystem::GetClosetsEnemyInRange]
+Time Average over frames: 679.520 MS
+Time Average over individual call: 1.127 MS
+Average Calls per frame: 603
+
+Scope Name [Valid AI to Update]
+Time Average over frames: 679.762 MS
+Time Average over individual call: 1.127 MS
+Average Calls per frame: 603
+
+Scope Name [AISystem::Update]
+Time Average over frames: 680.977 MS
+Time Average over individual call: 680.977 MS
+Average Calls per frame: 1
+
+Scope Name [GamePhysicsSystem::Update]
+Time Average over frames: 8.482 MS
+Time Average over individual call: 8.482 MS
+Average Calls per frame: 1
+
+Scope Name [App::Update]
+Time Average over frames: 689.655 MS
+Time Average over individual call: 689.655 MS
+Average Calls per frame: 1
+
+Scope Name [App::Render]
+Time Average over frames: 0.978 MS
+Time Average over individual call: 0.978 MS
+Average Calls per frame: 1
+
+Scope Name [App::RunFrame]
+Time Average over frames: 691.675 MS
+Time Average over individual call: 691.675 MS
+Average Calls per frame: 1
+-----------------------------------------------------------------------------------------------
+
+Notes:
+***Profile slowing system down***
+There are 606 entities wanting to get the closes enemy by iterating over all entities. 
+This will happen 606 * 606 times making the 

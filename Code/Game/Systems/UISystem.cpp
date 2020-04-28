@@ -18,6 +18,8 @@
 #include "Engine/Core/Strings/NamedStrings.hpp"
 #include "Engine/Core/Time/Clock.hpp"
 
+#include "Engine/Memory/Debug/LogProfile.hpp"
+
 #include "Engine/Renderer/BitmapFont.hpp"
 #include "Engine/Renderer/RenderContext.hpp"
 
@@ -46,7 +48,6 @@ UISystem::~UISystem()
 */
 void UISystem::Render() const
 {
-	PROFILE_FUNCTION();
 	EntityAdmin& admin = GetCurrentAdmin();
 
 	Entity* carrier = admin.GetFirstWithComp( QUEST_CARRIER_COMP );

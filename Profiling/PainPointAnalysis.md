@@ -1,3 +1,18 @@
+##Change Checklist
+- All changes made to code must follow these rules beforehand.
+
+Get to bottlenecks by finding MS going down.
+Pinpoint where the problem resides by using MS.
+Move on to refactoring to optimize the code.
+Retest to see if the MS has any improvements.
+
+##Finding a good test case
+
+- 606 entities stat at about 50 FPS
+	- Goal is 60+
+
+
+
 ##Pain Point Analysis
 
 3 enemies

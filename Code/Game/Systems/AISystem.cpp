@@ -37,7 +37,6 @@ AISystem::~AISystem()
 void AISystem::Update( float deltaTime ) const
 {
 	UNUSED(deltaTime);
-	PROFILE_FUNCTION();
 	EntityAdmin& admin = GetCurrentAdmin();
 	for (Entity& entity : admin.m_entities)
 	{
@@ -45,6 +44,7 @@ void AISystem::Update( float deltaTime ) const
 		{
 			continue;
 		}
+
 
 		AIComp* ai_comp = (AIComp*) entity.GetComponent( AI_COMP );
 		TransformComp* trans_comp = (TransformComp*) entity.GetComponent( TRANSFORM_COMP );
@@ -96,32 +96,28 @@ Entity* AISystem::GetClosetsEnemyInRange( const Vec2& position, float range, con
 	Entity* best_entity = nullptr;
 	float best_distance_squared = range * range;
 
-	for (Entity& entity : admin.m_entities)
+	std::vector<Entity*>& enemies = admin.GetAllEnemiesTo( &to_check_stats );
+	for( Entity* entity : enemies )
 	{
-		if (!entity.m_claimed)
+		TriggerComp* trigger_comp = (TriggerComp*)entity->GetComponent(TRIGGER_COMP);
+
+		if (trigger_comp)
 		{
 			continue;
 		}
 
-		TriggerComp* trigger_comp = (TriggerComp*) entity.GetComponent( TRIGGER_COMP );
+		TransformComp* trans_comp = (TransformComp*)entity->GetComponent(TRANSFORM_COMP);
+		StatsComp* stats_comp = (StatsComp*)entity->GetComponent(STATS_COMP);
 
-		if( trigger_comp )
+		if (trans_comp && stats_comp)
 		{
-			continue;
-		}
-
-		TransformComp* trans_comp = (TransformComp*) entity.GetComponent( TRANSFORM_COMP );
-		StatsComp* stats_comp = (StatsComp*) entity.GetComponent( STATS_COMP );
-
-		if( trans_comp && stats_comp )
-		{
-			if( to_check_stats.IsEnemy( stats_comp->m_team ) )
+			if (to_check_stats.IsEnemy(stats_comp->m_team))
 			{
-				float dist_squared = GetDistanceSquared( position, trans_comp->m_transform.m_position );
-				if( dist_squared < best_distance_squared )
+				float dist_squared = GetDistanceSquared(position, trans_comp->m_transform.m_position);
+				if (dist_squared < best_distance_squared)
 				{
 					best_distance_squared = dist_squared;
-					best_entity = &entity;
+					best_entity = entity;
 				}
 			}
 		}
